@@ -1,4 +1,13 @@
 class lmrtfy_RollProvider_sf1e extends lmrtfy_RollProvider {
+	constructor() {
+		super();
+		
+		this.initiativeMethod = "rollSkill";
+		this.skillMethod = "rollSkill";
+		this.saveMethod = "rollSave";
+		this.abilityMethod = "rollAbility";
+	}
+	
 	/**
 	 * The system identifier for this specific RollProvider.
 	 *
@@ -109,5 +118,68 @@ class lmrtfy_RollProvider_sf1e extends lmrtfy_RollProvider {
 	 */
 	specialRolls() {
 		return {'initiative': true, 'perception': true};
+	}
+	
+	trainedOptions() {
+		return [ "HideUntrained", "PreventUntrained", "AllowUntrained" ];
+	}
+	
+	isActorTrained(actor, rollType, id) {
+		if (rollType != LMRTFYRoller.rollTypes().SKILL) {
+			return true;
+		}
+		return actor.system.skills[id].ranks > 0;
+	}
+	
+	canActorSeeRoll(actor, rollType, id, trainedOption) {
+		var train = this.isActorTrained(actor, rollType, id);
+		switch (trainedOption) {
+			case "HideUntrained":
+				return train;
+		}
+		return true;
+	}
+	
+	canActorRoll(actor, rollType, id, trainedOption) {
+		var train = this.isActorTrained(actor, rollType, id);
+		switch (trainedOption) {
+			case "HideUntrained":
+			case "PreventUntrained":
+				return train;
+		}
+		return true;
+	}
+	
+	getAvailableRolls() {
+		return 
+		[
+			{
+				id: "Special",
+				name: "SFRPG.Special",
+				type: "Category",
+				rolls: [
+					{ id: "Initiative", name: "SFRPG.InitiativeLabel", type: "Roll", method: initiativeMethod },
+					{ id: "Perception", name: "SFRPG.SpecialLabel", type: "Roll", method: skillMethod }
+				]
+			},
+			{
+				id: "Abilities",
+				name: "SFRPG.ItemSheet.AbilityScoreIncrease.Label",
+				type: "Category",
+				rolls: this.getAvailableAbilityRolls()
+			},
+			{
+				id: "Saves",
+				name: "SFRPG.DroneSheet.Chassis.Details.Saves.Header",
+				type: "Category",
+				rolls: this.getAvailableSaveRolls()
+			},
+			{
+				id: "Skills",
+				name: "SFRPG.SkillsToggleHeader",
+				type: "Category",
+				rolls: this.getAvailableSkillRolls()
+			},
+		];
 	}
 }

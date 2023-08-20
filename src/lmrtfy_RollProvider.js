@@ -57,6 +57,8 @@ class lmrtfy_RollProvider {
 		return new lmrtfy_RollEvent();
 	}
 	
+	
+	
 	/**
 	 * If run, will override fail checks for this provider so that they always provide result set.
 	 */
@@ -211,4 +213,50 @@ class lmrtfy_RollProvider {
 		
         return abilityMods;
     }
+	
+	/** New Trained Options **/
+	
+	/**
+	 * Gets the array of options available for trained options.
+	 *
+	 * @return {Array} of options available. Should be in key:value format.
+	 */
+	trainedOptions() {
+		return null;
+	}
+	
+	/**
+	 * Gets if an Actor is trained in a specific skill/save/whatever.
+	 *
+	 * @return {boolean} null if unknown (or not programmed), true if the Actor is trained, and false if the Actor is untrained.
+	 */
+	isActorTrained(actor, rollType, id) {
+		return null;
+	}
+	
+	/**
+	 * Gets if an Actor can see if a specific skill/save/whatever.
+	 *
+	 * @return {boolean} null if unknown (or not programmed), true if the Actor could see the button, and false if the button should be hidden.
+	 */
+	canActorSeeRoll(actor, rollType, id, trainedOption) {
+		return null;
+	}
+	
+	/**
+	 * Gets if an Actor can roll a specific skill/save/wahtever.
+	 *
+	 * @return {boolean} null if unknown (or not programmed), true if the Actor could see the button, and false if the button should be disabled.
+	 */
+	canActorRoll(actor, rollType, id, trainedOption) {
+		return null;
+	}
+	
+	/** Available Rolls Refactor 
+	 * 
+	 * This gets the new available rolls for this system. 
+	 */
+	getAvailableRolls() {
+		return null;
+	}
 }

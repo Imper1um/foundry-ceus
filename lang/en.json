@@ -65,5 +65,12 @@
     "LMRTFY.SkillCheckFail": "FAIL Skill Check: ",
     "LMRTFY.EnableChooseFail": "Enable Fail Button",
     "LMRTFY.ShowFailButtons": "Show Fail Button",
-    "LMRTFY.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form"
+    "LMRTFY.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form", 
+    "LMRTFY": {
+		"Trained": {
+			"HideUntrained": "Hide Untrained Skills from view.",
+			"PreventUntrained": "Prevent Untrained Skills from being rolled.",
+			"AllowUntrained": "Allow Untrained Skills to be rolled.",
+		}
+    }
 }
