@@ -9,27 +9,10 @@
 		"name": "VTT Lair",
 		"url": "https://github.com/vtt-lair"
 	}],
-	"scripts": [
-		"./src/lmrtfy_RollProvider.js",
-		"./src/lmrtfy_RollEvent.js",
-		"./src/lmrtfy_RollProvider_cof.js",
-		"./src/lmrtfy_RollProvider_coc.js",
-		"./src/lmrtfy_RollProvider_dnd5e.js",
-		"./src/lmrtfy_RollProvider_cd.js",
-		"./src/lmrtfy_RollProvider_degenesis.js",
-		"./src/lmrtfy_RollProvider_dnd5eJP.js",
-		"./src/lmrtfy_RollProvider_dnd35.js",
-		"./src/lmrtfy_RollProvider_ffd20.js",
-		"./src/lmrtfy_RollProvider_ose.js",
-		"./src/lmrtfy_RollProvider_pf1.js",
-		"./src/lmrtfy_RollProvider_pf2e.js",
-		"./src/lmrtfy_RollProvider_sf1e.js",
-		"./src/lmrtfy_RollProvider_sw5e.js",
-
-		"./src/lmrtfy.js",
-		"./src/requestor.js",
-		"./src/roller.js"
+	"esmodules": [
+		"./src/lmrtfy_Startup.js"
 	],
+	"scripts": [],
 	"styles": [
 		"/css/lmrtfy.css"
 	],

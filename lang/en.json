@@ -70,7 +70,84 @@
 		"Trained": {
 			"HideUntrained": "Hide Untrained Skills from view.",
 			"PreventUntrained": "Prevent Untrained Skills from being rolled.",
-			"AllowUntrained": "Allow Untrained Skills to be rolled.",
+			"AllowUntrained": "Allow Untrained Skills to be rolled."
+		},
+		"Results": {
+			"Header": "Roll Results",
+			"Actor": "Actor",
+			"Bonus": "Bonus",
+			"Roll": "Roll",
+			"Total": "Total"
+		},
+		"Actions": {
+			"Dice": "Dice",
+			"Custom": "Custom"
+		},
+		"Requestor": {
+			"Title": "Let me roll that for you: Request Roll",
+			"SelectUsers": {
+				"Title": "Select Users",
+				"AddAll": "Add All",
+				"AddAllGM": "GMs",
+				"AddAllAssistants": "Assistant GMs",
+				"AddAllTrustedPlayers": "Trusted",
+				"AddAllPlayers": "Players",
+				"AddAllOnline": "Online Users",
+				"AddEveryone": "Everyone",
+				"Clear": "Clear"
+			},
+			"SelectActors": {
+				"Title": "Select Actors",
+				"AddAll": "Add All",
+				"AddAllFriendly": "Friendly",
+				"AddAllNeutral": "Neutral",
+				"AddAllEnemy": "Enemy",
+				"AddAllSecret": "Secret",
+				"AddAllPlayers": "Players",
+				"AddAllNonPlayers": "Non-Players",
+				"Clear": "Clear"
+			},
+			"SelectRolls": {
+				"Title": "Select Rolls",
+				"Clear": "Clear",
+				"ContextName": "Context",
+				"ContextHint": "When a roll requires it (for example, Initiative requires a Combat context), select the context for that roll.",
+				"RollNumberName": "Roll Number",
+				"RollNumberHint": "Select if receivers need to roll one, must roll all, or can roll any number.",
+				"Header": {
+					"Roll": "Roll",
+					"CustomBonus": "Custom/Bonus",
+					"DC": "DC",
+					"AdvantageDisadvantage": "Adv/Dis",
+					"Trained": "Trained"
+				},
+				"AdvantageDisadvantage": {
+					"RequireAdvantage": "Require Advantage",
+					"RequireDisadvantage": "Require Disadvantage",
+					"RequireNormal": "Require Normal",
+					"AllowNormalAdvantage": "Allow Normal or Advantage",
+					"AllowNormalDisadvantage": "Allow Normal or Disadvantage",
+					"AllowAdvantageDisadavantage": "Allow Advantage or Disadvantage",
+					"AllowAll": "AllowAll"
+				},
+				"Buttons": {
+					"Add": "Add",
+					"Clear": "Clear"
+				}
+			},
+			"Buttons": {
+				"GmrollSelected": "Roll for selected",
+				"AskSelected": "Ask selected to roll",
+				"MacroToScreen": "To this screen",
+				"MacroToGmroll": "To roll for selected",
+				"MacroToAsk": "To ask selected to roll"
+			}
+		},
+		"Errors": {
+			"PreventsSubmission": "Prevents Submission",
+			"NoUsers": "There are no users selected!",
+			"NoActors": "There are no actors selected!",
+			"NoRolls": "There are no rolls selected!"
 		}
     }
 }

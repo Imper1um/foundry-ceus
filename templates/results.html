@@ -1,0 +1,24 @@
+<div class="lmrtfy-dialog">
+	<div class="lmrtfy-results-header">
+		{{localize "LMRTFY.Results.Header"}}
+	</div>
+	<div class="lmrtfy-results-roll">
+		{{roll}}
+	</div>
+	<div class="lmrtfy-results-list">
+		<div class="lmrtfy-results-list-header">
+			<div class="header-item actor">{{localize "LMRTFY.Results.Actor"}}</div>
+			<div class="header-item bonus">{{localize "LMRTFY.Results.Bonus"}}</div>
+			<div class="header-item roll">{{localize "LMRTFY.Results.Roll"}}</div>
+			<div class="header-item total">{{localize "LMRTFY.Results.Total"}}</div>
+		</div>
+	{{#each results as result}}
+		<div class="lmrtfy-results-list-item">
+			<div class="list-item actor">{{result.actor}}</div>
+			<div class="list-item bonus">{{result.bonus}}</div>
+			<div class="list-item roll">{{result.roll}}</div>
+			<div class="list-item total">{{result.total}}</div>
+		</div>
+	{{/each}}
+</div>
+		

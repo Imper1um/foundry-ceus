@@ -1,4 +1,6 @@
-class lmrtfy_RollProvider_dnd5eJP extends lmrtfy_RollProvider_dnd5e {
+import { lmrtfy_RollProvider_dnd5e } from "./lmrtfy_RollProvider_dnd5e.js";
+
+export class lmrtfy_RollProvider_dnd5eJP extends lmrtfy_RollProvider_dnd5e {
 	systemIdentifiers() {
 		return 'dnd5eJP';
 	}

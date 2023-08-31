@@ -1,8 +1,34 @@
-class lmrtfy_RollProvider {
+import { lmrtfy_RollEvent } from "./lmrtfy_RollEvent.js";
+
+/** 
+ * Old Roll Provider.
+ *
+ * This is provided for backwards compatibility.
+ * 
+ * @deprecated with the new lmrtfy_RefactorRollProvider . Do not use this with new systems. If you can, try translating a RollProvider to a RefactorRollProvider. 
+ */
+export class lmrtfy_RollProvider {
 	constructor() {
+	}
+	
+	async onReady() {
 		this.failCheck = game.settings.get('lmrtfy', 'showFailButtons');
 		this.overrideFailCheck = false;
 	}
+	
+	getSettings() {
+		return [{
+				id: "showFailButtons",
+				name: game.i18n.localize("LMRTFY.Setting.ShowFailButtons.Name"),
+				hint: game.i18n.localize("LMRTFY.Setting.ShowFailButtons.Hint"),
+				scope: 'world',
+				config: LMRTFY.current.providerEngine.currentRollProvider.allowFailButtons(),
+				type: Boolean,
+				default: LMRTFY.current.providerEngine.currentRollProvider.failButtonsDefault(),
+				onChange: () => window.location.reload()
+			}];
+	}
+	
 	/**
 	 * The system identifier for this specific RollProvider.
 	 *
@@ -10,6 +36,10 @@ class lmrtfy_RollProvider {
 	 */
 	systemIdentifiers() {
 		throw new Error('No System Identifier has been set!');
+	}
+	
+	rollProviderType() {
+		return 'legacy';
 	}
 	
 	/**
@@ -57,7 +87,14 @@ class lmrtfy_RollProvider {
 		return new lmrtfy_RollEvent();
 	}
 	
-	
+	/**
+	 * Should fail buttons be enabled for this system?
+	 *
+	 * @return {boolean} true if fail buttons are enabled.
+	 */
+	allowFailButtons() {
+		return false;
+	}
 	
 	/**
 	 * If run, will override fail checks for this provider so that they always provide result set.
@@ -86,6 +123,14 @@ class lmrtfy_RollProvider {
 	 */
 	disadvantageRollEvent() {
 		return new lmrtfy_RollEvent();
+	}
+	
+	/**
+	 *
+	 * @return {Boolean} If true, the default for the show fail buttons will be set to true. Otherwise, false.
+	 */
+	failButtonsDefault() {
+		return false;
 	}
 	
 	/**
@@ -213,50 +258,4 @@ class lmrtfy_RollProvider {
 		
         return abilityMods;
     }
-	
-	/** New Trained Options **/
-	
-	/**
-	 * Gets the array of options available for trained options.
-	 *
-	 * @return {Array} of options available. Should be in key:value format.
-	 */
-	trainedOptions() {
-		return null;
-	}
-	
-	/**
-	 * Gets if an Actor is trained in a specific skill/save/whatever.
-	 *
-	 * @return {boolean} null if unknown (or not programmed), true if the Actor is trained, and false if the Actor is untrained.
-	 */
-	isActorTrained(actor, rollType, id) {
-		return null;
-	}
-	
-	/**
-	 * Gets if an Actor can see if a specific skill/save/whatever.
-	 *
-	 * @return {boolean} null if unknown (or not programmed), true if the Actor could see the button, and false if the button should be hidden.
-	 */
-	canActorSeeRoll(actor, rollType, id, trainedOption) {
-		return null;
-	}
-	
-	/**
-	 * Gets if an Actor can roll a specific skill/save/wahtever.
-	 *
-	 * @return {boolean} null if unknown (or not programmed), true if the Actor could see the button, and false if the button should be disabled.
-	 */
-	canActorRoll(actor, rollType, id, trainedOption) {
-		return null;
-	}
-	
-	/** Available Rolls Refactor 
-	 * 
-	 * This gets the new available rolls for this system. 
-	 */
-	getAvailableRolls() {
-		return null;
-	}
 }

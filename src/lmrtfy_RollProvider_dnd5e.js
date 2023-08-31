@@ -1,4 +1,6 @@
-class lmrtfy_RollProvider_dnd5e extends lmrtfy_RollProvider {
+import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+
+export class lmrtfy_RollProvider_dnd5e extends lmrtfy_RollProvider {
 	systemIdentifiers() {
 		return 'dnd5e';
 	}
@@ -19,12 +21,20 @@ class lmrtfy_RollProvider_dnd5e extends lmrtfy_RollProvider {
 		dre.advantage = true;
 		return dre;
 	}
+	
+	allowFailButtons() {
+		return true;
+	}
 
 	disadvantageRollEvent() {
 		var dre = new lmrtfy_RollEvent(false, false, true, true);
 		dre.disadvantage = true;
 		return dre;
 		
+	}
+	
+	failButtonsDefault() {
+		return true;
 	}
 	
 	handleDeathSave(actors, event) {

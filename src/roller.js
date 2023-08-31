@@ -1,4 +1,6 @@
-class LMRTFYRoller extends Application {
+import { LMRTFY } from "./lmrtfy.js";
+
+export class LMRTFYRoller extends Application {
 
     constructor(actors, data) {
         super();
@@ -115,7 +117,9 @@ class LMRTFYRoller extends Application {
             SKILL: "skill",
             PERCEPTION: "perception",
 			INITIATIVE: "initiative",
-			DEATHSAVE: "deathsave"
+			DEATHSAVE: "deathsave",
+			DICE: "dice",
+			CUSTOM: "custom"
         };
 	}
 
@@ -576,3 +580,5 @@ class LMRTFYRoller extends Application {
         if (normalButton) normalButton.disabled = !normalButton.disabled;
     }
 }
+
+console.log("LMRTFY | roller.js loaded");

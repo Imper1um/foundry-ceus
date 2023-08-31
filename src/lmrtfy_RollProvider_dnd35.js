@@ -1,4 +1,6 @@
-class lmrtfy_RollProvider_dnd35 extends lmrtfy_RollProvider {
+import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+
+export class lmrtfy_RollProvider_dnd35 extends lmrtfy_RollProvider {
 	systemIdentifiers() {
 		return 'D35E';
 	}

@@ -1,96 +1,33 @@
-class LMRTFY {
-    static async init() {
-        game.settings.register('lmrtfy', 'enableParchmentTheme', {
-            name: game.i18n.localize('LMRTFY.EnableParchmentTheme'),
-            hint: game.i18n.localize('LMRTFY.EnableParchmentThemeHint'),
-            scope: 'client',
-            config: true,
-            type: Boolean,
-            default: true,
-            onChange: (value) => LMRTFY.onThemeChange(value)
-        });
-        game.settings.register('lmrtfy', 'deselectOnRequestorRender', {
-            name: game.i18n.localize('LMRTFY.DeselectOnRequestorRender'),
-            hint: game.i18n.localize('LMRTFY.DeselectOnRequestorRenderHint'),
-            scope: 'world',
-            config: true,
-            type: Boolean,
-            default: false,
-            onChange: () => window.location.reload()
-        });
-        game.settings.register('lmrtfy', 'useTokenImageOnRequester', {
-            name: game.i18n.localize('LMRTFY.UseTokenImageOnRequester'),
-            hint: game.i18n.localize('LMRTFY.UseTokenImageOnRequesterHint'),
-            scope: 'world',
-            config: true,
-            type: Boolean,
-            default: false,
-            onChange: () => window.location.reload()
-        });
+import { lmrtfy_RequestWindow } from "./lmrtfy_RequestWindow.js";
+import { lmrtfy_ProviderEngine } from "./lmrtfy_ProviderEngine.js";
+import { lmrtfy_SocketEngine } from "./lmrtfy_SocketEngine.js";
+import { lmrtfy_SettingsEngine } from "./lmrtfy_SettingsEngine.js";
+import { LMRTFYRequestor } from "./requestor.js";
 
-        var showFailButtonSetting = false;
-        if (game.system.id === 'dnd5e') {
-            showFailButtonSetting = true;
-        }
-        game.settings.register('lmrtfy', 'showFailButtons', {
-            name: game.i18n.localize('LMRTFY.ShowFailButtons'),
-            hint: game.i18n.localize('LMRTFY.ShowFailButtonsHint'),
-            scope: 'world',
-            config: showFailButtonSetting,
-            type: Boolean,
-            default: showFailButtonSetting, // if it's DnD 5e default to true
-            onChange: () => window.location.reload()
-        });
 
-        Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
-            const actorsControlledToken = canvas.tokens?.controlled.find(t => t.actor.id === actor.id);
-            if (actorsControlledToken) {
-                return true;
-            } else {
-                return false;
-            }
-        });
-
-        Handlebars.registerHelper('lmrtfy-showTokenImage', function (actor) {
-            if (game.settings.get('lmrtfy', 'useTokenImageOnRequester')) {
-                return true;
-            } else {
-                return false;
-            }
-        });
-    }
-
-    static ready() {
-        game.socket.on('module.lmrtfy', LMRTFY.onMessage);
-        
-        var externalRollProviders = [
-            new lmrtfy_RollProvider_cd(),
-            new lmrtfy_RollProvider_coc(),
-            new lmrtfy_RollProvider_cof(),
-            new lmrtfy_RollProvider_degenesis(),
-            new lmrtfy_RollProvider_dnd5e(),
-            new lmrtfy_RollProvider_dnd5eJP(),
-            new lmrtfy_RollProvider_dnd35(),
-            new lmrtfy_RollProvider_ffd20(),
-            new lmrtfy_RollProvider_ose(),
-            new lmrtfy_RollProvider_pf1(),
-            new lmrtfy_RollProvider_pf2e(),
-            new lmrtfy_RollProvider_sf1e(),
-            new lmrtfy_RollProvider_sw5e()
-        ];
-        
-        for (var i = 0; i < externalRollProviders.length; i++) {
-            if (externalRollProviders[i].systemIdentifiers() == game.system.id) {
-                LMRTFY.currentRollProvider = externalRollProviders[i];
-                break;
-            }
-        }
-
-        if (!LMRTFY.currentRollProvider) {
-            console.error('LMRFTY | Unsupported system detected');
-        }
-
-        LMRTFY.d20Svg = '<svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
+export class LMRTFY {
+	constructor() {
+		this.requestWindows = new Array();
+		this.resultWindows = new Array();
+		this.askWindows = new Array();
+		this.providerEngine = new lmrtfy_ProviderEngine();
+		this.settingsEngine = new lmrtfy_SettingsEngine();
+		this.socketEngine = new lmrtfy_SocketEngine();
+	}
+	
+	static current = new LMRTFY();
+	
+	async onInit() {
+		this.registerHandlebarsHelpers();
+		Hooks.on('getSceneControlButtons', this.getSceneControlButtons);
+	}
+	
+	async onReady() {
+		await this.providerEngine.onReady();
+		await this.settingsEngine.onReady();
+		await this.socketEngine.onReady();
+		
+		this.d20Svg = '<svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"' +
             'viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">' +
             '<g transform="translate(-246.69456,-375.66745)">' +
                 '<path d="M278.2,382.1c-0.1,0-0.2,0-0.3,0.1L264.8,398c-0.2,0.3-0.2,0.3,0.1,0.3l26.4-0.1c0.4,0,0.4,0,0.1-0.3l-13-15.8' +
@@ -106,80 +43,152 @@ class LMRTFY {
                 'c-0.3,0-0.2,0.2-0.2,0.4l0.4,8c0,0.2,0,0.3,0.3,0.2L299.1,421.9z"/>' +
             '</g>' +
         '</svg>';
+	}
+	
+	getSceneControlButtons(buttons) {
+        let tokenButton = buttons.find(b => b.name == "token")
 
-        // for now we don't allow can fails until midi-qol has update patching.js
-        if (game.modules.get("midi-qol")?.active && !isNewerVersion(game.modules.get("midi-qol")?.version, "10.0.26")) {
-            LMRTFY.currentRollProvider.overrideFailChecks(false);
+        if (tokenButton) {
+			tokenButton.tools.push({
+				name: "request-roll",
+				title: game.i18n.localize('LMRTFY.ControlTitle'),
+				icon: "fas fa-dice-d20",
+				visible: game.user.isGM,
+				onClick: () => LMRTFY.current.requestRoll(),
+				button: true
+			});
         }
+    }
+	
+	onThemeChange(enabled) {
+        $(".lmrtfy.lmrtfy-requestor,.lmrtfy.lmrtfy-roller").toggleClass("lmrtfy-parchment", enabled);
+        if (!this.requestor) { return; }
+        if (enabled) {
+            this.requestor.options.classes.push("lmrtfy-parchment");
+        } else {
+            this.requestor.options.classes = this.requestor.options.classes.filter(c => c !== "lmrtfy-parchment");
+		}
+        // Resize to fit the new theme
+        if (this.requestor.element.length) {
+            this.requestor.setPosition({ width: "auto", height: "auto" });
+		}
+    }
+	
+	requestRoll() {
+		if (this.providerEngine.currentRollProvider.rollProviderType() === 'legacy') {
+			if (this.requestor === undefined) {
+				this.requestor = new LMRTFYRequestor();
+			}
+			this.requestor.render(true);
+		} else if (this.providerEngine.currentRollProvider.rollProviderType() === 'refactor') {
+			const requestwindow = new lmrtfy_RequestWindow();
+			this.requestWindows.push(requestwindow);
+			requestwindow.render(true);
+		}
+    }
+	
+	async registerHandlebarsHelpers() {
+		console.log("LMRFTY | Registering Handlebars Helpers...");
+		Handlebars.registerHelper('lmrtfy-controlledToken', function (actor) {
+			const actorsControlledToken = canvas.tokens?.controlled.find(t => t.actor.id === actor.id);
+			if (actorsControlledToken) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+
+		Handlebars.registerHelper('lmrtfy-showTokenImage', function (actor) {
+			if (game.settings.get('lmrtfy', 'useTokenImageOnRequester')) {
+				return true;
+			} else {
+				return false;
+			}
+		});
+		
+		Handlebars.registerHelper('lmrtfy-advantageDisadvantage', function(options) {
+			if (!options.allowDisadvantage && !options.allowAdvantage) { return ""; }
+			var html = `<select id="advdis-${options.id}" name="advdis-${options.id}" class="selector-advantageDisadvantage" data-id="${options.id}">`;
+			html += '<option value="require-normal" '+ (options.selected === "require-normal" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.RequireNormal") + '</option>';
+			if (options.allowAdvantage) {
+				html += '<option value="require-advantage" '+ (options.selected === "require-advantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.RequireAdvantage") + '</option>';
+				html += '<option value="allow-normal-advantage"> '+ (options.selected === "allow-normal-advantage" ? 'selected' : '') +'' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowNormalAdvantage") + '</option>';
+			}
+			if (options.allowDisadvantage) {
+				html += '<option value="require-disadvantage" '+ (options.selected === "require-disadvantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.RequireDisadvantage") + '</option>';
+				html += '<option value="allow-normal-disadvantage" '+ (options.selected === "allow-normal-disadvantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowNormalDisadvantage") + '</option>';
+			}
+			if (options.allowAdvantage && options.allowDisadvantage) {
+				html += '<option value="allow-advantage-disadvantage" '+ (options.selected === "allow-advantage-disadvantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowAdvantageDisadvantage") + '</option>';
+				html += '<option value="allow-all" '+ (options.selected === "allow-all" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowAll") + '</option>';
+			}
+			html += "</select>";
+			return new Handlebars.SafeString(html);
+		});
+		
+		Handlebars.registerHelper('lmrtfy-rollSelector', function(requestItem, possibleActions) {
+			var html = `<select id="roll-${requestItem.id}" name="roll-${requestItem.id}" class="selector-roll" data-id="${requestItem.id}">`;
+			const action = possibleActions.find(pa => pa.id == requestItem.id);
+			for (const possibleAction of possibleActions) {
+				if (possibleAction.type === "category") {
+					html += `<option class="category depth-${possibleAction.depth}">` + game.i18n.format(possibleAction.name) + '</option>';
+				} else if (possibleAction.type === "roll") {
+					const isAction = possibleAction.id === action.id ? " selected" : "";
+					html += `<option value="${possibleAction.id}" class="roll depth-${possibleAction.depth}"${isAction}>` + game.i18n.format(possibleAction.name) + '</option>';
+				}
+			}
+			html += '</select>';
+			return new Handlebars.SafeString(html);
+		});
+		
+		Handlebars.registerHelper('lmrtfy-trainedSelector', function(requestItem, trainedOptions) {
+			var html = `<select id="trained-${requestItem.id}" name="trained-${requestItem.id}" class="selector-trained" data-id="${requestItem.id}">`;
+			const opt = trainedOptions.find(to => to.key === requestItem.trainedOption);
+			for (const trainedOption of trainedOptions) {
+				const isOption = trainedOption.key === requestItem.trainedOption ? " selected" : "";
+				html += `<option value="${trainedOption.key}"${isOption}>` + game.i18n.format(trainedOption.name) + '</option>';
+			}
+			return new Handlebars.SafeString(html);
+		});
+	}
+
+    /*async onReady() {
+		this.providerEngine.onReady();
+		this.socketEngine.onReady();
+
+        
 
         if (game.settings.get('lmrtfy', 'deselectOnRequestorRender')) {
             Hooks.on("renderLMRTFYRequestor", () => {
                 canvas.tokens.releaseAll();
-            })
-        }
-    }
-   
-
-    static onMessage(data) {
-        //console.log("LMRTF got message: ", data)
-        if (data.user === "character" &&
-            (!game.user.character || !data.actors.includes(game.user.character.id))) {
-            return;
-        } else if (!["character", "tokens"].includes(data.user) && data.user !== game.user.id) {
-            return;
-        }
-        
-        let actors = [];
-        if (data.user === "character") {
-            actors = [game.user.character];
-        } else if (data.user === "tokens") {
-            actors = canvas.tokens.controlled.map(t => t.actor).filter(a => data.actors.includes(a.id));
-        } else {
-            actors = data.actors.map(aid => LMRTFY.fromUuid(aid));
-        }
-        actors = actors.filter(a => a);
-        
-        // remove player characters from GM's requests
-        if (game.user.isGM) {
-            actors = actors.filter(a => !a.hasPlayerOwner);
-        }        
-        if (actors.length === 0) return;
-        new LMRTFYRoller(actors, data).render(true);
-    }
-    static requestRoll() {
-        if (LMRTFY.requestor === undefined)
-            LMRTFY.requestor = new LMRTFYRequestor();
-        LMRTFY.requestor.render(true);
-    }
-
-    static onThemeChange(enabled) {
-        $(".lmrtfy.lmrtfy-requestor,.lmrtfy.lmrtfy-roller").toggleClass("lmrtfy-parchment", enabled)
-        if (!LMRTFY.requestor) return;
-        if (enabled)
-            LMRTFY.requestor.options.classes.push("lmrtfy-parchment")
-        else
-            LMRTFY.requestor.options.classes = LMRTFY.requestor.options.classes.filter(c => c !== "lmrtfy-parchment")
-        // Resize to fit the new theme
-        if (LMRTFY.requestor.element.length)
-            LMRTFY.requestor.setPosition({ width: "auto", height: "auto" })
-    }
-
-    static getSceneControlButtons(buttons) {
-        let tokenButton = buttons.find(b => b.name == "token")
-
-        if (tokenButton) {
-            tokenButton.tools.push({
-                name: "request-roll",
-                title: game.i18n.localize('LMRTFY.ControlTitle'),
-                icon: "fas fa-dice-d20",
-                visible: game.user.isGM,
-                onClick: () => LMRTFY.requestRoll(),
-                button: true
             });
         }
-    }
+		
+		
+		Hooks.on('renderChatMessage', this.hideBlind);
+    }*/
 
-    static async hideBlind(app, html, msg) {
+    /* 
+	results() {
+		if (this.results === undefined) {
+			this.results = new Array();
+		}
+		return this.results;
+	}
+	addResults(newResults) {
+		const r = results();
+		r.push(newResults);
+		this.results = r;
+	}
+	getResults(id) {
+		return results.find(r => r.id == id);
+	}
+
+    
+
+    
+
+    async hideBlind(app, html, msg) {
         if (msg.message.flags && msg.message.flags.lmrtfy) {
             if (msg.message.flags.lmrtfy.blind && !game.user.isGM) {
                 msg.content = '<p>??</p>';
@@ -191,7 +200,7 @@ class LMRTFY {
         }
     }
 
-    static fromUuid(uuid) {
+    fromUuid(uuid) {
         let parts = uuid.split(".");
         let doc;
 
@@ -217,12 +226,5 @@ class LMRTFY {
         }
         if (doc.actor) doc = doc.actor;
         return doc || undefined;
-    }
+    } */
 }
-
-globalThis.LMRTFYRequestRoll = LMRTFY.requestRoll;
-
-Hooks.once('init', LMRTFY.init);
-Hooks.on('ready', LMRTFY.ready);
-Hooks.on('getSceneControlButtons', LMRTFY.getSceneControlButtons);
-Hooks.on('renderChatMessage', LMRTFY.hideBlind);

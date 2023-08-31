@@ -1,6 +1,6 @@
+import { LMRTFY } from "./lmrtfy.js";
 
-
-class LMRTFYRequestor extends FormApplication {
+export class LMRTFYRequestor extends FormApplication {
     constructor(...args) {
         super(...args)
         game.users.apps.push(this);

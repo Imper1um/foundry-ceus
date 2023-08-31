@@ -1,11 +1,9 @@
-class lmrtfy_RollProvider_sf1e extends lmrtfy_RollProvider {
+import { lmrtfy_RefactorRollProvider } from "./lmrtfy_RefactorRollProvider.js";
+import { LMRTFYRoller } from "./roller.js";
+
+export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	constructor() {
 		super();
-		
-		this.initiativeMethod = "rollSkill";
-		this.skillMethod = "rollSkill";
-		this.saveMethod = "rollSave";
-		this.abilityMethod = "rollAbility";
 	}
 	
 	/**
@@ -15,109 +13,6 @@ class lmrtfy_RollProvider_sf1e extends lmrtfy_RollProvider {
 	 */
 	systemIdentifiers() {
 		return 'sfrpg';
-	}
-	
-	/**
-	 * Where all of the Abilities are defined for this system.
-	 *
-	 * @return array Of Abilities
-	 */
-	abilities() {
-		return CONFIG.SFRPG.abilities;
-	}
-
-	/**
-	 * Where all of the Abilities Abbreviations are defined for this system, if any.
-	 *
-	 * @return array Of Abilities with Abbreviations
-	 */
-	abilityAbbreviations() {
-		return CONFIG.SFRPG.abilities;
-	}
-
-
-	/**
-	 * Name of the method to roll on the Actor class to roll the appropriate check
-	 *
-	 * @return string Of method name associated with the appropriate check
-	 */
-	abilityRollMethod() {
-		return 'rollAbility';
-	}
-
-	/**
-	 * lmrtfy_RollEvent that is checked for special keys if a specific roll event is run.
-	 *
-	 * @return lmrtfy_RollEvent for this Event
-	 */
-	advantageRollEvent() {
-		return new lmrtfy_RollEvent();
-	}
-
-	/**
-	 * lmrtfy_RollEvent that is checked for special keys if a specific roll event is run.
-	 *
-	 * @return lmrtfy_RollEvent for this Event
-	 */
-	disadvantageRollEvent() {
-		return new lmrtfy_RollEvent();
-	}
-
-	/**
-	 * lmrtfy_RollEvent that is checked for special keys if a specific roll event is run.
-	 *
-	 * @return lmrtfy_RollEvent for this Event
-	 */
-	normalRollEvent() {
-		return new lmrtfy_RollEvent();
-	}
-
-	/**
-	 * Name of the method to roll on the Actor class to roll the appropriate check
-	 *
-	 * @return string Of method name associated with the appropriate check
-	 */
-	saveRollMethod() {
-		return 'rollSave';
-	}
-
-	/**
-	 * Where all of the Saves are defined for this system.
-	 *
-	 * @return array Of Saves
-	 */
-	saves() {
-		return CONFIG.SFRPG.saves;
-	}
-
-	/**
-	 * Where all of the Skills are defined for this system.
-	 *
-	 * @return array Of Skills
-	 */
-	skills() {
-		return CONFIG.SFRPG.skills;
-	}
-
-	/**
-	 * Name of the method to roll on the Actor class to roll the appropriate check
-	 *
-	 * @return string Of method name associated with the appropriate check
-	 */
-	skillRollMethod() {
-		return 'rollSkill';
-	}
-
-	/**
-	 * Array of special rolls:
-	 *  initiative
-	 *  deathsave
-	 *  perception
-	 *
-	 * @return array Containing special rolls that might be used for this System
-	 */
-	specialRolls() {
-		return {'initiative': true, 'perception': true};
 	}
 	
 	trainedOptions() {
@@ -150,36 +45,137 @@ class lmrtfy_RollProvider_sf1e extends lmrtfy_RollProvider {
 		return true;
 	}
 	
+	getInitiativeContexts() {
+		const initiativeContexts = new Array();
+		for (const combat of game.combats) {
+			initiativeContexts.push({"id":combat._id, "name":`${combat.combatants.size} on ${combat.scene.name}`});
+		}
+		return initiativeContexts;
+	}
+	
 	getAvailableRolls() {
-		return 
-		[
+		return [
 			{
 				id: "Special",
 				name: "SFRPG.Special",
-				type: "Category",
+				type: "category",
 				rolls: [
-					{ id: "Initiative", name: "SFRPG.InitiativeLabel", type: "Roll", method: initiativeMethod },
-					{ id: "Perception", name: "SFRPG.SpecialLabel", type: "Roll", method: skillMethod }
+					{ id: "Initiative", name: "SFRPG.InitiativeLabel", type: "roll", rollType: LMRTFYRoller.rollTypes().INITIATIVE, method: this.rollInitiative, contexts: this.getInitiativeContexts },
+					{ id: "Perception", name: "SFRPG.SpecialLabel", type: "roll", rollType:LMRTFYRoller.rollTypes().PERCEPTION, method: this.rollPerception }
 				]
 			},
 			{
 				id: "Abilities",
 				name: "SFRPG.ItemSheet.AbilityScoreIncrease.Label",
-				type: "Category",
+				type: "category",
 				rolls: this.getAvailableAbilityRolls()
 			},
 			{
 				id: "Saves",
 				name: "SFRPG.DroneSheet.Chassis.Details.Saves.Header",
-				type: "Category",
+				type: "category",
 				rolls: this.getAvailableSaveRolls()
 			},
 			{
 				id: "Skills",
 				name: "SFRPG.SkillsToggleHeader",
-				type: "Category",
+				type: "category",
 				rolls: this.getAvailableSkillRolls()
 			},
 		];
+	}
+	
+	async rollInitiative(rollId, actor, options) {
+		const combat = game.combats.get(options.context);
+		if (!combat) { return; }
+		var rollOptions = {formula: null, updateTurn: true, messageOptions: {}, requireMode: null, requireRollState: null};
+		if (options.requireMode) {
+			rollOptions.requireMode = options.requireMode;
+		}
+		if (options.requireRollState) {
+			rollOptions.requireRollState = options.requireRollState;
+		}
+		const newCombat = await combat.rollInitiative(actor._id, rollOptions); 
+		if (options.resultId) {
+			
+		}
+	}
+	
+	getAvailableAbilityRolls() {
+		const abilities = CONFIG.SFRPG.abilities;
+		return Object.keys(abilities).map(key => {
+			const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
+			return {
+				id: `Ability${capitalizedKey}`,
+				name: `SFRPG.Ability${capitalizedKey}`,
+				type: "roll",
+				rollType: LMRTFYRoller.rollTypes().ABILITY,
+				method: this.rollAbility
+			};
+		});
+	}
+	
+	getAvailableSaveRolls() {
+		const saves = CONFIG.SFRPG.saves;
+		return Object.keys(saves).map(key => {
+			const saveName = saves[key];
+			return {
+				id: `${saveName}Save`,
+				name: `SFRPG.${saveName}Save`,
+				type: "roll",
+				rollType: LMRTFYRoller.rollTypes().SAVE,
+				method: this.rollSave
+			};
+		});
+	}
+	
+	getAvailableSkillRolls() {
+		const abilities = CONFIG.SFRPG.skills;
+		return Object.keys(abilities).map(key => {
+			const capitalizedKey = (key.charAt(0).toUpperCase() + key.slice(1)).substring(0, 3);
+			return {
+				id: `Skill${capitalizedKey}`,
+				name: `SFRPG.Skill${capitalizedKey}`,
+				type: "roll",
+				rollType: LMRTFYRoller.rollTypes().SKILL,
+				method: this.rollSkill
+			};
+		});
+	}
+	
+	resultsEnabled() {
+		return true;
+	}
+	
+	canActionAdvantage(rollType, id) {
+		return true;
+	}
+	
+	canActionDisadvantage(rollType, id) {
+		return true;
+	}
+	permitAdvantageDisadvantage() {
+		return true;
+	}
+	needsContext(requestOptions) {
+		if (requestOptions.requestItems.some(ri => ri.id == "Initiative")) {
+			return true;
+		}
+		return false;
+	}
+	getContextList(requestOptions) {
+		if (requestOptions.requestItems.some(ri => ri.id == "Initiative")) {
+			return this.getInitiativeContexts();
+		}
+		return null;
+	}
+	permitDC() {
+		return true;
+	}
+	allowDC(rollType, id) {
+		if (rollType == LMRTFYRoller.rollTypes().INITIATIVE) {
+			return false;
+		}
+		return true;
 	}
 }

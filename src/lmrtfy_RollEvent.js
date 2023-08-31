@@ -5,7 +5,7 @@
  * @property {boolean} altKey - Indicates whether the alt (option on Mac) key was pressed. Default is false.
  * @property {boolean} ctrlKey - Indicates whether the control key was pressed. Default is false.
  */
-class lmrtfy_RollEvent {
+export class lmrtfy_RollEvent {
   /**
    * @param {boolean} shiftKey - (Optional) Specifies the state of the shift key.
    * @param {boolean} altKey - (Optional) Specifies the state of the alt key.

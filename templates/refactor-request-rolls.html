@@ -1,0 +1,125 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+	<fieldset class="select-users">
+		<legend>{{localize "LMRTFY.Requestor.SelectUsers.Title"}}</legend>
+		<div class="form-group">
+		{{#each possibleUsers as user}}
+			<div class="user {{#if user.active}}active{{else}}inactive{{/if}}" data-id="{{user.id}}" data-role="{{user.role}}" data-active="{{user.active}}" style="border-color: {{user.color}}">
+				<input type="checkbox" name="user-{{user.id}}" id="user-{{user.id}}" class="user-select" data-dtype="Boolean"
+					{{checked user.isSelected}} />
+				<label for="user-{{user.id}}">
+					{{#if user.img}}<img src="{{user.img}}" alt="{{user.name}}" />{{else}}<i class="fas fa-user-alt"></i>{{/if}}
+					<span class="name">{{user.name}}</span>
+				</label>
+			</div>
+		{{/each}}
+		</div>
+		<div class="form-group select-buttons">
+			<div class="button-intro">{{localize "LMRTFY.Requestor.SelectUsers.AddAll"}}</div>
+			<button type="button" id="users-addAll-gm" class="add-all">{{localize "LMRTFY.Requestor.SelectUsers.AddAllGM"}}</button>
+			<button type="button" id="users-addAll-assistant" class="add-all">{{localize "LMRTFY.Requestor.SelectUsers.AddAllAssistant"}}</button>
+			<button type="button" id="users-addAll-trusted" class="add-all">{{localize "LMRTFY.Requestor.SelectUsers.AddAllTrustedPlayers"}}</button>
+			<button type="button" id="users-addAll-player" class="add-all">{{localize "LMRTFY.Requestor.SelectUsers.AddAllPlayers"}}</button>
+			<button type="button" id="users-addAll-online" class="add-all">{{localize "LMRTFY.Requestor.SelectUsers.AddAllOnline"}}</button>
+			<button type="button" id="users-addAll-everyone" class="add-all">{{localize "LMRTFY.Requestor.SelectUsers.AddEveryone"}}</button>
+			<div class="button-separator"></div>
+			<button type="button" id="users-clear" class="clear-all">{{localize "LMRTFY.Requestor.SelectUsers.Clear"}}</button>
+	</fieldset>
+	<fieldset class="select-actors">
+		<legend>{{localize "LMRTFY.Requestor.SelectActors.Title"}}</legend>
+		<div class="form-group">
+		{{#each possibleActors as actor}}
+			{{#if actor.isVisible}}
+			<div class="actor {{actor.dispositionClass}}" data-id="{{actor.id}}">
+				<input type="checkbox" class="actor-select" name="actor-{{actor.id}}" id="actor-{{actor.id}}" data-dtype="Boolean" {{checked user.isSelected}} />
+				<label for="actor-{{actor.id}}">
+					<img src="{{actor.img}}" />
+					<span class="name">{{actor.name}}</span>
+				</label>
+			</div>
+			{{/endif}}
+		{{/each}}
+		</div>
+		<div class="form-group select-buttons">
+			<div class="button-intro">{{localize "LMRTFY.Requestor.SelectActors.AddAll"}}</div>
+			<button type="button" id="actors-addAll-friendly" class="addAll">{{localize "LMRTFY.Requestor.SelectActors.AddAllFriendly"}}</button>
+			<button type="button" id="actors-addAll-neutral" class="addAll">{{localize "LMRTFY.Requestor.SelectActors.AddAllNeutral"}}</button>
+			<button type="button" id="actors-addAll-enemy" class="addAll">{{localize "LMRTFY.Requestor.SelectActors.AddAllEnemy"}}</button>
+			<button type="button" id="actors-addAll-secret" class="addAll">{{localize "LMRTFY.Requestor.SelectActors.AddAllSecret"}}</button>
+			<button type="button" id="actors-addAll-players" class="addAll">{{localize "LMRTFY.Requestor.SelectActors.AddAllPlayers"}}</button>
+			<button type="button" id="actors-addAll-nonplayers" class="addAll">{{localize "LMRTFY.Requestor.SelectActors.AddAllNonPlayers"}}</button>
+			<div class="button-separator"></div>
+			<button type="button" id="actors-clear" class="clear-all">{{localize "LMRTFY.Requestor.SelectActors.Clear"}}</button>
+		</div>
+	</fieldset>
+	<fieldset class="select-rolls">
+		<legend>{{localize "LMRTFY.Requestor.SelectRolls.Title"}}</legend>
+		{{#if needsContext}}
+		<div class="form-group context">
+			<label for="context-selection">{{localize "LMRTFY.Requestor.SelectRolls.ContextName}}</label>
+			<select id="context-selection" name="context-selection">
+				{{#each possibleContexts as context}}
+				<option value="{{context.id}}" {{#if context.isSelected}}selected{{/if}}>{{context.name}}</option>
+				{{/each}}
+			</select>
+			<p class="hint">{{localize "LMRTFY.Requestor.SelectRolls.ContextHint}}</p>
+		</div>
+		{{/if}}
+		<div class="form-group roll-number">
+			<label for="roll-number">{{localize "LMRTFY.Requestor.SelectRolls.RollNumberName}}</label>
+			<select id="roll-number" name="roll-number">
+				<option value="one">Roll only one</option>
+				<option value="requireAll">Roll All</option>
+				<option value="allowAny">Roll Any</option>
+			</select>
+			<p class="hint">{{localize "LMRTFY.Requestor.SelectRolls.RollNumberHint}}</p>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>{{localize "LMRTFY.Requestor.SelectRolls.Header.Roll"}}</th>
+					<th>{{localize "LMRTFY.Requestor.SelectRolls.Header.CustomBonus"}}</th>
+					{{#if permitDC}}<th>{{localize "LMRTFY.Requestor.SelectRolls.Header.DC"}}</th>{{/if}}
+					{{#if permitAdvantageDisadvantage}}<th>{{localize "LMRTFY.Requestor.SelectRolls.Header.AdvantageDisadvantage"}}</th>{{/if}}
+					{{#if trainedOptions}}<th>{{localize "LMRTFY.Requestor.SelectRolls.Header.Trained"}}</th>{{/if}}
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			{{#each options.requestItems as requestItem}}
+				<tr data-id="{{requestItem.id}}" class="requestItem">
+					<td class="requestItem-roll">{{lmrtfy-rollSelector requestItem possibleActions}}</td>
+					<td class="requestItem-custombonus"><input type="text" class="selector-custombonus" name="custombonus-{{requestItem.id}}" id="custombonus-{{requestItem.id}" value="{{requestItem.customBonus}}" /></td>
+					{{#if permitDC}}<td class="requestItem-dc"><input type="text" class="selector-dc" name="dc-{{requestItem.id}}" id="dc-{{requestItem.id}}" value="{{requestItem.dc}}" /></td>{{/if}}
+					{{#if permitAdvantageDisadvantage}}{{lmrtfy-advantageDisadvantage requestItem.advantageDisadvantage}}</td>{{/if}}
+					{{#if trainedOptions}}<td class="requestItem-trained">{{lmrtfy-trainedSelector requestItem trainedOptions}}</td>{{/if}}
+					<td>
+						<button type="button" class="requestItem-delete" data-id="{{requestItem.id}}"><i class="fas fa-trash"></i></button>
+					</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+		<div class="select-rolls-buttons">
+			<button type="button" class="select-rolls-button" id="add-roll"><i class="fas fa-plus"></i> {{localize "LMRTFY.Requestor.SelectRolls.Buttons.Add"}}</button>
+			<button type="button" class="select-rolls-button" id="clear-rolls"><i class="fas fa-broom"></i> {{localize "LMRTFY.Requestor.SelectRolls.Buttons.Clear"}}</button>
+		</div>
+	</fieldset>	
+	<div class="form-group response-buttons">
+		<button type="button" class="response-button" id="button-gmroll"><i class="fas fa-dice"></i> {{localize "LMRTFY.Requestor.Buttons.GmrollSelected"}}</button>
+		<button type="button" class="response-button" id="button-ask"><i class="fas fa-person-circle-question"></i> {{localize "LMRTFY.Requestor.Buttons.AskSelected"}}</button>
+	</div>
+	<div class="errorlist">
+		<ul class="errorlist-items">
+			{{#each errors as error}}
+			<li class="{{error.type}}">{{#if error.preventsSubmission}}<span class="prevents label label-danger">{{localize "LMRTFY.Errors.PreventsSubmission"}}</span>{{/if}} {{error.content}}</li>
+			{{/each}}
+		</ul>
+	</div>
+	<div class="form-group response-buttons">
+		<div class="response-buttons-header">Generate Macro</div>
+		<button type="button" class="response-button" id="button-macro-request"><i class="fas fa-timeline"></i> {{localize "LMRTFY.Requestor.Buttons.MacroToScreen"}}</button>
+		<button type="button" class="response-button" id="button-macro-gmroll"><i class="fas fa-dice"></i> {{localize "LMRTFY.Requestor.Buttons.MacroToGmroll"}}</button>
+		<button type="button" class="response-button" id="button-macro-ask"><i class="fas fa-person-circle-question"></i> {{localize "LMRTFY.Requestor.Buttons.MacroToAsk"}}</button>
+	</div>
+</form>
+		

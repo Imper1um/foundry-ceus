@@ -1,4 +1,6 @@
-class lmrtfy_RollProvider_demonlord extends lmrtfy_RollProvider {
+import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+
+export class lmrtfy_RollProvider_demonlord extends lmrtfy_RollProvider {
 	systemIdentifiers() {
 		return 'demonlord';
 	}

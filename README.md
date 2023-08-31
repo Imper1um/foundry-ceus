@@ -1,21 +1,19 @@
 # Let Me Roll That For You!
 
-![Let Me Roll That For You](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2FLeague-of-Foundry-Developers%2Fleague-repo-status%2Fshields-endpoint%2Flmrtfy.json)
-![Latest Release Download Count](https://img.shields.io/badge/dynamic/json?label=Downloads@latest&query=assets%5B1%5D.download_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLeague-of-Foundry-Developers%2Ffvtt-module-lmrtfy%2Freleases%2Flatest)
-[![Forge Installs](https://img.shields.io/badge/dynamic/json?label=Forge%20Installs&query=package.installs&suffix=%25&url=https%3A%2F%2Fforge-vtt.com%2Fapi%2Fbazaar%2Fpackage%2Flmrtfy&colorB=4aa94a)](https://forge-vtt.com/bazaar#package=lmrtfy)
+LMRTFY is a module that helps Game Masters ask for rolls for specific players. This speeds up the game as you don't have players hunting their character sheet for rolls, or asking what things to add that the GM is looking for, or even reminding players what kind of roll they should be doing. It also can roll for players when you want to do an en masse roll without worrying about the players doing it, or letting them know it exists.
 
-[![Foundry Hub Endorsements](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Flmrtfy%2Fshield%2Fendorsements)](https://www.foundryvtt-hub.com/package/lmrtfy/)
-[![Foundry Hub Comments](https://img.shields.io/endpoint?logoColor=white&url=https%3A%2F%2Fwww.foundryvtt-hub.com%2Fwp-json%2Fhubapi%2Fv1%2Fpackage%2Flmrtfy%2Fshield%2Fcomments)](https://www.foundryvtt-hub.com/package/lmrtfy/)
-![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2FLeague-of-Foundry-Developers%2Ffvtt-module-lmrtfy%2Fmaster%2Fmodule.json&label=Foundry%20Version&query=$.compatibleCoreVersion&colorB=orange)
+# This Branch
 
+This new branch is a new way of thinking on how rolls can be accomplished in LMRTFY. It no longer relies on putting individual mechanics for each system in the main module systems, and now it allows for each system's `RollProvider` to provide the mechanics for how to roll, and how to handle each system. It also makes categories agnostic.
 
-LMRTFY is a module to let Game Masters request rolls from their players. This can help avoid questions like "where do I click again?" or maybe simply to request a roll without the other players knowing about it.
+For more information, see the [REFACTOR.md](/REFACTOR.md) .
 
-Writing this module was the idea of iotech, based on the Fantasy Grounds "[Roll For Initiative](https://www.fantasygrounds.com/forums/showthread.php?45234)" extension. Iotech also designed and wrote the UI for it.
+## Updated Systems:
+- Starfinder - 1st Edition (SFRPG)
 
-![screenshot](images/screenshot.png)
+Updating LMRTFY on this branch with systems requires that you adhere to the [REFACTOR.md](/REFACTOR.md) rules. Legacy systems for LMRTFY on this branch will no longer be accepted. Once you have created a new `RefactorRollProvider`, you can check out [CONTRIBUTING.md](/CONTRIBUTING.md) on instructions on how to create a Pull Request.
 
-## Currently Supported Systems:
+## Legacy Systems:
 - Chroniques Oubliées Fantasy (cof)
 - Chroniques Oubliées Contemporain (coc)
 - Dungeons and Dragons - 5th Edition (dnd5e)
@@ -28,7 +26,7 @@ Writing this module was the idea of iotech, based on the Fantasy Grounds "[Roll 
 - Starfinder - 1st Edition (sfrpg)
 - Star Wars - 5th Edition (sw5e)
 
-Your favorite system not on this list? Adding compatibility is easy! Have a look at [CONTRIBUTING.md](/CONTRIBUTING.md) and open a PR!
+These systems use the old, legacy system for rolling, and no longer are supported by this branch/fork.
 
 ## Old, Unconfirmed Versions
 The following systems have support on this module, but do not support Foundry v11 and could not be confirmed if they operate with this module's latest version.
@@ -38,18 +36,21 @@ The following systems have support on this module, but do not support Foundry v1
 The following systems are no longer supported by this module, and need to be fixed in order to work again.
 - Chromatic Dungeons (foundry-chromatic-Dungeons)
 
-## Installation
-
-You can now install this module automatically by specifying the following public module URL : `https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.json`
-
-As GM go to the `Manage Modules` options menu in your World Settings tab then enable the `Let Me Roll That For You!` module.
+# Installation
+As of now, there is no way to grab the latest package for automatic installation. You will need to download the source code and add it to your server manually while the packaging system is being worked on.
 
 ## License
-This Foundry VTT module, writen by KaKaRoTo, is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
+This Foundry VTT module, writen by KaKaRoTo and Refactored by Imper1um, is licensed under a [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
 
 This work is licensed under Foundry Virtual Tabletop [EULA - Limited License Agreement for module development v 0.1.6](http://foundryvtt.com/pages/license.html).
 
-## Attributions
+# Attributions
+
+## REFACTOR
+
+- Main Refactor by `@Imper1um`
+
+## Translations
 
 - Japanese translation by `@Brother Sharp`
 - German translation by `@Acd-Jake`

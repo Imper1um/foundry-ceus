@@ -1,4 +1,6 @@
-class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
+import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+
+export class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
 	systemIdentifiers() {
 		return 'pf2e';
 	}
@@ -70,7 +72,7 @@ class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
                 const skill = actor.data.data.skills[initiative.statistic];
                 rollNames.push(`${skill.ability}-based`);
                 rollNames.push(skill.name);
-				initiativeRoll = actor[`{skill.name}`] ?? actor.attributes.[`{skill.name}`];
+				initiativeRoll = actor[`{skill.name}`] ?? actor.attributes[`{skill.name}`];
             }
             const options = actor.getRollOptions(rollNames);
             initiativeRoll.roll({ event, options });
