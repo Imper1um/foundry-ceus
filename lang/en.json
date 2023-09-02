@@ -75,9 +75,7 @@
 		"Results": {
 			"Header": "Roll Results",
 			"Actor": "Actor",
-			"Bonus": "Bonus",
-			"Roll": "Roll",
-			"Total": "Total"
+			"Rolls": "Rolls"
 		},
 		"Actions": {
 			"Dice": "Dice",
@@ -89,12 +87,13 @@
 				"Title": "Select Users",
 				"AddAll": "Add All",
 				"AddAllGM": "GMs",
-				"AddAllAssistants": "Assistant GMs",
+				"AddAllAssistant": "Assistant GMs",
 				"AddAllTrustedPlayers": "Trusted",
 				"AddAllPlayers": "Players",
 				"AddAllOnline": "Online Users",
 				"AddEveryone": "Everyone",
-				"Clear": "Clear"
+				"Clear": "Clear",
+				"Active": "Active"
 			},
 			"SelectActors": {
 				"Title": "Select Actors",
@@ -114,6 +113,14 @@
 				"ContextHint": "When a roll requires it (for example, Initiative requires a Combat context), select the context for that roll.",
 				"RollNumberName": "Roll Number",
 				"RollNumberHint": "Select if receivers need to roll one, must roll all, or can roll any number.",
+				"RollPrivacyName": "Roll Privacy",
+				"RollPrivacyHint": "Select what roll privacy that players should roll.",
+				"RequireRollPrivacyName": "Require Roll Privacy",
+				"RequireRollPrivacyHint": "If checked, roll privacy should be enforced, and cannot be changed by the player.",
+				"TitleName": "Title",
+				"TitleHint": "Enter in a title for the roller window.",
+				"MessageName": "Message",
+				"MessageHint": "Enter in a message for the roller window.",
 				"Header": {
 					"Roll": "Roll",
 					"CustomBonus": "Custom/Bonus",
@@ -122,13 +129,19 @@
 					"Trained": "Trained"
 				},
 				"AdvantageDisadvantage": {
-					"RequireAdvantage": "Require Advantage",
-					"RequireDisadvantage": "Require Disadvantage",
-					"RequireNormal": "Require Normal",
-					"AllowNormalAdvantage": "Allow Normal or Advantage",
-					"AllowNormalDisadvantage": "Allow Normal or Disadvantage",
-					"AllowAdvantageDisadavantage": "Allow Advantage or Disadvantage",
-					"AllowAll": "AllowAll"
+					"RequireAdvantage": "✅ Adv / ❌ Norm / ❌ Dis",
+					"RequireDisadvantage": "❌ Adv / ❌ Norm / ✅ Dis",
+					"RequireNormal": "❌ Adv / ✅ Norm / ❌ Dis",
+					"AllowNormalAdvantage": "✅ Adv / ✅ Norm / ❌ Dis",
+					"AllowNormalDisadvantage": "❌ Adv / ✅ Norm / ✅ Dis",
+					"AllowAdvantageDisadvantage": "✅ Adv / ❌ Norm / ✅ Dis",
+					"AllowAll": "✅ Adv / ✅ Norm / ✅ Dis",
+					"Key": "❌ = Not Allowed, ✅ = Allowed"
+				},
+				"Trained": {
+					"AllowUntrained": "Allow Untrained",
+					"PreventUntrained": "Prevent Untrained",
+					"HideUntrained": "Require Trained"
 				},
 				"Buttons": {
 					"Add": "Add",
@@ -147,7 +160,8 @@
 			"PreventsSubmission": "Prevents Submission",
 			"NoUsers": "There are no users selected!",
 			"NoActors": "There are no actors selected!",
-			"NoRolls": "There are no rolls selected!"
+			"NoRolls": "There are no rolls selected!",
+			"NoActive": "None of the users you have selected are online to receive the request."
 		}
     }
 }

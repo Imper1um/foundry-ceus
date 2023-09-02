@@ -1,8 +1,8 @@
 export class lmrtfy_RequestActor {
 	constructor(
 		actorId,
-		name,
-		imgUrl
+		name = null,
+		imgUrl = null
 	) {
 		this.actorId = actorId;
 		this.name = name;

@@ -106,47 +106,61 @@ export class LMRTFY {
 			}
 		});
 		
-		Handlebars.registerHelper('lmrtfy-advantageDisadvantage', function(options) {
-			if (!options.allowDisadvantage && !options.allowAdvantage) { return ""; }
-			var html = `<select id="advdis-${options.id}" name="advdis-${options.id}" class="selector-advantageDisadvantage" data-id="${options.id}">`;
-			html += '<option value="require-normal" '+ (options.selected === "require-normal" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.RequireNormal") + '</option>';
-			if (options.allowAdvantage) {
-				html += '<option value="require-advantage" '+ (options.selected === "require-advantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.RequireAdvantage") + '</option>';
-				html += '<option value="allow-normal-advantage"> '+ (options.selected === "allow-normal-advantage" ? 'selected' : '') +'' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowNormalAdvantage") + '</option>';
+		Handlebars.registerHelper('lmrtfy-advantageDisadvantage', function(requestItem) {
+			const allowAdvantage = LMRTFY.current.providerEngine.currentRollProvider.canActionAdvantage(requestItem.rollType, requestItem.rollId);
+			const allowDisadvantage = LMRTFY.current.providerEngine.currentRollProvider.canActionDisadvantage(requestItem.rollType, requestItem.rollId);
+			
+			if (!allowDisadvantage && !allowAdvantage) { return ""; }
+			var html = `<select id="advdis-$1{requestItem.id}" name="advdis-${requestItem.id}" class="selector-advantageDisadvantage" data-id="${requestItem.id}">`;
+			html += '<option value="require-normal" '+ (requestItem.advantageDisadvantage === "require-normal" ? 'selected' : '') +'>' + game.i18n.localize("LMRTFY.Requestor.SelectRolls.AdvantageDisadvantage.RequireNormal") + '</option>';
+			if (allowAdvantage) {
+				html += '<option value="require-advantage" '+ (requestItem.advantageDisadvantage === "require-advantage" ? 'selected' : '') +'>' + game.i18n.localize("LMRTFY.Requestor.SelectRolls.AdvantageDisadvantage.RequireAdvantage") + '</option>';
+				html += '<option value="allow-normal-advantage"> '+ (requestItem.advantageDisadvantage === "allow-normal-advantage" ? 'selected' : '') +'' + game.i18n.localize("LMRTFY.Requestor.SelectRolls.AdvantageDisadvantage.AllowNormalAdvantage") + '</option>';
 			}
-			if (options.allowDisadvantage) {
-				html += '<option value="require-disadvantage" '+ (options.selected === "require-disadvantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.RequireDisadvantage") + '</option>';
-				html += '<option value="allow-normal-disadvantage" '+ (options.selected === "allow-normal-disadvantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowNormalDisadvantage") + '</option>';
+			if (allowDisadvantage) {
+				html += '<option value="require-disadvantage" '+ (requestItem.advantageDisadvantage === "require-disadvantage" ? 'selected' : '') +'>' + game.i18n.localize("LMRTFY.Requestor.SelectRolls.AdvantageDisadvantage.RequireDisadvantage") + '</option>';
+				html += '<option value="allow-normal-disadvantage" '+ (requestItem.advantageDisadvantage === "allow-normal-disadvantage" ? 'selected' : '') +'>' + game.i18n.localize("LMRTFY.Requestor.SelectRolls.AdvantageDisadvantage.AllowNormalDisadvantage") + '</option>';
 			}
-			if (options.allowAdvantage && options.allowDisadvantage) {
-				html += '<option value="allow-advantage-disadvantage" '+ (options.selected === "allow-advantage-disadvantage" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowAdvantageDisadvantage") + '</option>';
-				html += '<option value="allow-all" '+ (options.selected === "allow-all" ? 'selected' : '') +'>' + game.i18n.format("LMRTFY.SelectRolls.AdvantageDisadvantage.AllowAll") + '</option>';
+			if (allowAdvantage && allowDisadvantage) {
+				html += '<option value="allow-advantage-disadvantage" '+ (requestItem.advantageDisadvantage === "allow-advantage-disadvantage" ? 'selected' : '') +'>' + game.i18n.localize("LMRTFY.Requestor.SelectRolls.AdvantageDisadvantage.AllowAdvantageDisadvantage") + '</option>';
+				html += '<option value="allow-all" '+ (requestItem.advantageDisadvantage === "allow-all" ? 'selected' : '') +'>' + game.i18n.localize("LMRTFY.Requestor.SelectRolls.AdvantageDisadvantage.AllowAll") + '</option>';
 			}
 			html += "</select>";
 			return new Handlebars.SafeString(html);
 		});
 		
-		Handlebars.registerHelper('lmrtfy-rollSelector', function(requestItem, possibleActions) {
+		Handlebars.registerHelper('lmrtfy-rollSelector', function(requestItem) {
+			const appId = requestItem.appId;
+			const requestWindow = game.users.apps.find(a => a.appId == appId);
+			const possibleActions = requestWindow.possibleActions;
+			
 			var html = `<select id="roll-${requestItem.id}" name="roll-${requestItem.id}" class="selector-roll" data-id="${requestItem.id}">`;
-			const action = possibleActions.find(pa => pa.id == requestItem.id);
+			const action = possibleActions.find(pa => pa.id == requestItem.rollId);
 			for (const possibleAction of possibleActions) {
+				const append = Array(possibleAction.depth + 1).join('&nbsp;');
+				
 				if (possibleAction.type === "category") {
-					html += `<option class="category depth-${possibleAction.depth}">` + game.i18n.format(possibleAction.name) + '</option>';
+					html += `<option class="category depth-${possibleAction.depth}" disabled>${append}` + game.i18n.localize(possibleAction.name) + '</option>';
 				} else if (possibleAction.type === "roll") {
-					const isAction = possibleAction.id === action.id ? " selected" : "";
-					html += `<option value="${possibleAction.id}" class="roll depth-${possibleAction.depth}"${isAction}>` + game.i18n.format(possibleAction.name) + '</option>';
+					const isAction = (action && possibleAction.id === action.id) ? " selected" : "";
+					html += `<option value="${possibleAction.id}" class="roll depth-${possibleAction.depth}"${isAction} data-id="${possibleAction.id}" data-rolltype="${possibleAction.rollType}">${append}` + game.i18n.localize(possibleAction.name) + '</option>';
 				}
 			}
 			html += '</select>';
 			return new Handlebars.SafeString(html);
 		});
 		
-		Handlebars.registerHelper('lmrtfy-trainedSelector', function(requestItem, trainedOptions) {
+		Handlebars.registerHelper('lmrtfy-trainedSelector', function(requestItem) {
+			const trainedOptions = requestItem.trainedOptions;
+			if (!trainedOptions || trainedOptions.length === 0) {
+				return new Handlebars.SafeString(html);
+			}
+			
 			var html = `<select id="trained-${requestItem.id}" name="trained-${requestItem.id}" class="selector-trained" data-id="${requestItem.id}">`;
-			const opt = trainedOptions.find(to => to.key === requestItem.trainedOption);
+			const opt = trainedOptions.find(to => to === requestItem.trainedOption);
 			for (const trainedOption of trainedOptions) {
-				const isOption = trainedOption.key === requestItem.trainedOption ? " selected" : "";
-				html += `<option value="${trainedOption.key}"${isOption}>` + game.i18n.format(trainedOption.name) + '</option>';
+				const isOption = trainedOption === requestItem.trainedOption ? " selected" : "";
+				html += `<option value="${trainedOption}"${isOption}>` + game.i18n.localize(`LMRTFY.Requestor.SelectRolls.Trained.${trainedOption}`) + '</option>';
 			}
 			return new Handlebars.SafeString(html);
 		});

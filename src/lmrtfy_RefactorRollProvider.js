@@ -32,7 +32,7 @@ export class lmrtfy_RefactorRollProvider {
 	 *
 	 * @return {string} that should point to the template for the roll provider. */
 	requestRollTemplate() {
-		return "modules/lmrtfy/templates/refactor-request.html";
+		return "modules/lmrtfy/templates/refactor-request-rolls.html";
 	}
 
 	/** New Refactor Options **/
@@ -55,12 +55,30 @@ export class lmrtfy_RefactorRollProvider {
 	}
 	
 	/**
+	 * Gets the array of options available for a specific roll.
+	 *
+	 * @return {Array} of options available. Should be in key:value format.
+	 */
+	rollTrainedOptions(rollType, id) {
+		return this.trainedOptions();
+	}
+	
+	/**
 	 * Gets if an Actor is trained in a specific skill/save/whatever.
 	 *
 	 * @return {boolean} null if unknown (or not programmed), true if the Actor is trained, and false if the Actor is untrained.
 	 */
 	isActorTrained(actor, rollType, id) {
 		return null;
+	}
+	
+	/**
+	 * Gets if an Actor is a player.
+	 *
+	 * @return {boolean} if the actor is a player, false otherwise.
+	 */
+	isPlayer(actor) {
+		return false;
 	}
 	
 	/**
@@ -155,6 +173,24 @@ export class lmrtfy_RefactorRollProvider {
 	 * @return {boolean} true if the roll can allow DC Checks. Otherwise, false.
 	 */
 	canActionDC(rollType, id) {
+		return false;
+	}
+	
+	/**
+	 * Allow GMs to ask for a specific roll privacy.
+	 *
+	 * @return {boolean} true if GMs can ask for a specific roll privacy. Otherwise, false.
+	 */
+	permitSetRollPrivacy() {
+		return false;
+	}
+	
+	/**
+	 * Allow GMs to require a specific roll privacy.
+	 *
+	 * @return {boolean} true if GMs can require a specific roll privacy. Otherwise, false.
+	 */
+	permitRequireRollPrivacy() {
 		return false;
 	}
 	

@@ -423,3 +423,178 @@ form .form-group .lmrtfy-skill-checks {
     border-color: #000 !important;
     box-shadow: 0 0 6px inset #8d9ea7 !important;
 }
+
+/* Refactor */
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .form-group.user-select {
+    display: inline-block;
+    border: solid black 1px;
+    border-radius: 10px;
+	width: 100%;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .form-group label {
+	line-height: 0.5em;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user {
+    border: solid 1px;
+    margin: 5px;
+    text-align: center;
+    width: 100px;
+    padding: 5px;
+	display: inline-block;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user.inactive {
+	opacity: 0.8;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user.selected {
+	border-radius: 10px;
+	border-width: 2.5px;
+	border-color: #CFC;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user.selected .name {
+	font-weight: bold;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user i {
+    font-size: 2.5em;
+}
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .name {
+    font-size: 0.7em;
+    width: 100%;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .user-image {
+	width: 100%;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .user-image img {
+	height: 50px;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .active {
+	font-size: 0.6em;
+	border-radius: 10px;
+	padding: 2px;
+	color: #010;
+	background-color: #0A0;
+	margin-right: 2px;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor .select-buttons .button-intro {
+	flex: 2;
+	text-align: right; 
+	padding-right: 8px;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor .button-separator {
+	flex: 1px;
+	border: solid 1px black;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user:hover {
+    border-color: #617a8f;
+    cursor: pointer;
+	color: #617a8f;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user i,
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user img,
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user span {
+    cursor:pointer;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor .form-group.actor-select {
+    display: inline-block;
+    width: 100%;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor {
+    width: 30px;
+    height: 68px;
+    margin: 5px;
+    display: inline-block;
+    overflow: hidden;
+    margin-bottom: -10px;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.invisible {
+	display: none;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor:hover {
+    background-color: #CFC;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor:hover .name {
+    color: #000;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor label { 
+    line-height: 0.6em;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor-image {
+    width: 30px;
+    height: 30px;
+    overflow: clip;
+    margin-top: -15px;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.selected .name {
+    font-weight: bold;
+}
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.selected img {
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #CFC;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor-info {
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .name {
+    font-size: 0.6em;
+    text-overflow: ellipsis;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.friendly .actor-image {
+    border-top: solid 2px #0F0;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.enemy .actor-image {
+    border-top: solid 2px #F00;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.neutral .actor-image {
+    border-top: solid 2px #FF0;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.secret .actor-image {
+    border-top: solid 2px #F0F;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor .select-rolls-buttons {
+    display: flex;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor .select-rolls-buttons button {
+    margin: 5px;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor .selector-roll option.category {
+  background: rgba(255,255,0,1) !important;
+    color: #000;
+}
+
+.lmrtfy-requestor.lmrtfy-refactor .select-rolls .context.invisible {
+	display: none;
+}
