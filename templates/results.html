@@ -3,22 +3,46 @@
 		{{localize "LMRTFY.Results.Header"}}
 	</div>
 	<div class="lmrtfy-results-roll">
-		{{roll}}
+		<div class="users">
+			<span class="users-header">{{localize "LMRTFY.Results.Users"}}</span><span class="users-content">{{rollUsers}}</span>
+		</div>
+		<div class="actors">
+			<span class="actors-header">{{localize "LMRTFY.Results.Actors"}}</span><span class="actors-content">{{rollActors}}</span>
+		</div>
+		<div class="rolls">
+			<span class="rolls-header">{{localize "LMRTFY.Results.RollDescription"}}</span><span class="rolls-content">{{rollDescriptions}}</span>
+		</div>
 	</div>
 	<div class="lmrtfy-results-list">
-		<div class="lmrtfy-results-list-header">
-			<div class="header-item actor">{{localize "LMRTFY.Results.Actor"}}</div>
-			<div class="header-item bonus">{{localize "LMRTFY.Results.Bonus"}}</div>
-			<div class="header-item roll">{{localize "LMRTFY.Results.Roll"}}</div>
-			<div class="header-item total">{{localize "LMRTFY.Results.Total"}}</div>
-		</div>
-	{{#each results as result}}
-		<div class="lmrtfy-results-list-item">
-			<div class="list-item actor">{{result.actor}}</div>
-			<div class="list-item bonus">{{result.bonus}}</div>
-			<div class="list-item roll">{{result.roll}}</div>
-			<div class="list-item total">{{result.total}}</div>
-		</div>
-	{{/each}}
+		<table class="table table-bordered table-striped lmrtfy-results">
+			<thead>
+				<tr class="lmrtfy-results-list-header">
+					<th class="header-item actor">{{localize "LMRTFY.Results.Actor"}}</th>
+					<th class="header-item rolls">{{localize "LMRTFY.Results.Roll"}}</th>
+					<th class="header-item success">{{localize "LMRTFY.Results.Success"}}</th>
+				</tr>
+			</thead>
+			<tbody>
+			{{#each rolls}}
+				<tr class="lmrtfy-results-list-item">
+					<td class="list-item actor">
+						{{#if this.img}}
+						<div class="actor-image">
+							<img src="{{this.img}}" />
+						</div>
+						{{/if}}
+						<div class="actor-name">
+							{{this.name}}
+						</div>
+					</td>
+					<td class="list-item bonus">{{result.bonus}}</td>
+					<td class="list-item roll">{{result.roll}}</td>
+					<td class="list-item total">{{result.total}}</td>
+				</div>
+			{{/each}}
+			</tbody>
+		</table>
+	
+	</div>
 </div>
 		

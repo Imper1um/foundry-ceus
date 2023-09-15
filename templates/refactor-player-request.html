@@ -1,0 +1,34 @@
+<form autocomplete="off" onsubmit="event.preventDefault();" data-appid="{{appId}}" class="lmrtfy-form lmrtfy-request lmrtfy-request-player" data-requestid="{{requestOptions.requestId}}" data-isand="{{isAnd}}" data-isor="{{isOr}}">
+	<div class="header">
+		<h1 class="header-title">{{requestOptions.title}}</h1>
+		<div class="header-content">{{requestOptions.message}}</div>
+	</div>
+	<div class="actors">
+		{{#each actors}}
+			<div class="actor {{this.selectedClass}} {{this.doneClass}}" data-id="{{this.actor._id}}">
+				<input type="checkbox" class="actor-check" data-id="{{this.actor._id}}" name="actor-check-{{this.actor._id}}" id="actor-check-{{this.actor.id}}">
+				<label for="actor-check-{{this.actor.id}}">
+					<div class="actor-check-img"><img src="{{this.actor.img}}" /></div>
+					<div class="actor-check-name">{{this.actor.name}}</div>
+				</label>
+			</div>
+		{{/each}}
+	</div>
+	<div class="checks">
+		{{#each actors}}
+		<fieldset id="checks-actor-{{this.actor._id}}" class="checks-actor {{this.doneClass}} {{this.selectedClass}}" data-actorid="{{this.actor._id}}">
+			{{#each this.checks}}
+				<button class="check-button {{this.doneClass}}" id="check-button-{{this.roll.id}}" data-actorid="{{../actor._id}}" data-checkid="{{this.roll.id}}">{{localize this.check.name}}</button>
+				{{#if this.isNotLast}}
+					{{#if ../../isAnd}}
+					<div class="check-separator check-and">{{localize "LMRTFY.Player.And"}}</div>
+					{{/if}}
+					{{#if ../../isOr}}
+					<div class="check-separator check-or">{{localize "LMRTFY.Player.Or"}}</div>
+					{{/if}}
+				{{/if}}
+			{{/each}}
+		</fieldset>
+		{{/each}}
+	</div>
+</form>

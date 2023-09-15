@@ -8,6 +8,10 @@ import { lmrtfy_ResultsWindow } from "./lmrtfy_ResultsWindow.js";
 export class lmrtfy_RequestWindow extends FormApplication {
 	constructor(...args) {
 		super(...args);
+		if (!game.user.isGM) {
+			ui.notifications.error("You are not a GM!");
+			return;
+		}
 		game.users.apps.push(this);
 		
 		const rp = LMRTFY.current.providerEngine.currentRollProvider;
@@ -105,8 +109,98 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		html.find("#button-gmroll").click(this._onGmRoll);
 		html.find("#button-ask").click(this._onAsk);
 		html.find("#button-macro-request").click(this._onMacroRequest);
-		html.find("#button-macro-gmroll").click(this.onMacroGmRoll);
-		html.find("#button-macro-ask").click(this.onMacroAsk);
+		html.find("#button-macro-gmroll").click(this._onMacroGmRoll);
+		html.find("#button-macro-ask").click(this._onMacroAsk);
+	}
+	
+	async _onMacroRequest(event) {
+		const item = $(event.currentTarget);
+		const parentForm = item.parents('.lmrtfy-form');
+		const dataParent = parentForm.data('appid');
+		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
+		const requestOptions = requestWindow.requestOptions;
+		const requestActors = requestOptions.requestActors.map(ra => ra.name).join(", ");
+		const requestUsers = requestOptions.requestUsers.map(ru => ru.name).join(", ");
+		const requestContent = requestOptions.shrink();
+		const scriptContent = `// Request Rolls\n
+			// Users: ${requestUsers}\n
+			// Actors: ${requestActors}\n
+			// Title: ${requestOptions.title}\n
+			// Message: ${requestOptions.message}\n
+			const data = ${JSON.stringify(requestOptions.shrink())};\n
+			LMRTFY.openRequest(data);`;
+		const macro = await Macro.create({
+			name: "LMRTFY: " + (requestOptions.title || requestOptions.message),
+			type: "script",
+			scope: "global",
+			command: scriptContent,
+			img: "icons/svg/d20-highlight.svg"
+		});
+		macro.sheet.render(true);
+	}
+	
+	async _onMacroGmRoll(event) {
+		const item = $(event.currentTarget);
+		const parentForm = item.parents('.lmrtfy-form');
+		const dataParent = parentForm.data('appid');
+		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
+		const requestOptions = requestWindow.requestOptions;
+		const requestActors = requestOptions.requestActors.map(ra => ra.name).join(", ");
+		const requestUsers = requestOptions.requestUsers.map(ru => ru.name).join(", ");
+		const requestContent = requestOptions.shrink();
+		const scriptContent = `// Request Rolls\n
+			// Users: ${requestUsers}\n
+			// Actors: ${requestActors}\n
+			// Title: ${requestOptions.title}\n
+			// Message: ${requestOptions.message}\n
+			const data = ${JSON.stringify(requestOptions.shrink())};\n
+			LMRTFY.gmRoll(data);`;
+		const macro = await Macro.create({
+			name: "LMRTFY: " + (requestOptions.title || requestOptions.message),
+			type: "script",
+			scope: "global",
+			command: scriptContent,
+			img: "icons/svg/d20-highlight.svg"
+		});
+		macro.sheet.render(true);
+	}
+	
+	async _onMacroAsk(event) {
+		const item = $(event.currentTarget);
+		const parentForm = item.parents('.lmrtfy-form');
+		const dataParent = parentForm.data('appid');
+		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
+		const requestOptions = requestWindow.requestOptions;
+		const requestActors = requestOptions.requestActors.map(ra => ra.name).join(", ");
+		const requestUsers = requestOptions.requestUsers.map(ru => ru.name).join(", ");
+		const requestContent = requestOptions.shrink(); 
+		const scriptContent = `// Request Rolls\n
+			// Users: ${requestUsers}\n
+			// Actors: ${requestActors}\n
+			// Title: ${requestOptions.title}\n
+			// Message: ${requestOptions.message}\n
+			const data = ${JSON.stringify(requestOptions.shrink())};\n
+			LMRTFY.requestRoll(data);`;
+		const macro = await Macro.create({
+			name: "LMRTFY: " + (requestOptions.title || requestOptions.message),
+			type: "script",
+			scope: "global",
+			command: scriptContent,
+			img: "icons/svg/d20-highlight.svg"
+		});
+		macro.sheet.render(true);
+	}
+	
+	async _onAsk(event) {
+		const item = $(event.currentTarget);
+		const parentForm = item.parents('.lmrtfy-form');
+		const dataParent = parentForm.data('appid');
+		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
+		const requestOptions = requestWindow.requestOptions;
+		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, self);
+		requestOptions.resultId = resultsWindow.appId;
+		resultsWindow.render(true);
+		LMRTFY.socketEngine.pushRefactorRequest(requestOptions.shrink());
 	}
 	
 	async _onGmRoll(event) {
@@ -163,7 +257,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const dataParent = parentForm.data('appid');
 		const requestItemId = item.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		requestWindow.requestItems = new Array();
+		requestWindow.requestOptions.requestItems = new Array();
 		const data = await requestWindow.getData();
 		requestWindow.render(false, {action: "update", context: data});
 	}
@@ -174,9 +268,9 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const dataParent = parentForm.data('appid');
 		const requestItemId = item.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		const requestItem = requestWindow.requestItems.find(i => i.id == requestItemId);
+		const requestItem = requestWindow.requestOptions.requestItems.find(i => i.id == requestItemId);
 		if (requestItem) {
-			requestWindow.requestItems.splice(requestWindow.requestItems.findIndex(ri => ri.id == requestItem.id), 1);
+			requestWindow.requestItems.splice(requestWindow.requestOptions.requestItems.findIndex(ri => ri.id == requestItem.id), 1);
 		}
 		const data = await requestWindow.getData();
 		requestWindow.render(false, {action: "update", context: data});
@@ -189,7 +283,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		const requestItem = requestWindow.requestItems.find(i => i.id == requestItemId);
+		const requestItem = requestWindow.requestOptions.requestItems.find(i => i.id == requestItemId);
 		if (requestItem) {
 			requestItem.trainedOption = item.val();
 		}
@@ -202,7 +296,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		const requestItem = requestWindow.requestItems.find(i => i.id == requestItemId);
+		const requestItem = requestWindow.requestOptions.requestItems.find(i => i.id == requestItemId);
 		if (requestItem) {
 			requestItem.advantageDisadvantage = item.val();
 		}
@@ -226,7 +320,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		const requestItem = requestWindow.requestItems.find(i => i.id == requestItemId);
+		const requestItem = requestWindow.requestOptions.requestItems.find(i => i.id == requestItemId);
 		if (requestItem) {
 			requestItem.dc = item.val();
 		}
@@ -239,7 +333,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		const requestItem = requestWindow.requestItems.find(i => i.id == requestItemId);
+		const requestItem = requestWindow.requestOptions.requestItems.find(i => i.id == requestItemId);
 		if (requestItem) {
 			requestItem.customBonus = item.val();
 		}
@@ -377,7 +471,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		}
 		if (!preventsSubmission && !preventsMacro) {
 			var hasActive = false;
-			for (const ru in this.requestOptions.requestUsers) {
+			for (const ru of this.requestOptions.requestUsers) {
 				const pu = this.possibleUsers.find(p => p.id == ru.userId);
 				if (pu.active) {
 					hasActive = true;

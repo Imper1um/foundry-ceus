@@ -8,4 +8,8 @@ export class lmrtfy_RequestUser {
 		this.name = name;
 		this.imgUrl = imgUrl;
 	}
+	
+	shrink() {
+		return new lmrtfy_RequestUser(this.userId);
+	}
 }

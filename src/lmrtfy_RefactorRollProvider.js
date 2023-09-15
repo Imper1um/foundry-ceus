@@ -34,6 +34,14 @@ export class lmrtfy_RefactorRollProvider {
 	requestRollTemplate() {
 		return "modules/lmrtfy/templates/refactor-request-rolls.html";
 	}
+	
+	/**
+	 * The template that should be requested by the player for this RollProvider.
+	 *
+	 * @return {string} that should point to the template for the player request. */
+	playerRequestTemplate() {
+		return "modules/lmrtfy/templates/refactor-player-request.html";
+	}
 
 	/** New Refactor Options **/
 	/** 
@@ -193,6 +201,8 @@ export class lmrtfy_RefactorRollProvider {
 	permitRequireRollPrivacy() {
 		return false;
 	}
+	
+	
 	
 }
 

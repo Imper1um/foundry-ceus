@@ -72,10 +72,18 @@
 			"PreventUntrained": "Prevent Untrained Skills from being rolled.",
 			"AllowUntrained": "Allow Untrained Skills to be rolled."
 		},
+		"Player": {
+			"Or": "Or",
+			"And": "And",
+			"Title": "Request Roll"
+		},
 		"Results": {
 			"Header": "Roll Results",
 			"Actor": "Actor",
-			"Rolls": "Rolls"
+			"Rolls": "Rolls",
+			"Users": "Users",
+			"Actors": "Actors",
+			"RollDescription": "Roll Description"
 		},
 		"Actions": {
 			"Dice": "Dice",
@@ -83,6 +91,7 @@
 		},
 		"Requestor": {
 			"Title": "Let me roll that for you: Request Roll",
+			"Sent": "Request sent to all involved users.",
 			"SelectUsers": {
 				"Title": "Select Users",
 				"AddAll": "Add All",

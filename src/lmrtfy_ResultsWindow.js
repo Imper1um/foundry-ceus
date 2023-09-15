@@ -42,10 +42,16 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 		};
 	}
 	
+	activateListeners(html) {
+		html.find("#announce-full").click(this._onAnnounceFull);
+		html.find("#announce-obfuscate").click(this._onAnnounceObfuscate);
+	}
+	
 	async appendResult(result) {
 		if (result.requestId !== this.requestOptions.id) { return; }
 		const rollActor = this.rolls.find(ra => ra.actorId === result.requestActorId);
 		if (!rollActor) { return; }
+		if (this.requestOptions.rollNumber === "one" && rollActor.rolls.some(r => r.isRolled)) { return; } //Only the first roll qualifies.
 		const roll = rollActor.rolls.find(r => r.id === result.requestItemId);
 		if (roll.isRolled) { return; } //Only the first result qualifies.
 		roll.isRolled = result.isRolled;
@@ -55,6 +61,24 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 		roll.rolledUserId = rolledUser._id;
 		roll.rolledBy = rolledUser.name;
 		roll.rolledAmount = result.rolledAmount;
+		roll.rolledAdvantageDisadvantage = result.rolledAdvantageDisadvantage;
+		switch (this.requestOptions.rollNumber) {
+			case 'any':
+				rollActor.isRolled = rollActor.rolls.some(r => r.isRolled);
+				rollActor.isPass = rollActor.rolls.some(r => r.isPass);
+				break;
+			case 'all':
+				if (rollActor.rolls.every(r => r.isRolled)) {
+					rollActor.isRolled = true;
+					rollActor.isPass = rollActor.rolls.every(r => r.isPass);
+				}
+				break;
+		}
+		if (rollActor.isRolled && rollActor.isPass) {
+			rollActor.passClass = "rolled pass";
+		} else if (rollActor.isRolled && !rollActor.isPass) {
+			rollActor.passClass = "rolled fail";
+		}
 		this.render(false);
 	}
 
@@ -90,9 +114,19 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 		var actorRolls = new Array();
 		var possibleRolls = this.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
 		var actorList = game.actors.entities || game.actors.contents;
+		const rollPrefix = "or";
+		switch (this.requestOptions.rollNumber) {
+			case 'any':
+				rollPrefix = "+";
+				break;
+			case 'all':
+				rollPrefix = "and";
+				break;
+		}
 		for (const actor in this.requestOptions.requestActors) {
 			var rollList = new Array();
 			var actorItem = actorList.find(a => a._id == actor.actorId);
+			var isFirst = true;
 			for (const roll in this.requestOptions.requestItems) {
 				var possibleRoll = possibleRolls.find(pr => pr.id == roll.id);
 				rollList.push({
@@ -108,7 +142,8 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 					rolledBy: null,
 					rolledUserId: null,
 					rolledAmount: null,
-					rolledAdvantageDisadvantage: null
+					rolledAdvantageDisadvantage: null,
+					rollPrefix: isFirst ? "":rollPrefix
 				});
 			}
 			
@@ -116,7 +151,10 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 				actorId: actorItem._id,
 				name: actorItem.name,
 				img: actorItem.img,
-				rollList: rollList
+				rollList: rollList,
+				isPass: false,
+				isRolled: false,
+				passClass: "pending"
 			});
 		}
 		return actorRolls;

@@ -1,6 +1,20 @@
 import { lmrtfy_RefactorRollProvider } from "./lmrtfy_RefactorRollProvider.js";
 import { LMRTFYRoller } from "./roller.js";
 
+/**
+ * RollProvider for Starfinder (1st Edition) (sfrpg)
+ *
+ * systemIdentifier: SFRPG
+ * trained detection: yes
+ * results enabled: yes
+ * advantage/disadvantage setting: no
+ *  - At the moment, there's no way to force ADV/DIS setting through the normal roll UI that is presented by SFRPG.
+ *    This may change in the future, and I'm planning on bypassing the entire Roll System when it comes down to forcing.
+ *    However, I'm skipping this addition for right now.
+ * DC setting: yes
+ * rollMode setting: no
+ *  - Again, there's not enough data being passed to the roll system to permit requiring rolls or not.
+ */
 export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	constructor() {
 		super();
@@ -96,6 +110,54 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		];
 	}
 	
+	async rollSkill(requestOptions, actor, requestItem) {
+		const skillRoll = this.getAvailableRolls().find(r => r.id === "Skills").rolls.find(r => r.id === requestItem.id);
+		const skillId = skillRoll.skillId;
+		const skill = actor.system.skills[skillRoll.skillId];
+		var completeRoll;
+		switch (requestItem.trainedOption) {
+			case "HideUntrained":
+				if (skill.isTrainedOnly && skl.ranks < 1) {
+					return new lmrtfy_Result(
+						requestOptions.requestId,
+						actor._id,
+						requestItem.id,
+						game.data.userId,
+						null,
+						false,
+						null,
+						null
+					);
+				}
+				completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
+				break;
+			case "PreventUntrained":
+				if (skill.isTrainedOnly && skl.ranks < 1) {
+					completeRoll = await actor.rollSkill(skillId, this.baseRollOptions());
+				} else {
+					completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
+				}
+				break;
+			default:
+				completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
+				break;
+			
+		}
+		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+	}
+	
+	async rollSave(requestOptions, actor, requestItem) {
+		const saveRoll = this.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.id);
+		const completeRoll = await actor.rollSave(saveRoll.saveId, this.baseRollOptions());
+		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+	}
+	
+	async rollAbility(requestOptions, actor, requestItem) {
+		const abilityRoll = this.getAvailableRolls().find(r => r.id === "Abilities").rolls.find(r => r.id === requestItem.id);
+		const completeRoll = await actor.rollAbility(abilityRoll.abilityId, this.baseRollOptions());
+		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+	}
+	
 	async rollInitiative(requestOptions, actor, requestItem) {
 		const combat = game.combats.get(requestOptions.contextId);
 		if (!combat) { return; }
@@ -130,6 +192,45 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		return result;
 	}
 	
+	async rollPerception(requestOptions, actor, requestItem) {
+		const skill = actor.system.skills["per"];
+		const skillId = "per";
+		const completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
+		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+	}
+	
+	baseRollOptions() {
+		return options = {
+			chatMessage: false,
+			onClose: null,
+			rollOptions: {
+				isPrivate: true,
+			}
+		};
+	}
+	
+	buildResult(requestOptions, actor, requestItem, roll) {
+		let rollType;
+		if (completeRoll.formula.includes("2d20kh")) {
+			rollType = "advantage";
+		} else if (completeRoll.formula.includes("2d20kl")) {
+			rollType = "disadvantage";
+		} else {
+			rollType = "normal";
+		}
+		
+		return new lmrtfy_Result(
+			requestOptions.requestId,
+			actor._id,
+			requestItem.id,
+			game.data.userId,
+			completeRoll.total,
+			true,
+			requestItem.dc ? requestItem.dc <= completeRoll.total : true,
+			rollType
+		);
+	}
+	
 	getAvailableAbilityRolls() {
 		const abilities = CONFIG.SFRPG.abilities;
 		return Object.keys(abilities).map(key => {
@@ -139,7 +240,8 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				name: `SFRPG.Ability${capitalizedKey}`,
 				type: "roll",
 				rollType: LMRTFYRoller.rollTypes().ABILITY,
-				method: this.rollAbility
+				method: this.rollAbility,
+				abilityId: key
 			};
 		});
 	}
@@ -153,7 +255,8 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				name: `SFRPG.${saveName}Save`,
 				type: "roll",
 				rollType: LMRTFYRoller.rollTypes().SAVE,
-				method: this.rollSave
+				method: this.rollSave,
+				saveId: key
 			};
 		});
 	}
@@ -172,7 +275,8 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				name: `SFRPG.Skill${translateKey}`,
 				type: "roll",
 				rollType: LMRTFYRoller.rollTypes().SKILL,
-				method: this.rollSkill
+				method: this.rollSkill,
+				skillId: key
 			};
 		});
 	}
@@ -182,14 +286,14 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	canActionAdvantage(rollType, id) {
-		return true;
+		return false; //Advantage/Disadvantage can't base be passed into the Starfinder roll system. You can't force it (at least through SFRPG)
 	}
 	
 	canActionDisadvantage(rollType, id) {
-		return true;
+		return false;
 	}
 	permitAdvantageDisadvantage() {
-		return true;
+		return false;
 	}
 	needsContext(requestOptions) {
 		if (requestOptions.requestItems.some(ri => ri.id == "Initiative")) {
@@ -213,9 +317,9 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		return true;
 	}
 	permitSetRollPrivacy() {
-		return true;
+		return false;
 	}
 	permitRequireRollPrivacy() {
-		return true;
+		return false;
 	}
 }

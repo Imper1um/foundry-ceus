@@ -1,4 +1,5 @@
 import { LMRTFYRoller } from "./roller.js";
+import { lmrtfy_PlayerRequestWindow } from "./lmrtfy_PlayerRequestWindow.js";
 
 export class lmrtfy_SocketEngine {
 	async onReady() {
@@ -36,10 +37,46 @@ export class lmrtfy_SocketEngine {
         new LMRTFYRoller(actors, data).render(true);
 	}
 	async onRefactorRequest(data) {
+		const w = new lmrtfy_PlayerRequestWindow(data);
+		if (w.needsToBeDisplayed) {
+			w.render(true);
+		}
 	}
 	
 	async onRequestCancel(data) {
+		if (!game.user.isGM) { return; }
+		
+		const resultWindow = game.users.apps.find(a => a.appId === data.request.resultId);
+		if (!resultWindow) { return; }
+	
+		const u = game.users.get(data.userid);
+		if (!u) { return; }
+	
+		ui.notifications.info(`${u.name} closed their request window.`);
 	}
 	async onRequestComplete(data) {
+		if (!game.user.isGM) { return; }
+		
+		const resultWindow = game.users.apps.find(a => a.appId === data.request.resultId);
+		if (!resultWindow) { return; }
+		await resultWindow.appendResult(data.response);
+	}
+	
+	async pushRefactorRequest(request) {
+		game.socket.emit('module.lmrtfy.request.refactor', request);
+		ui.notifications.info(game.i18n.localize("LMRTFY.Requestor.Sent"));
+	}
+	async pushCancelResponse(request, userid) {
+		game.socket.emit('module.lmrtfy.request.cancel', {
+			userid,
+			request
+		});
+	}
+	async pushCompleteResponse(request, userid, response) {
+		game.socket.emit('module.lmrtfy.request.complete', {
+			userid,
+			request,
+			response
+		});
 	}
 }
