@@ -1,19 +1,14 @@
+import { Utils } from "./Utils.js";
+import { LMRTFY } from "./lmrtfy.js";
+
 export class lmrtfy_PlayerRequestWindow extends FormApplication {
-	constructor(...args) {
+	constructor(data, ...args) {
 		super(...args);
 		this.needsToBeDisplayed = false;
 		
-		if (args.length) {
-			const val = args[0];
-			if (val instanceof lmrtfy_RequestOptions) {
-				this.requestOptions = val;
-				this.requestType = "self";
-				if (args.length > 1) {
-					this.requestType = args[1];
-				}
-				this.handleRequestOptions();
-			}
-		}
+		this.requestOptions = data;
+		this.handleRequestOptions();
+		
 		if (this.needsToBeDisplayed) {
 			game.users.apps.push(this);
 		}
@@ -118,7 +113,8 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		this.actors = [];
 		const user = game.user;
 		const userCharacter = user.character;
-		const possibleRolls = this.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
+		
+		const possibleRolls = Utils.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
 		
 		const requestUsers = this.requestOptions.requestUsers.find(ru => ru.userId === user._id);
 		if (!requestUsers) {
@@ -152,17 +148,6 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 				});
 			}
 		}
-	}
-	
-	flattenRolls(rollList) {
-		var flat = new Array();
-		for (const r in rollList) {
-			flat.push(r);
-			if (r.rolls) {
-				flat.concat(this.flattenRolls(r.rolls));
-			}
-		}
-		return flat;
 	}
 	
 	doesUserControlActor(actor, user) {

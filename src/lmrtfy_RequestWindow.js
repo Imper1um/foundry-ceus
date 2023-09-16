@@ -197,10 +197,11 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
-		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, self);
+		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, "ask");
 		requestOptions.resultId = resultsWindow.appId;
+		resultsWindow.handleRequestOptions();
 		resultsWindow.render(true);
-		LMRTFY.socketEngine.pushRefactorRequest(requestOptions.shrink());
+		LMRTFY.current.socketEngine.pushRefactorRequest(requestOptions.shrink());
 	}
 	
 	async _onGmRoll(event) {
@@ -210,9 +211,12 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
 		
-		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, self);
+		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, "gmroll");
 		requestOptions.resultId = resultsWindow.appId;
+		resultsWindow.handleRequestOptions();
+		resultsWindow.render(true);
 		const shrunkResults = requestOptions.shrink();
+		//#TODO
 	}
 	
 	async _onRollPrivacyChange(event) {
@@ -270,7 +274,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestItem = requestWindow.requestOptions.requestItems.find(i => i.id == requestItemId);
 		if (requestItem) {
-			requestWindow.requestItems.splice(requestWindow.requestOptions.requestItems.findIndex(ri => ri.id == requestItem.id), 1);
+			requestWindow.requestOptions.requestItems.splice(requestWindow.requestOptions.requestItems.findIndex(ri => ri.id == requestItem.id), 1);
 		}
 		const data = await requestWindow.getData();
 		requestWindow.render(false, {action: "update", context: data});
@@ -383,7 +387,9 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		if (requestWindow.requestOptions.requestItems && requestWindow.requestOptions.requestItems.length) {
 			nextId = Math.max(...requestWindow.requestOptions.requestItems.map(obj => obj.id)) + 1;
 		}
-		var newItem = {id:nextId, appId:requestWindow.appId};
+		var newItem = new lmrtfy_RequestItem("", "", "", "", "allow-all");
+		newItem.id = nextId;
+		newItem.appId = requestWindow.appId;
 		
 		var firstItem = requestWindow.possibleActions.find(a => a.type === "roll");
 		requestWindow.buildRollForDefault(newItem, firstItem.id);

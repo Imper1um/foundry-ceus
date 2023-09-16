@@ -18,13 +18,15 @@
 			<thead>
 				<tr class="lmrtfy-results-list-header">
 					<th class="header-item actor">{{localize "LMRTFY.Results.Actor"}}</th>
+					<th class="header-item bonus">{{localize "LMRTFY.Results.Bonus"}}</th>
 					<th class="header-item rolls">{{localize "LMRTFY.Results.Roll"}}</th>
+					<th class="header-item total">{{localize "LMRTFY.Results.Total"}}</th>
 					<th class="header-item success">{{localize "LMRTFY.Results.Success"}}</th>
 				</tr>
 			</thead>
 			<tbody>
 			{{#each rolls}}
-				<tr class="lmrtfy-results-list-item">
+				<tr class="lmrtfy-results-list-item {{#if result.isRolled}}rolled{{/if}}">
 					<td class="list-item actor">
 						{{#if this.img}}
 						<div class="actor-image">
@@ -38,6 +40,7 @@
 					<td class="list-item bonus">{{result.bonus}}</td>
 					<td class="list-item roll">{{result.roll}}</td>
 					<td class="list-item total">{{result.total}}</td>
+					<td class="list-item success {{#if result.isPass}}pass{{/if}}">{{#if result.isRolled}}{{#if result.isPass}}✅{{else}}❌{{/if}}{{/if}}</td>
 				</div>
 			{{/each}}
 			</tbody>

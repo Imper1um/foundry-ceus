@@ -1,26 +1,20 @@
+import { Utils } from "./Utils.js";
+import { LMRTFY } from "./lmrtfy.js";
+
 export class lmrtfy_ResultsWindow extends FormApplication {
-	constructor(...args) {
+	constructor(requestOptions, requestType, ...args) {
 		super(...args);
 		game.users.apps.push(this);
 		
-		if (args.length) {
-			const val = args[0];
-			if (val instanceof lmrtfy_RequestOptions) {
-				this.requestOptions = val;
-				this.requestType = "self";
-				if (args.length > 1) {
-					this.requestType = args[1];
-				}
-				this.handleRequestOptions();
-			}
-		}
+		this.requestOptions = requestOptions;
+		this.requestType = requestType;
 	}
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		options.title = game.i18n.localize("LMRTFY.Results.Header");
 		options.id = `lmrtfy-results-${this.appId}`;
-		options.template = LMRTFY.current.providerEngine.currentRollProvider.requestRollTemplate();
+		options.template = LMRTFY.current.providerEngine.currentRollProvider.resultsTemplate();
 		options.closeOnSubmit = false;
 		options.popOut = true;
 		options.width = 950;
@@ -92,12 +86,12 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 			this.rollUsers = "You";
 		} else {
 			var userList = game.users.entities || game.users.contents;
-			this.rollUsers = this.requestOptions.requestUsers.map(ru => userList.find(ul => ul._id === ru.id).name).join(", ");
+			this.rollUsers = this.requestOptions.requestUsers.map(ru => userList.find(ul => ul._id === ru.userId).name).join(", ");
 		}
 		var actorList = game.actors.entities || game.actors.contents;
-		this.rollActors = this.requestOptions.requestActors.map(ru => actorList.find(al => al._id === ru.id).name).join(", ");
+		this.rollActors = this.requestOptions.requestActors.map(ru => actorList.find(al => al._id === ru.actorId).name).join(", ");
 		
-		const rollPrefix = "Roll One: ";
+		var rollPrefix = "Roll One: ";
 		switch (this.requestOptions.rollNumber) {
 			case 'any':
 				rollPrefix = "Roll Any: ";
@@ -112,9 +106,9 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 	
 	generateRolls() {
 		var actorRolls = new Array();
-		var possibleRolls = this.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
+		var possibleRolls = Utils.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
 		var actorList = game.actors.entities || game.actors.contents;
-		const rollPrefix = "or";
+		var rollPrefix = "or";
 		switch (this.requestOptions.rollNumber) {
 			case 'any':
 				rollPrefix = "+";
@@ -123,12 +117,12 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 				rollPrefix = "and";
 				break;
 		}
-		for (const actor in this.requestOptions.requestActors) {
+		for (const actor of this.requestOptions.requestActors) {
 			var rollList = new Array();
 			var actorItem = actorList.find(a => a._id == actor.actorId);
 			var isFirst = true;
-			for (const roll in this.requestOptions.requestItems) {
-				var possibleRoll = possibleRolls.find(pr => pr.id == roll.id);
+			for (const roll of this.requestOptions.requestItems) {
+				var possibleRoll = possibleRolls.find(pr => pr.id == roll.rollId);
 				rollList.push({
 					id: possibleRoll.id,
 					name: game.i18n.localize(possibleRoll.name),
@@ -161,7 +155,9 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 	}
 	
 	generateRollDescription(requestItem) {
-		const roll = this.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls()).find(r => r.id === requestItem.id);
+		const flat = Utils.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
+		
+		const roll = flat.find(r => r.id === requestItem.rollId);
 		const rollName = game.i18n.localize(roll.name);
 		var rollDescription = rollName;
 		if (requestItem.customBonus) {
@@ -191,20 +187,13 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 		}
 		var trainedOptions = LMRTFY.current.providerEngine.currentRollProvider.trainedOptions();
 		if (trainedOptions && trainedOptions.length > 1) {
-			rollDescription += ' [' + game.i18n.localize(`LMRTFY.Requestor.SelectRolls.Trained.${trainedOption}`) + ']';
+			for (const to of trainedOptions) {
+				rollDescription += ' [' + game.i18n.localize(`LMRTFY.Requestor.SelectRolls.Trained.${to}`) + ']';
+			}
 		}
 		return rollDescription;
 	}
 	
-	flattenRolls(rollList) {
-		var flat = new Array();
-		for (const r in rollList) {
-			flat.push(r);
-			if (r.rolls) {
-				flat.concat(this.flattenRolls(r.rolls));
-			}
-		}
-		return flat;
-	}
+	
 	
 }

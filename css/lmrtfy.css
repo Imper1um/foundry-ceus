@@ -598,3 +598,31 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-requestor.lmrtfy-refactor .select-rolls .context.invisible {
 	display: none;
 }
+
+.lmrtfy-results-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.lmrtfy-refactor .lmrtfy-results-roll .users .users-header,
+.lmrtfy-refactor .lmrtfy-results-roll .actors .actors-header,
+.lmrtfy-refactor .lmrtfy-results-roll .rolls .rolls-header {
+    font-weight: bold;
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list .lmrtfy-results-list-item td {
+    padding: 5px;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list .lmrtfy-results-list-item .actor .actor-image {
+    width: 100px;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list .lmrtfy-results-list-item .actor .actor-image img {
+    height: 100px;
+}

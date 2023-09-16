@@ -83,7 +83,11 @@
 			"Rolls": "Rolls",
 			"Users": "Users",
 			"Actors": "Actors",
-			"RollDescription": "Roll Description"
+			"RollDescription": "Roll Description",
+			"Roll": "Roll",
+			"Success": "Success",
+			"Bonus": "Bonus",
+			"Total": "Total"
 		},
 		"Actions": {
 			"Dice": "Dice",

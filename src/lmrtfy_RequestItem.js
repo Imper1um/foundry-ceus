@@ -1,6 +1,6 @@
 export class lmrtfy_RequestItem {
 	constructor(rollId, trainedOption = null, dc = null, customBonus = null, advantageDisadvantage = "allow-all") {
-		this.rollId = id;
+		this.rollId = rollId;
 		this.customBonus = customBonus;
 		this.trainedOption = trainedOption;
 		this.dc = null;

@@ -42,6 +42,14 @@ export class lmrtfy_RefactorRollProvider {
 	playerRequestTemplate() {
 		return "modules/lmrtfy/templates/refactor-player-request.html";
 	}
+	
+	/**
+	 * The template for the results of this request.
+	 *
+	 * @return {string} that should point to the results template. */
+	resultsTemplate() {
+		return "modules/lmrtfy/templates/results.html";
+	}
 
 	/** New Refactor Options **/
 	/** 
