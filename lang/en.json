@@ -75,7 +75,14 @@
 		"Player": {
 			"Or": "Or",
 			"And": "And",
-			"Title": "Request Roll"
+			"Title": "Request Roll",
+			"Warnings": {
+				"Initial": "You msut select a character to roll for.",
+				"AvailableRolls": "You may roll more than once if you wish.",
+				"RollDone": " [Done!]",
+				"RollAny": " [Done: More Rolls Available]"
+			},
+			"SelectionWarning": "You must select a character to roll for before you can select a roll!"
 		},
 		"Results": {
 			"Header": "Roll Results",
@@ -87,7 +94,8 @@
 			"Roll": "Roll",
 			"Success": "Success",
 			"Bonus": "Bonus",
-			"Total": "Total"
+			"Total": "Total",
+			"Cancel": "closed their request window."
 		},
 		"Actions": {
 			"Dice": "Dice",

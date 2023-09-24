@@ -4,6 +4,7 @@ import { lmrtfy_RequestOptions } from "./lmrtfy_RequestOptions.js";
 import { lmrtfy_RequestUser } from "./lmrtfy_RequestUser.js";
 import { lmrtfy_RequestActor } from "./lmrtfy_RequestActor.js";
 import { lmrtfy_ResultsWindow } from "./lmrtfy_ResultsWindow.js";
+import { lmrtfy_RequestItem } from "./lmrtfy_RequestItem.js";
 
 export class lmrtfy_RequestWindow extends FormApplication {
 	constructor(...args) {

@@ -7,6 +7,43 @@ export class lmrtfy_SocketEngine {
 		game.socket.on('module.lmrtfy', this.onRequest);
 		
 		console.log("LMRTFY | Socket Engine Ready");
+		
+		this.onLegacyRequests = [];
+		this.onRefactorRequests = [];
+		this.onCompleteRequests = [];
+		this.onCancelRequests = [];
+	}
+	
+	addLegacyWatcher(id, method) {
+		this.onLegacyRequests.push({id, method});
+	}
+	
+	removeLegacyWatcher(id) {
+		this.onLegacyRequests = this.onLegacyRequests.filter(item => item.id !== id);
+	}
+	
+	addRefactorWatcher(id, method, filterMethod) {
+		this.onRefactorRequests.push({id, method, filterMethod});
+	}
+	
+	removeRefactorWatcher(id) {
+		this.onRefactorRequests = this.onRefactorRequests.filter(item => item.id !== id);
+	}
+	
+	addCompleteWatcher(id, method, filterMethod) {
+		this.onCompleteRequests.push({id, method, filterMethod});
+	}
+	
+	removeCompleteWatcher(id) {
+		this.onCompleteRequests = this.onCompleteRequests.filter(item => item.id !== id);
+	}
+	
+	addCancelWatcher(id, method, filterMethod) {
+		this.onCancelRequests.push({id, method, filterMethod});
+	}
+	
+	removeCancelWatcher(id) {
+		this.onCancelRequests = this.onCancelRequests.filter(item => item.id !== id);
 	}
 	
 	async onRequest(data) {
@@ -51,38 +88,49 @@ export class lmrtfy_SocketEngine {
             actors = actors.filter(a => !a.hasPlayerOwner);
         }        
         if (actors.length === 0) return;
-        new LMRTFYRoller(actors, data).render(true);
+		for (const w of this.onLegacyRequests) {
+			w.method(actors, data);
+		}
+        //new LMRTFYRoller(actors, data).render(true);
 	}
 	async onRefactorRequest(data) {
 		console.log("LMRTFY | onRefactorRequest");
-		console.log(data);
-		const w = new lmrtfy_PlayerRequestWindow(data);
-		if (w.needsToBeDisplayed) {
-			w.render(true);
+		for (const w of this.onRefactorRequests) {
+			if (w.filterMethod && !(await w.filterMethod(data))) {
+				continue;
+			}
+			await w.method(data);
 		}
+		//console.log(data);
+		// const w = new lmrtfy_PlayerRequestWindow(data);
+		// if (w.needsToBeDisplayed) {
+			// w.render(true);
+		// }
 	}
 	
 	async onRequestCancel(data) {
 		console.log("LMRTFY | onRequestCancel");
-		console.log(data);
-		if (!game.user.isGM) { return; }
-		
-		const resultWindow = game.users.apps.find(a => a.appId === data.request.resultId);
-		if (!resultWindow) { return; }
-	
-		const u = game.users.get(data.userid);
-		if (!u) { return; }
-	
-		ui.notifications.info(`${u.name} closed their request window.`);
+		for (const w of this.onCancelRequests) {
+			if (w.filterMethod && !(await w.filterMethod(data))) {
+				continue;
+			}
+			await w.method(data);
+		}
 	}
 	async onRequestComplete(data) {
 		console.log("LMRTFY | onRequestComplete");
-		console.log(data);
-		if (!game.user.isGM) { return; }
+		//console.log(data);
+		for (const w of this.onCompleteRequests) {
+			if (w.filterMethod && !(await w.filterMethod(data))) {
+				continue;
+			}
+			await w.method(data);
+		}
+		// if (!game.user.isGM) { return; }
 		
-		const resultWindow = game.users.apps.find(a => a.appId === data.request.resultId);
-		if (!resultWindow) { return; }
-		await resultWindow.appendResult(data.response);
+		// const resultWindow = game.users.apps.find(a => a.appId === data.request.resultId);
+		// if (!resultWindow) { return; }
+		// await resultWindow.appendResult(data.response);
 	}
 	
 	async pushRefactorRequest(request) {

@@ -1,5 +1,6 @@
 import { Utils } from "./Utils.js";
 import { LMRTFY } from "./lmrtfy.js";
+import { lmrtfy_SocketEngine } from "./lmrtfy_SocketEngine.js";
 
 export class lmrtfy_ResultsWindow extends FormApplication {
 	constructor(requestOptions, requestType, ...args) {
@@ -8,7 +9,29 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 		
 		this.requestOptions = requestOptions;
 		this.requestType = requestType;
+		
+		LMRTFY.current.socketEngine.addCompleteWatcher(requestOptions.id, this.onCompleteReceived, this.onFilter);
+		LMRTFY.current.socketEngine.addCancelWatcher(requestOptions.id, this.onCancelReceived, this.onFilter);
 	}
+	
+	async onFilter(data) {
+		return data.request.resultId === this.appId;
+	}
+	
+	async onCompleteReceived(data) {
+		this.appendResult(data);
+	}
+	
+	async onCancelReceived(data) {
+		this.appendCancel(data);
+	}
+	
+	async _onClose(options = {}) {
+		await super._onClose(options);
+		LMRTFY.current.socketEngine.removeCompleteWatcher(requestOptions.id);
+		LMRTFY.current.socketEngine.removeCancelWatcher(requestOptions.id);
+	}
+	
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;
@@ -39,6 +62,13 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 	activateListeners(html) {
 		html.find("#announce-full").click(this._onAnnounceFull);
 		html.find("#announce-obfuscate").click(this._onAnnounceObfuscate);
+	}
+	
+	async appendCancel(result) {
+		if (result.requestId !== this.requestOptions.id) { return; }
+		const cancelNotification = game.i18n.localize("LMRTFY.Results.Cancel");
+		const u = game.users.get(data.userid);
+		ui.notifications.info(`${u.name} {cancelNotification}`);
 	}
 	
 	async appendResult(result) {

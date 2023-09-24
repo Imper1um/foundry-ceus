@@ -11,7 +11,22 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		
 		if (this.needsToBeDisplayed) {
 			game.users.apps.push(this);
+			LMRTFY.current.socketEngine.addCompleteWatcher(this.appId, this.onComplete, this.onFilter);
 		}
+	}
+	
+	async onFilter(data) {
+		return data.request.resultId === this.appId;
+	}
+	
+	async onComplete(data) {
+		this.handleExternalResult(data);
+	}
+	
+	async _onClose(options = {}) {
+		await super._onClose(options);
+		LMRTFY.current.socketEngine.removeCompleteWatcher(this.appId);
+		LMRTFY.current.socketEngine.pushCancelResponse(this.requestOptions, game.user._id);
 	}
 	
 	static get defaultOptions() {
@@ -40,35 +55,9 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 	}
 	
 	activateListeners(html) {
-		html.find(".actor").click(this._onActorChange);
-		html.find(".actor").on("mouseover", this._onActorMouseOver);
-		html.find(".actor").on("mouseout", this._onActorMouseOut);
 		html.find(".check-button").click(this._onCheck);
 	}
-	
-	_onActorMouseOver(event) {
-		const target = $(event.currentTarget);
-		target.addClass("mouseover");
-	}
-	
-	_onActorMouseOut(event) {
-		const target = $(event.currentTarget);
-		target.removeClass("mouseover");
-	}
-	
-	async _onActorChange(event) {
-		const target = $(event.currentTarget);
-		const actorId = target.data("id");
-		const parentForm = item.parents('.lmrtfy-form');
-		const dataParent = parentForm.data('appid');
-		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		
-		for (const a in requestWindow.actors) {
-			a.selectedClass = a.actor._id === actorId ? "selected" : "not-selected";
-		}
-		const data = await requestWindow.getData();
-		requestWindow.render(false, {action: "update", context: data});
-	}
+
 	
 	async _onCheck(event) {
 		const target = $(event.currentTarget);
@@ -94,16 +83,18 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		checkItem.doneClass = "done";
 		if (requestWindow.requestOptions.rollNumber === "one") {
 			actorItem.doneClass = "done";
+			actorItem.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
 		} else if (actorItem.checks.every(i => i.doneClass === "done")) {
 			actorItem.doneClass = "done";
+			actorItem.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
 		} else if (requestWindow.requestOptions.rollNumber === "any") {
 			actorItem.doneClass = "any";
+			actorItem.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollAny");
 		}
 		if (requestWindow.actors.every(a => a.checks.every(i => i.doneClass === "done"))) {
 			requestWindow.close();
 			return;
 		}
-		
 		
 		const data = await requestWindow.getData();
 		requestWindow.render(false, {action: "update", context: data});
@@ -133,7 +124,7 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 				if (check.trainedOption === "HideUntrained" && !isActorTrained(actor, roll.rollType, check.rollId)) {
 					continue;
 				}
-				checks.push({ roll, check, selectedClass: "not-selected", doneClass: "" });
+				checks.push({ roll, check, doneClass: "" });
 			}
 			if (checks.length) {
 				for (const c in checks) {
@@ -143,11 +134,32 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 				this.actors.push({
 					actor: actor,
 					checks: checks,
-					doneClass: "",
-					selectedClass: "not-selected"
+					doneClass: ""
 				});
 			}
 		}
+	}
+	
+	handleExternalResult(result) {
+		if (result.requestId !== this.requestOptions.id) { return; }
+		const actor = this.actors.find(a => a.actor._id === result.requestActorId);
+		if (!actor) { return; }
+		const check = actor.checks.find(c => c.check.rollId === result.requestItemId);
+		if (!check) { return; }
+		check.doneClass = "done";
+		if (this.requestOptions.rollNumber === "one") {
+			actor.doneClass = "done";
+			actor.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
+		} else if (actor.checks.every(i => i.doneClass === "done")) {
+			actor.doneClass = "done";
+			actor.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
+		} else if (this.requestOptions.rollNumber === "any") {
+			actor.doneClass = "any";
+			actor.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollAny");
+		}
+		
+		const data = await this.getData();
+		this.render(false, {action: "update", context: data});
 	}
 	
 	doesUserControlActor(actor, user) {

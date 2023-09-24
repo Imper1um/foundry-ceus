@@ -43,7 +43,16 @@ export class LMRTFY {
                 'c-0.3,0-0.2,0.2-0.2,0.4l0.4,8c0,0.2,0,0.3,0.3,0.2L299.1,421.9z"/>' +
             '</g>' +
         '</svg>';
+		
+		this.socketEngine.addRefactorWatcher(0, onRefactorRequest);
 	}
+	
+	onRefactorRequest(data) {
+		const w = new lmrtfy_PlayerRequestWindow(data);
+		if (w.needsToBeDisplayed) {
+			w.render(true);
+		}
+	}	
 	
 	getSceneControlButtons(buttons) {
         let tokenButton = buttons.find(b => b.name == "token")
