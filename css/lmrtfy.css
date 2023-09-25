@@ -605,6 +605,33 @@ form .form-group .lmrtfy-skill-checks {
     font-size: 1.5em;
 }
 
+.lmrtfy-refactor .lmrtfy-results-list-item.rolled {
+    border-radius: 5px;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list-item.rolled.pass {
+    border-color: #AFA;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list-item.rolled.fail {
+    border-color: #FAA;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list-item .total,
+.lmrtfy-refactor .lmrtfy-results-list-item .success {
+    text-align: center;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list-item .total {
+	font-size: 1.5em;
+}
+
+.lmrtfy-refactor .lmrtfy-results-list-item .success {
+    font-size: 3em;
+}
+
 .lmrtfy-refactor .lmrtfy-results-roll .users .users-header,
 .lmrtfy-refactor .lmrtfy-results-roll .actors .actors-header,
 .lmrtfy-refactor .lmrtfy-results-roll .rolls .rolls-header {
@@ -613,6 +640,11 @@ form .form-group .lmrtfy-skill-checks {
     width: 200px;
     text-align: right;
     margin-right: 10px;
+}
+
+.lmrtfy-refactor .lmrtfy-results-pending .actor-image img {
+	max-height: 100px;
+	max-width: 100px;
 }
 
 .lmrtfy-refactor .lmrtfy-results-list .lmrtfy-results-list-item td {
@@ -667,4 +699,43 @@ form .form-group .lmrtfy-skill-checks {
 .lmrtfy-request-player .check-button.done {
 	pointer-events: none;
 	background-color: #AFA;
+}
+
+.lmrtfy.lmrtfy-result header {
+    border: solid 1px #FFF;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #000;
+    margin: 4px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.lmrtfy.lmrtfy-result .result-body .result-total {
+    border: solid 1px #FFF;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #000;
+    margin: 4px;
+    font-size: 1.2em;
+}
+
+.lmrtfy.lmrtfy-result.sensitive {
+	background-color: rgba(70,70,70,0.3);
+}
+
+.lmrtfy.lmrtfy-result.fail .result-total {
+	border-color: #F00;
+}
+
+.lmrtfy.lmrtfy-result.pass .result-total {
+	border-color: #0F0;
+}
+
+.lmrtfy.lmrtfy-result.crit-success .result-total {
+	color: #0F0;
+}
+
+.lmrtfy.lmrtfy-result.crit-fail .result-total {
+	color: #F00;
 }

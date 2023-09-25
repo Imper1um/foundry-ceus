@@ -210,8 +210,69 @@ export class lmrtfy_RefactorRollProvider {
 		return false;
 	}
 	
+	/**
+	 * When a roll is completed, does the mod need to make the decision to display the results of the roll?
+	 *
+	 * @return {boolean} true if the Mod needs to make the decision to display the results of the roll.
+	 */
+	displayRequiredByMod() {
+		return false;
+	}
 	
-	
+	/**
+	 * Called when a display is asked for.
+	 */
+	async displayRoll(requestOptions, user, actor, check, result) {
+		const sensitive = requestOptions.rollPrivacy === "blind" ? "sensitive" : "not-sensitive";
+		var crit = "";
+		if (check.canCritSuccess && result.critSuccess) {
+			crit = "crit-success";
+		} else if (check.canCritFail && result.critFail) {
+			crit = "crit-fail";
+		}
+		const ispass = result.isPass == true ? "pass" : (result.isPass == false ? "fail" : "");
+		var htmlView = `<div class="lmrtfy lmrtfy-result lmrtfy-chat ${sensitive} ${ispass} ${requestOptions.rollPrivacy}" data-requestid="${requestOptions.id}" data-actorid="${actor._id}" data-userid="${user._id}" data-rollid="${check.rollId}" data-total="${result.rolledAmount}" data-ispass="${result.isPass}" data-dc="${check.dc}">
+			<header>${check.rollId}</header>
+			<div class="result-body">
+				<div class="result-total">${result.rolledAmount}</div>
+				<div class="result-breakdown">${result.rollBreakdown}</div>
+			</div>
+		</div>`;
+		
+		let chatData = {
+			user: user.id,
+			speaker: ChatMessage.getSpeaker({actor: actor}),
+			content: htmlView,
+			type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+		};
+
+		let whisperIds = [];
+
+		// Determine who can see the message based on requestOptions.rollPrivacy
+		switch(requestOptions.rollPrivacy) {
+			case "self":
+			  whisperIds.push(user.id);
+			  break;
+			case "gm":
+			  const gmUsers = game.users.filter(u => u.isGM);
+			  whisperIds = gmUsers.map(u => u.id);
+			  whisperIds.push(user.id);  // Include the current user
+			  break;
+			case "blind":
+			case "public":
+			  // No need to set whisperIds, the message will be public
+			  break;
+			default:
+			  console.error("Invalid rollPrivacy option");
+			  return;
+		  }
+
+		if (whisperIds.length > 0) {
+			chatData.whisper = whisperIds;
+		}
+
+		await ChatMessage.create(chatData);
+	}
 }
 
 console.log("LMRTFY | lmrtfy_RefactorRollProvider.js loaded");

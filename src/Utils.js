@@ -27,4 +27,16 @@ export class Utils {
 		}
 		return flat;
 	}
+	
+	static doesUserControlActor(actor, user) {
+		if (user.isGM) {
+			return true;
+		}
+		if (user.character && user.character._id == actor._id) {
+			return true;
+		}
+		var ownership = actor.ownership["default"];
+		if (actor.ownership[user._id]) { ownership = actor.ownership[user._id]; }
+		return ownership >= 3;
+	}
 }

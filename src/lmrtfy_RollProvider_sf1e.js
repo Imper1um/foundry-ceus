@@ -1,5 +1,7 @@
 import { lmrtfy_RefactorRollProvider } from "./lmrtfy_RefactorRollProvider.js";
 import { LMRTFYRoller } from "./roller.js";
+import { LMRTFY } from "./lmrtfy.js";
+import { lmrtfy_Result } from "./lmrtfy_Result.js";
 
 /**
  * RollProvider for Starfinder (1st Edition) (sfrpg)
@@ -85,8 +87,8 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				name: "SFRPG.Special",
 				type: "category",
 				rolls: [
-					{ id: "Initiative", name: "SFRPG.InitiativeLabel", type: "roll", rollType: LMRTFYRoller.rollTypes().INITIATIVE, method: this.rollInitiative, contexts: this.getInitiativeContexts },
-					{ id: "Perception", name: "SFRPG.SkillPer", type: "roll", rollType:LMRTFYRoller.rollTypes().PERCEPTION, method: this.rollPerception }
+					{ id: "Initiative", name: "SFRPG.InitiativeLabel", type: "roll", rollType: LMRTFYRoller.rollTypes().INITIATIVE, method: this.rollInitiative, contexts: this.getInitiativeContexts, canCritSuccess: false, canCritFail: false },
+					{ id: "Perception", name: "SFRPG.SkillPer", type: "roll", rollType:LMRTFYRoller.rollTypes().PERCEPTION, method: this.rollPerception, canCritSuccess: true, canCritFail: true }
 				]
 			},
 			{
@@ -111,7 +113,8 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	async rollSkill(requestOptions, actor, requestItem) {
-		const skillRoll = this.getAvailableRolls().find(r => r.id === "Skills").rolls.find(r => r.id === requestItem.id);
+		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const skillRoll = rp.getAvailableRolls().find(r => r.id === "Skills").rolls.find(r => r.id === requestItem.id);
 		const skillId = skillRoll.skillId;
 		const skill = actor.system.skills[skillRoll.skillId];
 		var completeRoll;
@@ -129,17 +132,17 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 						null
 					);
 				}
-				completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
+				completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
 				break;
 			case "PreventUntrained":
 				if (skill.isTrainedOnly && skl.ranks < 1) {
-					completeRoll = await actor.rollSkill(skillId, this.baseRollOptions());
+					completeRoll = await actor.rollSkill(skillId, rp.baseRollOptions());
 				} else {
-					completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
+					completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
 				}
 				break;
 			default:
-				completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
+				completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
 				break;
 			
 		}
@@ -147,18 +150,21 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	async rollSave(requestOptions, actor, requestItem) {
-		const saveRoll = this.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.id);
-		const completeRoll = await actor.rollSave(saveRoll.saveId, this.baseRollOptions());
+		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const saveRoll = rp.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.id);
+		const completeRoll = await actor.rollSave(saveRoll.saveId, rp.baseRollOptions());
 		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
 	async rollAbility(requestOptions, actor, requestItem) {
-		const abilityRoll = this.getAvailableRolls().find(r => r.id === "Abilities").rolls.find(r => r.id === requestItem.id);
-		const completeRoll = await actor.rollAbility(abilityRoll.abilityId, this.baseRollOptions());
-		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const abilityRoll = rp.getAvailableRolls().find(r => r.id === "Abilities").rolls.find(r => r.id === requestItem.id);
+		const completeRoll = await actor.rollAbility(abilityRoll.abilityId, rp.baseRollOptions());
+		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
 	async rollInitiative(requestOptions, actor, requestItem) {
+		const rp = LMRTFY.current.providerEngine.currentRollProvider;
 		const combat = game.combats.get(requestOptions.contextId);
 		if (!combat) { return; }
 		var rollOptions = {formula: null, updateTurn: true, messageOptions: {}, requireMode: null, requireRollState: null};
@@ -181,7 +187,8 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		const newTurn = newCombat.turns.find(t => t.actorId === actor._id);
 		if (!newTurn) { return; }
 		const result = new lmrtfy_Result(
-			requestOptions.requestId,
+			requestOptions.id,
+			requestOptions.resultId,
 			actor._id,
 			requestItem.id,
 			game.data.userId,
@@ -193,14 +200,15 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	async rollPerception(requestOptions, actor, requestItem) {
+		const rp = LMRTFY.current.providerEngine.currentRollProvider;
 		const skill = actor.system.skills["per"];
 		const skillId = "per";
-		const completeRoll = await actor.rollSkillCheck(skillId, skill, this.baseRollOptions());
-		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+		const completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
+		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
 	baseRollOptions() {
-		return options = {
+		return {
 			chatMessage: false,
 			onClose: null,
 			rollOptions: {
@@ -211,23 +219,40 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	
 	buildResult(requestOptions, actor, requestItem, roll) {
 		let rollType;
-		if (completeRoll.formula.includes("2d20kh")) {
+		if (roll.button === "advantage") {
 			rollType = "advantage";
-		} else if (completeRoll.formula.includes("2d20kl")) {
+		} else if (roll.button === "disadvantage") {
 			rollType = "disadvantage";
 		} else {
 			rollType = "normal";
 		}
+		var isCritSuccess = false;
+		var isCritFail = false;
+		for (const term of roll.callbackResult.terms) {
+			if (!term.faces || term.faces !== 20) { continue; }
+			if (term.results[0].result === 20) { isCritSuccess = true; }
+			if (term.results[0].result === 1) { isCritFail = true; }
+		}
+		var isPass = null;
+		if (requestItem.dc) {
+			isPass = requestItem.dc <= roll.callbackResult._total;
+			if (isCritSuccess) { isPass = true; }
+			if (isCritFail) { isPass = false; }
+		}
 		
 		return new lmrtfy_Result(
-			requestOptions.requestId,
+			requestOptions.id,
+			requestOptions.resultId,
 			actor._id,
-			requestItem.id,
+			requestItem.rollId,
 			game.data.userId,
-			completeRoll.total,
+			roll.callbackResult._total,
 			true,
-			requestItem.dc ? requestItem.dc <= completeRoll.total : true,
-			rollType
+			isPass,
+			rollType,
+			roll.callbackResult.breakdown,
+			isCritFail,
+			isCritSuccess
 		);
 	}
 	
@@ -241,7 +266,9 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				type: "roll",
 				rollType: LMRTFYRoller.rollTypes().ABILITY,
 				method: this.rollAbility,
-				abilityId: key
+				abilityId: key,
+				canCritSuccess: true,
+				canCritFail: true
 			};
 		});
 	}
@@ -256,7 +283,9 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				type: "roll",
 				rollType: LMRTFYRoller.rollTypes().SAVE,
 				method: this.rollSave,
-				saveId: key
+				saveId: key,
+				canCritSuccess: true,
+				canCritFail: true
 			};
 		});
 	}
@@ -276,7 +305,9 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				type: "roll",
 				rollType: LMRTFYRoller.rollTypes().SKILL,
 				method: this.rollSkill,
-				skillId: key
+				skillId: key,
+				canCritSuccess: true,
+				canCritFail: true
 			};
 		});
 	}
@@ -317,9 +348,12 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		return true;
 	}
 	permitSetRollPrivacy() {
-		return false;
+		return true;
 	}
 	permitRequireRollPrivacy() {
-		return false;
+		return true;
+	}
+	displayRequiredByMod() {
+		return true;
 	}
 }

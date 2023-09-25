@@ -20,7 +20,7 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 	}
 	
 	async onComplete(data) {
-		this.handleExternalResult(data);
+		await this.handleExternalResult(data);
 	}
 	
 	async _onClose(options = {}) {
@@ -50,7 +50,8 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 			requestOptions: this.requestOptions,
 			isAnd: this.requestOptions.rollNumber === "all",
 			isOr: this.requestOptions.rollNumber === "one",
-			actors: this.actors
+			actors: this.actors,
+			appId: this.appId
 		};
 	}
 	
@@ -60,26 +61,31 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 
 	
 	async _onCheck(event) {
+		event.preventDefault();
 		const target = $(event.currentTarget);
 		const actorId = target.data("actorid");
 		const checkId = target.data("checkid");
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = $(target.parents('.lmrtfy-form'));
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
+		const rp = LMRTFY.current.providerEngine.currentRollProvider;
 		
 		const actorItem = requestWindow.actors.find(a => a.actor._id === actorId);
 		if (!actorItem) {
 			ui.notifications.error("Unable to find actor!");
 			return;
 		}
-		const checkItem = actorItem.checks.find(c => c.check.id === checkId);
+		const checkItem = actorItem.checks.find(c => c.check.rollId === checkId);
 		if (!checkItem) {
 			ui.notifications.error("Unable to find check!");
 			return;
 		}
 		
 		const result = await checkItem.roll.method(requestWindow.requestOptions, actorItem.actor, checkItem.check);
-		await LMRTFY.socketEngine.pushCompleteResponse(requestWindow.requestOptions, game.user._id, result);
+		if (rp.displayRequiredByMod()) {
+			await rp.displayRoll(requestWindow.requestOptions, game.user, actorItem.actor, checkItem.check, result);
+		}
+		await LMRTFY.current.socketEngine.pushCompleteResponse(requestWindow.requestOptions, game.user._id, result);
 		checkItem.doneClass = "done";
 		if (requestWindow.requestOptions.rollNumber === "one") {
 			actorItem.doneClass = "done";
@@ -114,14 +120,14 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		for (const requestActor of this.requestOptions.requestActors) {
 			const actor = game.actors.get(requestActor.actorId);
 			if (!actor) { continue; }
-			if (!this.doesUserControlActor(actor, user)) { continue; }
+			if (!Utils.doesUserControlActor(actor, user)) { continue; }
 			var checks = [];
 			for (const check of this.requestOptions.requestItems) {
 				const roll = possibleRolls.find(r => r.id === check.rollId);
 				if (!roll) {
 					continue;
 				}
-				if (check.trainedOption === "HideUntrained" && !isActorTrained(actor, roll.rollType, check.rollId)) {
+				if (check.trainedOption === "HideUntrained" && !LMRTFY.current.providerEngine.currentRollProvider.isActorTrained(actor, roll.rollType, check.rollId)) {
 					continue;
 				}
 				checks.push({ roll, check, doneClass: "" });
@@ -140,7 +146,7 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		}
 	}
 	
-	handleExternalResult(result) {
+	async handleExternalResult(result) {
 		if (result.requestId !== this.requestOptions.id) { return; }
 		const actor = this.actors.find(a => a.actor._id === result.requestActorId);
 		if (!actor) { return; }
@@ -162,15 +168,5 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		this.render(false, {action: "update", context: data});
 	}
 	
-	doesUserControlActor(actor, user) {
-		if (user.isGM) {
-			return true;
-		}
-		if (user.character && user.character._id == actor._id) {
-			return true;
-		}
-		var ownership = actor.ownership["default"];
-		if (actor.ownership[user._id]) { ownership = actor.ownership[user._id]; }
-		return ownership >= 3;
-	}
+	
 }

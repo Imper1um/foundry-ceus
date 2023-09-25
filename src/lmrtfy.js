@@ -1,4 +1,5 @@
 import { lmrtfy_RequestWindow } from "./lmrtfy_RequestWindow.js";
+import { lmrtfy_PlayerRequestWindow } from "./lmrtfy_PlayerRequestWindow.js";
 import { lmrtfy_ProviderEngine } from "./lmrtfy_ProviderEngine.js";
 import { lmrtfy_SocketEngine } from "./lmrtfy_SocketEngine.js";
 import { lmrtfy_SettingsEngine } from "./lmrtfy_SettingsEngine.js";
@@ -20,7 +21,30 @@ export class LMRTFY {
 	async onInit() {
 		this.registerHandlebarsHelpers();
 		Hooks.on('getSceneControlButtons', this.getSceneControlButtons);
+		Hooks.on('renderChatMessage', this.onChatMessage);
 	}
+	
+	async onChatMessage(app, html, data) {
+		if (game.user.isGM) { return; }
+		if (html.hasClass("sensitive") && html.hasClass("lmrtfy")) {
+			html.find('.result-total').text('???');
+			html.find('.result-breakdown').remove();
+			html.removeClass('pass');
+			html.removeClass('fail');
+			html.removeClass('crit-success');
+			html.removeClass('crit-fail');
+		}
+		for (const i of html.find('.lmrtfy.sensitive')) {
+			const item = $(i);
+			item.find('.result-total').text('???');
+			item.find('.result-breakdown').remove();
+			item.removeClass('pass');
+			item.removeClass('fail');
+			item.removeClass('crit-success');
+			item.removeClass('crit-fail');
+		}
+	}
+	
 	
 	async onReady() {
 		await this.providerEngine.onReady();
@@ -44,7 +68,7 @@ export class LMRTFY {
             '</g>' +
         '</svg>';
 		
-		this.socketEngine.addRefactorWatcher(0, onRefactorRequest);
+		this.socketEngine.addRefactorWatcher(0, this.onRefactorRequest);
 	}
 	
 	onRefactorRequest(data) {

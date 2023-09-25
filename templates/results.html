@@ -13,21 +13,21 @@
 			<span class="rolls-header">{{localize "LMRTFY.Results.RollDescription"}}</span><span class="rolls-content">{{rollDescriptions}}</span>
 		</div>
 	</div>
-	<div class="lmrtfy-results-list">
-		<table class="table table-bordered table-striped lmrtfy-results">
+	{{#if hasPendingRolls}}
+	<h2>{{localize "LMRTFY.Results.Pending"}}</h2>
+	<div class="lmrtfy-results-pending">
+		<table class="table table-bordered table-striped lmrtfy-pending">
 			<thead>
-				<tr class="lmrtfy-results-list-header">
+				<tr class="lmrtfy-pending-header">
 					<th class="header-item actor">{{localize "LMRTFY.Results.Actor"}}</th>
-					<th class="header-item bonus">{{localize "LMRTFY.Results.Bonus"}}</th>
-					<th class="header-item rolls">{{localize "LMRTFY.Results.Roll"}}</th>
-					<th class="header-item total">{{localize "LMRTFY.Results.Total"}}</th>
-					<th class="header-item success">{{localize "LMRTFY.Results.Success"}}</th>
+					<th class="header-item users">{{localize "LMRTFY.Results.Users"}}</th>
+					<th class="header-item rolls">{{localize "LMRTFY.Results.Rolls"}}</th>
 				</tr>
 			</thead>
 			<tbody>
-			{{#each rolls}}
-				<tr class="lmrtfy-results-list-item {{#if result.isRolled}}rolled{{/if}}">
-					<td class="list-item actor">
+			{{#each pendingRolls}}
+			<tr>
+				<td class="list-item actor">
 						{{#if this.img}}
 						<div class="actor-image">
 							<img src="{{this.img}}" />
@@ -36,11 +36,55 @@
 						<div class="actor-name">
 							{{this.name}}
 						</div>
+				</td>
+				<td class="list-item users">
+					{{{this.possibleUsers}}}
+				</td>
+				<td class="list-item rolls">
+					{{{this.possibleRolls}}}
+				</td>
+			</tr>
+			{{/each}}
+			</tbody>
+		</table>
+	</div>
+	{{/if}}
+	<h2>{{localize "LMRTFY.Results.Completed"}}</h2>
+	<div class="lmrtfy-results-list">
+		<table class="table table-bordered table-striped lmrtfy-results">
+			<thead>
+				<tr class="lmrtfy-results-list-header">
+					<th class="header-item actor">{{localize "LMRTFY.Results.Actor"}}</th>
+					<th class="header-item breakdown">{{localize "LMRTFY.Results.Breakdown"}}</th>
+					<th class="header-item total">{{localize "LMRTFY.Results.Total"}}</th>
+					<th class="header-item success">{{localize "LMRTFY.Results.Success"}}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			{{#each completedRolls}}
+				<tr class="lmrtfy-results-list-item rolled {{this.passClass}}">
+					<td class="list-item actor">
+						{{#if this.actor.img}}
+						<div class="actor-image">
+							<img src="{{this.actor.img}}" />
+						</div>
+						{{/if}}
+						<div class="actor-name">
+							{{this.actor.name}}
+						</div>
+						{{#if this.user}}
+						<div class="actor-rolledby">
+							{{localize "LMRTFY.Results.RolledBy"}}{{this.user.name}}
+						</div>
+						{{/if}}
 					</td>
-					<td class="list-item bonus">{{result.bonus}}</td>
-					<td class="list-item roll">{{result.roll}}</td>
-					<td class="list-item total">{{result.total}}</td>
-					<td class="list-item success {{#if result.isPass}}pass{{/if}}">{{#if result.isRolled}}{{#if result.isPass}}✅{{else}}❌{{/if}}{{/if}}</td>
+					<td class="list-item breakdown">{{{this.result.rollBreakdown}}}
+						{{#if this.result.isAdvantage}}<br /><span class="advantage">[{{localize "LMRTFY.Results.Advantage"}}]</span>{{/if}}{{#if this.result.isDisadvantage}}<br /><span class="disadvantage">[{{localize "LMRTFY.Results.Disadvantage"}}]</span>{{/if}}
+					</td>
+					<td class="list-item total">{{this.result.rolledAmount}}</td>
+					<td class="list-item success">{{#if this.isPass}}✅{{/if}}{{#if this.isFail}}❌{{/if}}</td>
+					<td></td>
 				</div>
 			{{/each}}
 			</tbody>

@@ -9,9 +9,16 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 		
 		this.requestOptions = requestOptions;
 		this.requestType = requestType;
+		this.requestOptions.resultId = this.appId;
 		
-		LMRTFY.current.socketEngine.addCompleteWatcher(requestOptions.id, this.onCompleteReceived, this.onFilter);
-		LMRTFY.current.socketEngine.addCancelWatcher(requestOptions.id, this.onCancelReceived, this.onFilter);
+		LMRTFY.current.socketEngine.addCompleteWatcher(
+			requestOptions.id, 
+			async (data) => this.onCompleteReceived( data), 
+			async (data) => this.onFilter(data));
+		LMRTFY.current.socketEngine.addCancelWatcher(
+			requestOptions.id, 
+			async (data) => this.onCancelReceived(data),
+			async (data) => this.onFilter(data));
 	}
 	
 	async onFilter(data) {
@@ -28,8 +35,8 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 	
 	async _onClose(options = {}) {
 		await super._onClose(options);
-		LMRTFY.current.socketEngine.removeCompleteWatcher(requestOptions.id);
-		LMRTFY.current.socketEngine.removeCancelWatcher(requestOptions.id);
+		LMRTFY.current.socketEngine.removeCompleteWatcher(this.requestOptions.id);
+		LMRTFY.current.socketEngine.removeCancelWatcher(this.requestOptions.id);
 	}
 	
 	
@@ -55,7 +62,9 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 			rollUsers: this.rollUsers,
 			rollActors: this.rollActors,
 			rollDescriptions: this.rollDescriptions,
-			rolls: this.rolls
+			pendingRolls: this.pendingRolls,
+			completedRolls: this.completedRolls,
+			hasPendingRolls: this.pendingRolls.length
 		};
 	}
 	
@@ -72,36 +81,37 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 	}
 	
 	async appendResult(result) {
-		if (result.requestId !== this.requestOptions.id) { return; }
-		const rollActor = this.rolls.find(ra => ra.actorId === result.requestActorId);
-		if (!rollActor) { return; }
-		if (this.requestOptions.rollNumber === "one" && rollActor.rolls.some(r => r.isRolled)) { return; } //Only the first roll qualifies.
-		const roll = rollActor.rolls.find(r => r.id === result.requestItemId);
-		if (roll.isRolled) { return; } //Only the first result qualifies.
-		roll.isRolled = result.isRolled;
-		roll.isPass = result.isPass;
 		const userList = game.users.entities || game.users.contents;
-		const rolledUser = userList.find(u => u._id == roll.rolledUserId);
-		roll.rolledUserId = rolledUser._id;
-		roll.rolledBy = rolledUser.name;
-		roll.rolledAmount = result.rolledAmount;
-		roll.rolledAdvantageDisadvantage = result.rolledAdvantageDisadvantage;
-		switch (this.requestOptions.rollNumber) {
-			case 'any':
-				rollActor.isRolled = rollActor.rolls.some(r => r.isRolled);
-				rollActor.isPass = rollActor.rolls.some(r => r.isPass);
-				break;
-			case 'all':
-				if (rollActor.rolls.every(r => r.isRolled)) {
-					rollActor.isRolled = true;
-					rollActor.isPass = rollActor.rolls.every(r => r.isPass);
-				}
-				break;
+		
+		const pendingRoll = this.pendingRolls.find(r => r.id === result.response.requestActorId);
+		if (!pendingRoll) { return; }
+		
+		const pendingItem = pendingRoll.rolls.find(r => r.roll.rollId === result.response.requestItemId);
+		if (pendingItem.isRolled) { return; } //Only the first roll qualifies.
+		
+		const rolledUser = userList.find(u => u._id == result.response.rolledUserId);
+		if (!rolledUser) { return; }
+		
+		pendingItem.result = result.response;
+		pendingItem.isRolled = true;
+		pendingItem.isPass = result.response.isPass == true;
+		pendingItem.isFail = result.response.isPass == false;
+		pendingItem.passClass = pendingItem.isPass ? "pass" : (pendingItem.isFail ? "fail" : "");
+		pendingItem.user = rolledUser;
+		pendingItem.isAdvantage = result.response.rolledAdvantageDisadvantage === "advantage";
+		pendingItem.isDisadvantage = result.response.rolledAdvantageDisadvantage === "disadvantage";
+		if (this.requestOptions.rollNumber === "one") {
+			pendingRoll.isRolled = true;
+			this.pendingRolls = this.pendingRolls.filter(pr => pr.id !== pendingRoll.id);
 		}
-		if (rollActor.isRolled && rollActor.isPass) {
-			rollActor.passClass = "rolled pass";
-		} else if (rollActor.isRolled && !rollActor.isPass) {
-			rollActor.passClass = "rolled fail";
+		if (pendingRoll.rolls.every(r => r.isRolled)) {
+			pendingRoll.isRolled = true;
+			this.pendingRolls = this.pendingRolls.filter(pr => pr.id !== pendingRoll.id);
+		}
+		this.completedRolls.push(pendingItem);
+		for (const pendingRoll of this.pendingRolls) {
+			pendingRoll.possibleUsers = pendingRoll.users.map(u => u.name).join("<br />");
+			pendingRoll.possibleRolls = pendingRoll.rolls.map(u => `<div class="roll ${u.isRolled ? "rolled" : ""}" data-rollid="${u.roll.rollId}">${u.roll.rollId}</div>`).join("");
 		}
 		this.render(false);
 	}
@@ -131,13 +141,14 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 				break;
 		}
 		this.rollDescriptions = rollPrefix + this.requestOptions.requestItems.map(this.generateRollDescription).join(', ');
-		this.rolls = this.generateRolls();
+		this.generateRolls();
 	}
 	
 	generateRolls() {
-		var actorRolls = new Array();
-		var possibleRolls = Utils.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
+		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		var possibleRolls = Utils.flattenRolls(rp.getAvailableRolls());
 		var actorList = game.actors.entities || game.actors.contents;
+		var userList = game.users.entities || game.users.contents;
 		var rollPrefix = "or";
 		switch (this.requestOptions.rollNumber) {
 			case 'any':
@@ -147,42 +158,42 @@ export class lmrtfy_ResultsWindow extends FormApplication {
 				rollPrefix = "and";
 				break;
 		}
+		
+		this.pendingRolls = [];
+		this.completedRolls = [];
+		
 		for (const actor of this.requestOptions.requestActors) {
-			var rollList = new Array();
-			var actorItem = actorList.find(a => a._id == actor.actorId);
-			var isFirst = true;
-			for (const roll of this.requestOptions.requestItems) {
-				var possibleRoll = possibleRolls.find(pr => pr.id == roll.rollId);
-				rollList.push({
-					id: possibleRoll.id,
-					name: game.i18n.localize(possibleRoll.name),
-					customBonus: roll.customBonus,
-					trainedOption: roll.trainedOption,
-					dc: roll.dc,
-					advantageDisadvantage: roll.advantageDisadvantage,
-					description: this.generateRollDescription(roll),
-					isRolled: false,
-					isPass: false,
-					rolledBy: null,
-					rolledUserId: null,
-					rolledAmount: null,
-					rolledAdvantageDisadvantage: null,
-					rollPrefix: isFirst ? "":rollPrefix
+			const actorItem = actorList.find(a => a._id == actor.actorId);
+			if (!actorItem) { continue; }
+			var pendingRoll = {
+				img: actorItem.img,
+				name: actorItem.name,
+				id: actorItem._id,
+				users: [],
+				rolls: [],
+				isRolled: false
+			};
+			for (const u of this.requestOptions.requestUsers) {
+				const userItem = userList.find(ul => ul._id === u.userId);
+				if (!userItem) { continue; }
+				if (!Utils.doesUserControlActor(actorItem, userItem)) { continue; }
+				pendingRoll.users.push(userItem);
+			}
+			for (const r of this.requestOptions.requestItems) {
+				if (r.trainedOption === "HideUntrained" && !rp.isActorTrained(actorItem, r.rollType, r.rollId)) { continue; }
+				pendingRoll.rolls.push({
+					actor: actorItem,
+					roll: r,
+					isRolled: false
 				});
 			}
-			
-			actorRolls.push({
-				actorId: actorItem._id,
-				name: actorItem.name,
-				img: actorItem.img,
-				rollList: rollList,
-				isPass: false,
-				isRolled: false,
-				passClass: "pending"
-			});
+			pendingRoll.possibleUsers = pendingRoll.users.map(u => u.name).join("<br />");
+			pendingRoll.possibleRolls = pendingRoll.rolls.map(u => `<div class="roll" data-rollid="${u.roll.rollId}"> ${u.roll.rollId}</div>`).join("");
+			this.pendingRolls.push(pendingRoll);
 		}
-		return actorRolls;
 	}
+	
+	
 	
 	generateRollDescription(requestItem) {
 		const flat = Utils.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());

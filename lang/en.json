@@ -92,10 +92,15 @@
 			"Actors": "Actors",
 			"RollDescription": "Roll Description",
 			"Roll": "Roll",
+			"Rolls": "Rolls",
 			"Success": "Success",
 			"Bonus": "Bonus",
 			"Total": "Total",
-			"Cancel": "closed their request window."
+			"Cancel": "closed their request window.",
+			"Breakdown": "Breakdown",
+			"RolledBy": "Rolled by: ",
+			"Pending": "Pending Rolls",
+			"Completed": "Completed Rolls"
 		},
 		"Actions": {
 			"Dice": "Dice",

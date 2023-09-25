@@ -199,7 +199,6 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
 		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, "ask");
-		requestOptions.resultId = resultsWindow.appId;
 		resultsWindow.handleRequestOptions();
 		resultsWindow.render(true);
 		LMRTFY.current.socketEngine.pushRefactorRequest(requestOptions.shrink());
@@ -213,7 +212,6 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		const requestOptions = requestWindow.requestOptions;
 		
 		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, "gmroll");
-		requestOptions.resultId = resultsWindow.appId;
 		resultsWindow.handleRequestOptions();
 		resultsWindow.render(true);
 		const shrunkResults = requestOptions.shrink();
@@ -377,6 +375,8 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		item.allowDC = LMRTFY.current.providerEngine.currentRollProvider.allowDC(action.rollType, action.id);
 		item.permitDC = LMRTFY.current.providerEngine.currentRollProvider.permitDC();
 		item.permitAdvantageDisadvantage = LMRTFY.current.providerEngine.currentRollProvider.permitAdvantageDisadvantage();
+		item.canCritSuccess = action.canCritSuccess;
+		item.canCritFail = action.canCritFail;
 	}
 	
 	async _onAddRoll(event) {
