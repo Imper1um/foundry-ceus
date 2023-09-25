@@ -64,7 +64,7 @@
 			"Custom": "Custom"
 		},
 		"Requestor": {
-			"Title": "Let me roll that for you: Request Roll",
+			"Title": "Ceus: Request Roll",
 			"Sent": "Request sent to all involved users.",
 			"SelectUsers": {
 				"Title": "Select Users",
