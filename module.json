@@ -6,8 +6,8 @@
 	"version": "0.80",
 	"author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego, VTT Lair, Imper1um",
 	"authors": [{
-		"name": "VTT Lair",
-		"url": "https://github.com/vtt-lair"
+		"name": "Imper1um",
+		"url": "https://github.com/Imper1um"
 	}],
 	"esmodules": [
 		"./src/ceus_Startup.js"
@@ -26,46 +26,6 @@
 			"lang": "en",
 			"name": "English",
 			"path": "lang/en.json"
-		},
-		{
-			"lang": "ja",
-			"name": "日本語 (Japanese)",
-			"path": "lang/ja.json"
-		},
-		{
-			"lang": "de",
-			"name": "German",
-			"path": "lang/de.json"
-		},
-		{
-			"lang": "pt-BR",
-			"name": "Português (Brasil)",
-			"path": "lang/pt-BR.json"
-		},
-		{
-			"lang": "es",
-			"name": "Español",
-			"path": "lang/es.json"
-		},
-		{
-			"lang": "fr",
-			"name": "Français",
-			"path": "lang/fr.json"
-		},
-		{
-			"lang": "cn",
-			"name": "中文",
-			"path": "lang/cn.json"
-		},
-		{
-			"lang": "zh-tw",
-			"name": "正體中文",
-			"path": "lang/zh-tw.json"
-		},
-		{
-			"lang": "it",
-			"name": "Italiana",
-			"path": "lang/it.json"
 		}
 	],
 	"systems": [
@@ -84,9 +44,9 @@
 		]
 	},
 	"socket": true,
-	"url": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy",
-	"manifest": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/latest/download/module.json",
-	"download": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases/download/v3.00/module.zip",
-	"changelog": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/releases",
-	"bugs": "https://github.com/League-of-Foundry-Developers/fvtt-module-lmrtfy/issues"
+	"url": "https://github.com/Imper1um/foundry-ceus/",
+	"manifest": "https://github.com/Imper1um/foundry-ceus/releases/latest/download/module.json",
+	"download": "https://github.com/Imper1um/foundry-ceus/releases/download/v3.00/module.zip",
+	"changelog": "https://github.com/Imper1um/foundry-ceus/releases",
+	"bugs": "https://github.com/Imper1um/foundry-ceus/issues"
 }
