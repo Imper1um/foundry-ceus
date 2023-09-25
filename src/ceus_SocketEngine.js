@@ -1,6 +1,7 @@
 import { Ceus } from "./ceus.js";
 import { CeusRoller } from "./roller.js";
 import { ceus_PlayerRequestWindow } from "./ceus_PlayerRequestWindow.js";
+import { ceus_LogEngine } from "./ceus_LogEngine.js";
 
 export class ceus_SocketEngine {
 	async onReady() {
@@ -12,47 +13,44 @@ export class ceus_SocketEngine {
 		this.onRefactorRequests = [];
 		this.onCompleteRequests = [];
 		this.onCancelRequests = [];
-	}
-	
-	addLegacyWatcher(id, method) {
-		this.onLegacyRequests.push({id, method});
-	}
-	
-	removeLegacyWatcher(id) {
-		this.onLegacyRequests = this.onLegacyRequests.filter(item => item.id !== id);
+		this.log = new ceus_LogEngine("SocketEngine");
 	}
 	
 	addRefactorWatcher(id, method, filterMethod) {
+		this.log.Trace("addRefactorWatcher", id);
 		this.onRefactorRequests.push({id, method, filterMethod});
 	}
 	
 	removeRefactorWatcher(id) {
+		this.log.Trace("removeRefactorWatcher", id);
 		this.onRefactorRequests = this.onRefactorRequests.filter(item => item.id !== id);
 	}
 	
 	addCompleteWatcher(id, method, filterMethod) {
+		this.log.Trace("addCompleteWatcher", id);
 		this.onCompleteRequests.push({id, method, filterMethod});
 	}
 	
 	removeCompleteWatcher(id) {
+		this.log.Trace("removeCompleteWatcher", id);
 		this.onCompleteRequests = this.onCompleteRequests.filter(item => item.id !== id);
 	}
 	
 	addCancelWatcher(id, method, filterMethod) {
+		this.log.Trace("addCancelWatcher", id);
 		this.onCancelRequests.push({id, method, filterMethod});
 	}
 	
 	removeCancelWatcher(id) {
+		this.log.Trace("removeCancelWatcher", id);
 		this.onCancelRequests = this.onCancelRequests.filter(item => item.id !== id);
 	}
 	
 	async onRequest(data) {
+		this.log.Trace("onRequest", data);
 		switch (data.type) {
 			case 'refactor':
 				await Ceus.current.socketEngine.onRefactorRequest(data.request);
-				break;
-			case 'legacy':
-				await Ceus.current.socketEngine.onLegacyRequest(data.request);
 				break;
 			case 'cancel':
 				await Ceus.current.socketEngine.onRequestCancel(data.request);
@@ -62,54 +60,19 @@ export class ceus_SocketEngine {
 				break;
 		}
 	}
-	
-	async onLegacyRequest(data) {
-		console.log("Ceus | onLegacyRequest");
-		console.log(data);
-		if (data.user === "character" &&
-            (!game.user.character || !data.actors.includes(game.user.character.id))) {
-            return;
-        } else if (!["character", "tokens"].includes(data.user) && data.user !== game.user.id) {
-            return;
-        }
-        
-        let actors = [];
-        if (data.user === "character") {
-            actors = [game.user.character];
-        } else if (data.user === "tokens") {
-            actors = canvas.tokens.controlled.map(t => t.actor).filter(a => data.actors.includes(a.id));
-        } else {
-            actors = data.actors.map(aid => this.fromUuid(aid));
-        }
-        actors = actors.filter(a => a);
-        
-        // remove player characters from GM's requests
-        if (game.user.isGM) {
-            actors = actors.filter(a => !a.hasPlayerOwner);
-        }        
-        if (actors.length === 0) return;
-		for (const w of this.onLegacyRequests) {
-			w.method(actors, data);
-		}
-        //new CeusRoller(actors, data).render(true);
-	}
+
 	async onRefactorRequest(data) {
-		console.log("Ceus | onRefactorRequest");
+		this.log.Trace("onRefactorRequest", data);
 		for (const w of this.onRefactorRequests) {
 			if (w.filterMethod && !(await w.filterMethod(data))) {
 				continue;
 			}
 			await w.method(data);
 		}
-		//console.log(data);
-		// const w = new ceus_PlayerRequestWindow(data);
-		// if (w.needsToBeDisplayed) {
-			// w.render(true);
-		// }
 	}
 	
 	async onRequestCancel(data) {
-		console.log("Ceus | onRequestCancel");
+		this.log.Trace("onRequestCancel", data);
 		for (const w of this.onCancelRequests) {
 			if (w.filterMethod && !(await w.filterMethod(data))) {
 				continue;
@@ -118,7 +81,7 @@ export class ceus_SocketEngine {
 		}
 	}
 	async onRequestComplete(data) {
-		console.log("Ceus | onRequestComplete");
+		this.log.Trace("onRequestComplete", data);
 		//console.log(data);
 		for (const w of this.onCompleteRequests) {
 			if (w.filterMethod && !(await w.filterMethod(data))) {
@@ -126,24 +89,22 @@ export class ceus_SocketEngine {
 			}
 			await w.method(data);
 		}
-		// if (!game.user.isGM) { return; }
-		
-		// const resultWindow = game.users.apps.find(a => a.appId === data.request.resultId);
-		// if (!resultWindow) { return; }
-		// await resultWindow.appendResult(data.response);
 	}
 	
 	async pushRefactorRequest(request) {
+		this.log.Trace("pushRefactorRequest", request);
 		await game.socket.emit('module.ceus', {type: 'refactor', request});
 		ui.notifications.info(game.i18n.localize("Ceus.Requestor.Sent"));
 	}
 	async pushCancelResponse(request, userid) {
+		this.log.Trace("pushCancelResponse", {request, userid});
 		await game.socket.emit('module.ceus', {type: 'cancel', request: {
 			userid,
 			request
 		}});
 	}
 	async pushCompleteResponse(request, userid, response) {
+		this.log.Trace("onRefactorRequest", {request,userid,response});
 		await game.socket.emit('module.ceus', {type: 'complete', request: {
 			userid,
 			request,

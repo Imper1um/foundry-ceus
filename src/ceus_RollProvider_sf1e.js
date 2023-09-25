@@ -2,6 +2,7 @@ import { ceus_RefactorRollProvider } from "./ceus_RefactorRollProvider.js";
 import { CeusRoller } from "./roller.js";
 import { Ceus } from "./ceus.js";
 import { ceus_Result } from "./ceus_Result.js";
+import { ceus_LogEngine } from "./ceus_LogEngine.js";
 
 /**
  * RollProvider for Starfinder (1st Edition) (sfrpg)
@@ -20,6 +21,13 @@ import { ceus_Result } from "./ceus_Result.js";
 export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	constructor() {
 		super();
+	}
+	
+	static get log() {
+		if (!ceus_RollProvider_sf1e._log) {
+			ceus_RollProvider_sf1e._log = new ceus_LogEngine("sfrpg");
+		}
+		return ceus_RollProvider_sf1e._log;
 	}
 	
 	/**
@@ -77,6 +85,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 		for (const combat of game.combats) {
 			initiativeContexts.push({"id":combat._id, "name":`${combat.combatants.size} on ${combat.scene.name}`});
 		}
+		ceus_RollProvider_sf1e.log.Trace("getInitiativeContexts", initiativeContexts);
 		return initiativeContexts;
 	}
 	
@@ -113,6 +122,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	}
 	
 	async rollSkill(requestOptions, actor, requestItem) {
+		ceus_RollProvider_sf1e.log.Trace("rollSkill", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const skillRoll = rp.getAvailableRolls().find(r => r.id === "Skills").rolls.find(r => r.id === requestItem.id);
 		const skillId = skillRoll.skillId;
@@ -150,6 +160,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	}
 	
 	async rollSave(requestOptions, actor, requestItem) {
+		ceus_RollProvider_sf1e.log.Trace("rollSave", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const saveRoll = rp.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.id);
 		const completeRoll = await actor.rollSave(saveRoll.saveId, rp.baseRollOptions());
@@ -157,6 +168,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	}
 	
 	async rollAbility(requestOptions, actor, requestItem) {
+		ceus_RollProvider_sf1e.log.Trace("rollAbility", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const abilityRoll = rp.getAvailableRolls().find(r => r.id === "Abilities").rolls.find(r => r.id === requestItem.id);
 		const completeRoll = await actor.rollAbility(abilityRoll.abilityId, rp.baseRollOptions());
@@ -164,6 +176,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	}
 	
 	async rollInitiative(requestOptions, actor, requestItem) {
+		ceus_RollProvider_sf1e.log.Trace("rollInitiative", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const combat = game.combats.get(requestOptions.contextId);
 		if (!combat) { return; }
@@ -200,6 +213,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	}
 	
 	async rollPerception(requestOptions, actor, requestItem) {
+		ceus_RollProvider_sf1e.log.Trace("rollPerception", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const skill = actor.system.skills["per"];
 		const skillId = "per";
@@ -218,6 +232,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	}
 	
 	buildResult(requestOptions, actor, requestItem, roll) {
+		ceus_RollProvider_sf1e.log.Trace("buildResult", {requestOptions, actor, requestItem, roll});
 		let rollType;
 		if (roll.button === "advantage") {
 			rollType = "advantage";

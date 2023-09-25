@@ -4,6 +4,7 @@ import { ceus_ProviderEngine } from "./ceus_ProviderEngine.js";
 import { ceus_SocketEngine } from "./ceus_SocketEngine.js";
 import { ceus_SettingsEngine } from "./ceus_SettingsEngine.js";
 import { ceus_ResultsWindow } from "./ceus_ResultsWindow.js";
+import { ceus_LogEngine } from "./ceus_LogEngine.js";
 import { CeusRequestor } from "./requestor.js";
 
 
@@ -18,6 +19,13 @@ export class Ceus {
 	}
 	
 	static current = new Ceus();
+	static get log() {
+		if (!Ceus._log) {
+			Ceus._log = new ceus_LogEngine("ceus");
+		}
+		return Ceus._log;
+	}
+	
 	
 	async onInit() {
 		this.registerHandlebarsHelpers();
@@ -26,6 +34,7 @@ export class Ceus {
 	}
 	
 	async onChatMessage(app, html, data) {
+		Ceus.log.Trace("onChatMessage", {app, html, data});
 		if (game.user.isGM) { return; }
 		if (html.hasClass("sensitive") && html.hasClass("ceus")) {
 			html.find('.result-total').text('???');
@@ -51,12 +60,12 @@ export class Ceus {
 		await this.providerEngine.onReady();
 		await this.settingsEngine.onReady();
 		await this.socketEngine.onReady();
-
 		
 		this.socketEngine.addRefactorWatcher(0, this.onRefactorRequest);
 	}
 	
 	onRefactorRequest(data) {
+		Ceus.log.Trace("onRefactorRequest", data);
 		const w = new ceus_PlayerRequestWindow(data);
 		if (w.needsToBeDisplayed) {
 			w.render(true);

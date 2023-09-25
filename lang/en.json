@@ -19,6 +19,16 @@
 			"SelectionWarning": "You must select a character to roll for before you can select a roll!",
 			"CloseInfo": "Roll window was closed because other users rolled all of the asked for rolls, or the GM cancelled this roll."
 		},
+		"Setting": {
+			"LogLevel": {
+				"Name": "Log Level",
+				"Hint": "What is the maximum level of content you want to see in the Console Log for this module? Setting this higher will slow down your browser, but it will provide more information to developers to fix issues."
+			},
+			"NotifyLevel": {
+				"Name": "Notify Level",
+				"Hint": "What is the maximum level of notices that you want to see on your notification log for this module? Setting this higher will produce more notifications and slow down your browser."
+			}
+		},
 		"Results": {
 			"Header": "Roll Results",
 			"Actor": "Actor",
@@ -146,5 +156,6 @@
 			"NoRolls": "There are no rolls selected!",
 			"NoActive": "None of the users you have selected are online to receive the request."
 		}
+		
     }
 }
