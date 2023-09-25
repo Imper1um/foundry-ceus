@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
+export class ceus_RollProvider_pf2e extends ceus_RollProvider {
 	systemIdentifiers() {
 		return 'pf2e';
 	}
@@ -22,23 +22,23 @@ export class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
             (actor.synthetics.statisticsModifier[key] || []).forEach((m) => modifiers.push(m.clone()));
         });
         
-        return new game.pf2e.StatisticModifier(`${game.i18n.localize('LMRTFY.AbilityCheck')} ${game.i18n.localize(mod.label)}`, modifiers);
+        return new game.pf2e.StatisticModifier(`${game.i18n.localize('Ceus.AbilityCheck')} ${game.i18n.localize(mod.label)}`, modifiers);
     }
 	
 	handleCustomRoll(actor, event, rollMethod, rolledType, failRoll, dc, ...args) {
 		switch (rolledType) {
-			case LMRTFYRoller.rollTypes().ABILITY:
+			case CeusRoller.rollTypes().ABILITY:
 				const modifier = this.buildAbilityModifier(actor, args[0]);
 				game.pf2e.Check.roll(modifier, { type: 'skill-check', dc: dc, actor }, event);
 				break;
 
-			case LMRTFYRoller.rollTypes().SAVE:
+			case CeusRoller.rollTypes().SAVE:
 				const save = actor.saves[args[0]].check;
 				const saveOptions = actor.getRollOptions(['all', `${save.ability}-based`, 'saving-throw', save.name]);
 				save.roll({ event, saveOptions, dc: dc });
 				break;
 
-			case LMRTFYRoller.rollTypes().SKILL:
+			case CeusRoller.rollTypes().SKILL:
 				// system specific roll handling
 				const skill = actor.system.skills[args[0]];
 				// roll lore skills only for actors who have them ...
@@ -48,7 +48,7 @@ export class lmrtfy_RollProvider_pf2e extends lmrtfy_RollProvider {
 				skill.roll({ event, skillOptions, dc: dc });
 				break;
 
-			case LMRTFYRoller.rollTypes().PERCEPTION:
+			case CeusRoller.rollTypes().PERCEPTION:
 				const precOptions = actor.getRollOptions(['all', 'wis-based', 'perception']);
 				actor.perception.roll({ event, precOptions, dc: dc });
 				break;

@@ -1,6 +1,6 @@
-import { LMRTFY } from "./lmrtfy.js";
+import { Ceus } from "./ceus.js";
 
-export class LMRTFYRequestor extends FormApplication {
+export class CeusRequestor extends FormApplication {
     constructor(...args) {
         super(...args)
         game.users.apps.push(this);
@@ -24,18 +24,18 @@ export class LMRTFYRequestor extends FormApplication {
 
     static get defaultOptions() {
 
-        let template = LMRTFY.currentRollProvider.requestRollTemplate();
+        let template = Ceus.currentRollProvider.requestRollTemplate();
         const options = super.defaultOptions;
-        options.title = game.i18n.localize("LMRTFY.Title");
-        options.id = "lmrtfy";
+        options.title = game.i18n.localize("Ceus.Title");
+        options.id = "ceus";
         options.template = template;
         options.closeOnSubmit = false;
         options.popOut = true;
         options.width = 600;
         options.height = "auto";
-        options.classes = ["lmrtfy", "lmrtfy-requestor"];
-        if (game.settings.get('lmrtfy', 'enableParchmentTheme')) {
-          options.classes.push('lmrtfy-parchment');
+        options.classes = ["ceus", "ceus-requestor"];
+        if (game.settings.get('ceus', 'enableParchmentTheme')) {
+          options.classes.push('ceus-parchment');
         }
         return options;
     }
@@ -45,18 +45,18 @@ export class LMRTFYRequestor extends FormApplication {
         const actors = game.actors.entities || game.actors.contents;
         const users = game.users.entities || game.users.contents;
         // Note: Maybe these work better at a global level, but keeping things simple
-        const abilities = LMRTFY.currentRollProvider.abilities();
-        const saves = LMRTFY.currentRollProvider.saves();
-        const abilityModifiers = LMRTFY.currentRollProvider.abilityModifiers();
+        const abilities = Ceus.currentRollProvider.abilities();
+        const saves = Ceus.currentRollProvider.saves();
+        const abilityModifiers = Ceus.currentRollProvider.abilityModifiers();
 
-        const skills = Object.keys(LMRTFY.currentRollProvider.skills())
+        const skills = Object.keys(Ceus.currentRollProvider.skills())
             .sort((a, b) => {
-                const skillA = (LMRTFY.currentRollProvider.skills()[a]?.label) ? LMRTFY.currentRollProvider.skills()[a].label : LMRTFY.currentRollProvider.skills()[a];
-                const skillB = (LMRTFY.currentRollProvider.skills()[b]?.label) ? LMRTFY.currentRollProvider.skills()[b].label : LMRTFY.currentRollProvider.skills()[b];
+                const skillA = (Ceus.currentRollProvider.skills()[a]?.label) ? Ceus.currentRollProvider.skills()[a].label : Ceus.currentRollProvider.skills()[a];
+                const skillB = (Ceus.currentRollProvider.skills()[b]?.label) ? Ceus.currentRollProvider.skills()[b].label : Ceus.currentRollProvider.skills()[b];
                 game.i18n.localize(skillA).localeCompare(skillB)
             })
             .reduce((acc, skillKey) => {
-                const skill = (LMRTFY.currentRollProvider.skills()[skillKey]?.label) ? LMRTFY.currentRollProvider.skills()[skillKey]?.label : LMRTFY.currentRollProvider.skills()[skillKey];
+                const skill = (Ceus.currentRollProvider.skills()[skillKey]?.label) ? Ceus.currentRollProvider.skills()[skillKey]?.label : Ceus.currentRollProvider.skills()[skillKey];
                 acc[skillKey] = skill;
                 return acc;
             }, {});
@@ -76,9 +76,9 @@ export class LMRTFYRequestor extends FormApplication {
             saves,
             skills,
             tables,
-            specialRolls: LMRTFY.currentRollProvider.specialRolls(),
+            specialRolls: Ceus.currentRollProvider.specialRolls(),
             rollModes: CONFIG.Dice.rollModes,
-            showDC: LMRTFY.currentRollProvider.useDC(),
+            showDC: Ceus.currentRollProvider.useDC(),
             abilityModifiers,
         };
     }
@@ -97,19 +97,19 @@ export class LMRTFYRequestor extends FormApplication {
         this.element.find(".select-all").click((event) => this.setActorSelection(event, true));
         this.element.find(".deselect-all").click((event) => this.setActorSelection(event, false));
         this.element.find("select[name=user]").change(this._onUserChange.bind(this));
-        this.element.find(".lmrtfy-save-roll").click(this._onSubmit.bind(this));
-        this.element.find(".lmrtfy-actor").hover(this._onHoverActor.bind(this));
-        this.element.find(".lmrtfy-dice-tray-button").click(this.diceLeftClick.bind(this));
-        this.element.find(".lmrtfy-dice-tray-button").contextmenu(this.diceRightClick.bind(this));
-        this.element.find(".lmrtfy-bonus-button").click(this.bonusClick.bind(this));
-        this.element.find(".lmrtfy-formula-ability").click(this.modifierClick.bind(this));
-        this.element.find(".lmrtfy-clear-formula").click(this.clearCustomFormula.bind(this));        
+        this.element.find(".ceus-save-roll").click(this._onSubmit.bind(this));
+        this.element.find(".ceus-actor").hover(this._onHoverActor.bind(this));
+        this.element.find(".ceus-dice-tray-button").click(this.diceLeftClick.bind(this));
+        this.element.find(".ceus-dice-tray-button").contextmenu(this.diceRightClick.bind(this));
+        this.element.find(".ceus-bonus-button").click(this.bonusClick.bind(this));
+        this.element.find(".ceus-formula-ability").click(this.modifierClick.bind(this));
+        this.element.find(".ceus-clear-formula").click(this.clearCustomFormula.bind(this));        
         this._onUserChange();
     }
 
     setActorSelection(event, enabled) {
         event.preventDefault();
-        this.element.find(".lmrtfy-actor input").prop("checked", enabled)
+        this.element.find(".ceus-actor input").prop("checked", enabled)
     }
 
     // From _onHoverMacro
@@ -156,12 +156,12 @@ export class LMRTFYRequestor extends FormApplication {
     _onUserChange() {
         const userId = this.element.find("select[name=user]").val();
         const actors = this._getUserActorIds(userId)
-        this.element.find(".lmrtfy-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
+        this.element.find(".ceus-actor").hide().filter((i, e) => actors.includes(e.dataset.id)).show();
 
         if (userId === 'selected') {
-            this.element.find(".lmrtfy-request-roll").hide();
+            this.element.find(".ceus-request-roll").hide();
         } else {
-            this.element.find(".lmrtfy-request-roll").show();
+            this.element.find(".ceus-request-roll").show();
         }
     }
 
@@ -278,14 +278,14 @@ export class LMRTFYRequestor extends FormApplication {
         this.bonusFormula = '';
         this.selectedDice = [];
         this.selectedModifiers = [];
-        this.element.find(".lmrtfy-formula-ability").prop('checked', false);
+        this.element.find(".ceus-formula-ability").prop('checked', false);
 
         this.combineFormula();
     }
 
     async _updateObject(event, formData) {
-        //console.log("LMRTFY submit: ", formData)
-        const saveAsMacro = $(event.currentTarget).hasClass("lmrtfy-save-roll")
+        //console.log("Ceus submit: ", formData)
+        const saveAsMacro = $(event.currentTarget).hasClass("ceus-save-roll")
         const keys = Object.keys(formData)
         const user_actors = this._getUserActorIds(formData.user).map(id => `actor-${id}`);
         const actors = keys.filter(k => k.startsWith("actor-")).reduce((acc, k) => {
@@ -313,7 +313,7 @@ export class LMRTFYRequestor extends FormApplication {
         const { advantage, mode, title, message } = formData;
 
         if (formData.user === 'selected' && !saveAsMacro) {
-            ui.notifications.warn(game.i18n.localize("LMRTFY.SelectedNotification"));
+            ui.notifications.warn(game.i18n.localize("Ceus.SelectedNotification"));
             return;
         }
 
@@ -326,12 +326,12 @@ export class LMRTFYRequestor extends FormApplication {
                 tables?.length === 0
             )
         ) {
-            ui.notifications.warn(game.i18n.localize("LMRTFY.NothingNotification"));
+            ui.notifications.warn(game.i18n.localize("Ceus.NothingNotification"));
             return;
         }
 
         let dc = undefined;
-		if (LMRTFY.currentRollProvider.useDC() && Number.isInteger(parseInt(formData.dc))) {
+		if (Ceus.currentRollProvider.useDC() && Number.isInteger(parseInt(formData.dc))) {
 			dc = {
 				value: parseInt(formData.dc),
 				visibility: formData.visibility
@@ -354,7 +354,7 @@ export class LMRTFYRequestor extends FormApplication {
             perception: formData['extra-perception'],
             tables: tables,
             chooseOne: formData['choose-one'],
-            canFailChecks: LMRTFY.currentRollProvider.canFailChecks(),
+            canFailChecks: Ceus.currentRollProvider.canFailChecks(),
         }
         if (game.system.id === 'pf2e' && dc) {
             socketData['dc'] = dc;
@@ -366,7 +366,7 @@ export class LMRTFYRequestor extends FormApplication {
                 selectedSection = `// Handle selected user\n` +
                     `if (data.user === "selected") {\n` +
                     `    if (!canvas.tokens?.controlled?.length) {\n` +
-                    `      ui.notifications.warn(game.i18n.localize("LMRTFY.NoSelectedToken"));\n` +
+                    `      ui.notifications.warn(game.i18n.localize("Ceus.NoSelectedToken"));\n` +
                     `      return;\n` +
                     `    }\n\n` +
                     `    data.actors = canvas.tokens.controlled.map(t => t.actor.id);\n` +
@@ -379,14 +379,14 @@ export class LMRTFYRequestor extends FormApplication {
             const target = user ? user.name : actorTargets;
             const scriptContent = `// ${title} ${message ? " -- " + message : ""}\n` +
                 `// Request rolls from ${target}\n` +
-                `// Abilities: ${abilities.map(a => LMRTFY.currentRollProvider.abilities()[a]).filter(s => s).join(", ")}\n` +
-                `// Saves: ${saves.map(a => LMRTFY.currentRollProvider.saves()[a]).filter(s => s).join(", ")}\n` +
-                `// Skills: ${skills.map(s => LMRTFY.currentRollProvider.skills()[s]).filter(s => s).join(", ")}\n` +
+                `// Abilities: ${abilities.map(a => Ceus.currentRollProvider.abilities()[a]).filter(s => s).join(", ")}\n` +
+                `// Saves: ${saves.map(a => Ceus.currentRollProvider.saves()[a]).filter(s => s).join(", ")}\n` +
+                `// Skills: ${skills.map(s => Ceus.currentRollProvider.skills()[s]).filter(s => s).join(", ")}\n` +
                 `const data = ${JSON.stringify(socketData, null, 2)};\n\n` +
                 `${selectedSection}` +
-                `game.socket.emit('module.lmrtfy', data);\n`;
+                `game.socket.emit('module.ceus', data);\n`;
             const macro = await Macro.create({
-                name: "LMRTFY: " + (message || title),
+                name: "Ceus: " + (message || title),
                 type: "script",
                 scope: "global",
                 command: scriptContent,
@@ -394,10 +394,10 @@ export class LMRTFYRequestor extends FormApplication {
             });
             macro.sheet.render(true);
         } else {
-            game.socket.emit('module.lmrtfy', socketData);
+            game.socket.emit('module.ceus', socketData);
             // Send to ourselves
-            LMRTFY.onMessage(socketData);
-            ui.notifications.info(game.i18n.localize("LMRTFY.SentNotification"))
+            Ceus.onMessage(socketData);
+            ui.notifications.info(game.i18n.localize("Ceus.SentNotification"))
         }
     }
 }

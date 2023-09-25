@@ -1,4 +1,4 @@
-export class lmrtfy_RequestItem {
+export class ceus_RequestItem {
 	constructor(rollId, trainedOption = null, dc = null, customBonus = null, advantageDisadvantage = "allow-all", canCritSuccess = false, canCritFail = false) {
 		this.rollId = rollId;
 		this.customBonus = customBonus;
@@ -10,6 +10,6 @@ export class lmrtfy_RequestItem {
 	}
 	
 	shrink() {
-		return new lmrtfy_RequestItem(this.rollId, this.trainedOption, this.dc, this.customBonus, this.advantageDisadvantage, this.canCritSuccess, this.canCritFail);
+		return new ceus_RequestItem(this.rollId, this.trainedOption, this.dc, this.customBonus, this.advantageDisadvantage, this.canCritSuccess, this.canCritFail);
 	}
 }

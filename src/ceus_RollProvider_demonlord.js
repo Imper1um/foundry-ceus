@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_demonlord extends lmrtfy_RollProvider {
+export class ceus_RollProvider_demonlord extends ceus_RollProvider {
 	systemIdentifiers() {
 		return 'demonlord';
 	}

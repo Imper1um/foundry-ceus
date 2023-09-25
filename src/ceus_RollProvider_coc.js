@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider_cof } from "./lmrtfy_RollProvider_cof.js";
+import { ceus_RollProvider_cof } from "./ceus_RollProvider_cof.js";
 
-export class lmrtfy_RollProvider_coc extends lmrtfy_RollProvider_cof {
+export class ceus_RollProvider_coc extends ceus_RollProvider_cof {
 	systemIdentifiers() {
 		return 'coc';
 	}

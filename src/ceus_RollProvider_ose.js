@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_ose extends lmrtfy_RollProvider {
+export class ceus_RollProvider_ose extends ceus_RollProvider {
 	/**
 	 * The system identifier for this specific RollProvider.
 	 *
@@ -24,7 +24,7 @@ export class lmrtfy_RollProvider_ose extends lmrtfy_RollProvider {
 	}
 
 	canFailChecks() {
-		return game.settings.get('lmrtfy', 'showFailButtons');
+		return game.settings.get('ceus', 'showFailButtons');
 	}
 	
 	modIdentifier() {

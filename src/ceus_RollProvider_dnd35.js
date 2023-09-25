@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_dnd35 extends lmrtfy_RollProvider {
+export class ceus_RollProvider_dnd35 extends ceus_RollProvider {
 	systemIdentifiers() {
 		return 'D35E';
 	}
@@ -18,15 +18,15 @@ export class lmrtfy_RollProvider_dnd35 extends lmrtfy_RollProvider {
 	}
 
 	advantageRollEvent() {
-		return new lmrtfy_RollEvent(false, true, false);
+		return new ceus_RollEvent(false, true, false);
 	}
 
 	disadvantageRollEvent() {
-		return new lmrtfy_RollEvent(false, false, true);
+		return new ceus_RollEvent(false, false, true);
 	}
 
 	normalRollEvent() {
-		return new lmrtfy_RollEvent(false, false, false);
+		return new ceus_RollEvent(false, false, false);
 	}
 
 	saveRollMethod() {

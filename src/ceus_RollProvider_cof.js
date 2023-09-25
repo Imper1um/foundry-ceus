@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_cof extends lmrtfy_RollProvider {
+export class ceus_RollProvider_cof extends ceus_RollProvider {
 	systemIdentifiers() {
 		return 'cof';
 	}
@@ -19,15 +19,15 @@ export class lmrtfy_RollProvider_cof extends lmrtfy_RollProvider {
 	}
 
 	advantageRollEvent() {
-		return new lmrtfy_RollEvent( false, false, false );
+		return new ceus_RollEvent( false, false, false );
 	}
 
 	disadvantageRollEvent() {
-		return new lmrtfy_RollEvent( false, false, false );
+		return new ceus_RollEvent( false, false, false );
 	}
 
 	normalRollEvent() {
-		return new lmrtfy_RollEvent( false, false, false );
+		return new ceus_RollEvent( false, false, false );
 	}
 
 	saveRollMethod() {

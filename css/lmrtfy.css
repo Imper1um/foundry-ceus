@@ -1,64 +1,64 @@
-.lmrtfy.lmrtfy-parchment .window-content {
+.ceus.ceus-parchment .window-content {
 	background: url(../images/parchment.jpg);
 	padding: 5px;
 }
 
 /* request-rolls.html */
-.lmrtfy .lmrtfy-actor-avatars input[type=checkbox] {
+.ceus .ceus-actor-avatars input[type=checkbox] {
 	display:none;
 }
-.lmrtfy.lmrtfy-parchment input[type=checkbox] {
+.ceus.ceus-parchment input[type=checkbox] {
 	display:none;
 }
-.lmrtfy.lmrtfy-parchment select,
-.lmrtfy.lmrtfy-parchment input[type=text] {
+.ceus.ceus-parchment select,
+.ceus.ceus-parchment input[type=text] {
 	background-color: rgba(220, 200, 160, 0.5);
 }
 
-.lmrtfy input[type=checkbox] + label {
+.ceus input[type=checkbox] + label {
 	flex: 1;
 }
-.lmrtfy.lmrtfy-parchment input[type=checkbox] + label {
+.ceus.ceus-parchment input[type=checkbox] + label {
 	margin: 3px;
 }
-.lmrtfy.lmrtfy-parchment input[type=checkbox]:checked + label {
+.ceus.ceus-parchment input[type=checkbox]:checked + label {
 	margin: 2px;
 	color: red;
 	font-weight: bold;
 }
 
-.lmrtfy-actor-avatars {
+.ceus-actor-avatars {
 	justify-content: center;
 }
-.lmrtfy-actor-avatars > div {
+.ceus-actor-avatars > div {
 	position: relative;
 	flex: 0 0 45px;
 }
-.lmrtfy-actor-avatars img {
+.ceus-actor-avatars img {
 	width: 45px;
 	height: 45px;
 	transition-duration: 0.2s;
 	transform-origin: 50% 50%;
 }
-.lmrtfy-actor-avatars input:checked + label img {
+.ceus-actor-avatars input:checked + label img {
 	transform: scale(0.9);
 	box-shadow: 0 0 5px #ff0000;
 }
 
-form .form-group .lmrtfy-ability-checks,
-form .form-group .lmrtfy-saving-throws,
-form .form-group .lmrtfy-extras {
+form .form-group .ceus-ability-checks,
+form .form-group .ceus-saving-throws,
+form .form-group .ceus-extras {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
-.lmrtfy-parchment form .form-group .lmrtfy-ability-checks,
-.lmrtfy-parchment form .form-group .lmrtfy-saving-throws,
-.lmrtfy-parchment form .form-group .lmrtfy-extras {
+.ceus-parchment form .form-group .ceus-ability-checks,
+.ceus-parchment form .form-group .ceus-saving-throws,
+.ceus-parchment form .form-group .ceus-extras {
 	flex-wrap: nowrap;
 }
 
-form .form-group .lmrtfy-skill-checks {
+form .form-group .ceus-skill-checks {
 	display: flex;
 	flex-wrap: wrap;
 	flex-direction: column;
@@ -66,29 +66,29 @@ form .form-group .lmrtfy-skill-checks {
 	max-height: 220px;
 	flex: 8;
 }
-.lmrtfy-parchment form .form-group .lmrtfy-skill-checks {
+.ceus-parchment form .form-group .ceus-skill-checks {
 	max-height: 200px;
 }
 
-.lmrtfy-ability-checks > div,
-.lmrtfy-saving-throws > div,
-.lmrtfy-skill-checks > div ,
-.lmrtfy-extras > div {
+.ceus-ability-checks > div,
+.ceus-saving-throws > div,
+.ceus-skill-checks > div ,
+.ceus-extras > div {
 	flex: 3;
 	padding: 4px;
 	display: flex;
 }
 
-.lmrtfy-submit {
+.ceus-submit {
 		text-align: center;
 }
-.lmrtfy-request-roll,
-.lmrtfy-save-roll {
+.ceus-request-roll,
+.ceus-save-roll {
 	text-align: center;
 }
 
-.lmrtfy-parchment .lmrtfy-request-roll,
-.lmrtfy-parchment .lmrtfy-save-roll {
+.ceus-parchment .ceus-request-roll,
+.ceus-parchment .ceus-save-roll {
 	background: url(../images/button.png);
 	background-repeat: no-repeat ;
 	background-size: 100% 100%;
@@ -99,62 +99,62 @@ form .form-group .lmrtfy-skill-checks {
 .deselect-all {
 	flex: 1;
 }
-.lmrtfy-parchment .select-all,
-.lmrtfy-parchment .deselect-all {
+.ceus-parchment .select-all,
+.ceus-parchment .deselect-all {
 	background-color: rgba(220, 200, 160, 0.75);
 	border-radius: 10px;
 }
 
 
 /* Roller.html */
-.lmrtfy-avatar {
+.ceus-avatar {
 	text-align: center;
 	margin: 2px;
 }
-.lmrtfy-avatar img {
+.ceus-avatar img {
 	width: 64px;
 	height: 64px;
 }
 
-.lmrtfy-actor-list {
+.ceus-actor-list {
 	justify-content: center;
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
-.lmrtfy-actor-list > div {
+.ceus-actor-list > div {
 	flex: 0 0 64px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
-.lmrtfy-ability-check,
-.lmrtfy-ability-check-fail,
-.lmrtfy-ability-save,
-.lmrtfy-ability-save-fail,
-.lmrtfy-skill-check,
-.lmrtfy-skill-check-fail,
-.lmrtfy-custom-formula,
-.lmrtfy-initiative,
-.lmrtfy-death-save,
-.lmrtfy-perception,
-.lmrtfy-roll-table {
+.ceus-ability-check,
+.ceus-ability-check-fail,
+.ceus-ability-save,
+.ceus-ability-save-fail,
+.ceus-skill-check,
+.ceus-skill-check-fail,
+.ceus-custom-formula,
+.ceus-initiative,
+.ceus-death-save,
+.ceus-perception,
+.ceus-roll-table {
 	height: 48px;
 	text-align: center;
 	margin-top: 4px;
 }
-.lmrtfy-parchment .lmrtfy-ability-check,
-.lmrtfy-parchment .lmrtfy-ability-check-fail,
-.lmrtfy-parchment .lmrtfy-ability-save,
-.lmrtfy-parchment .lmrtfy-ability-save-fail,
-.lmrtfy-parchment .lmrtfy-skill-check,
-.lmrtfy-parchment .lmrtfy-skill-check-fail,
-.lmrtfy-parchment .lmrtfy-custom-formula,
-.lmrtfy-parchment .lmrtfy-initiative,
-.lmrtfy-parchment .lmrtfy-death-save,
-.lmrtfy-parchment .lmrtfy-perception,
-.lmrtfy-parchment .lmrtfy-roll-table {
+.ceus-parchment .ceus-ability-check,
+.ceus-parchment .ceus-ability-check-fail,
+.ceus-parchment .ceus-ability-save,
+.ceus-parchment .ceus-ability-save-fail,
+.ceus-parchment .ceus-skill-check,
+.ceus-parchment .ceus-skill-check-fail,
+.ceus-parchment .ceus-custom-formula,
+.ceus-parchment .ceus-initiative,
+.ceus-parchment .ceus-death-save,
+.ceus-parchment .ceus-perception,
+.ceus-parchment .ceus-roll-table {
 	background: url(../images/button.png);
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -162,20 +162,20 @@ form .form-group .lmrtfy-skill-checks {
 	height: 78px;
 }
 
-.enable-lmrtfy-ability-check-fail,
-.enable-lmrtfy-ability-save-fail,
-.enable-lmrtfy-skill-check-fail {
+.enable-ceus-ability-check-fail,
+.enable-ceus-ability-save-fail,
+.enable-ceus-skill-check-fail {
     width: 10%;
     position: absolute !important;
     margin-top: -57px !important;
     right: 27px;    
 }
 
-.lmrtfy-roller button:disabled {
+.ceus-roller button:disabled {
 	opacity: 0.5;
 }
 
-.lmrtfy-actor .tooltip {
+.ceus-actor .tooltip {
 	display: block;
 	min-width: 148px;
 	height: 26px;
@@ -193,13 +193,13 @@ form .form-group .lmrtfy-skill-checks {
 	word-break: break-all;
 }
 
-.lmrtfy-dice-tray-buttons {
+.ceus-dice-tray-buttons {
     width: 75%;
     padding-left: 207px;
     margin-left: 95px;
 }
 
-.lmrtfy-dice-tray-button {
+.ceus-dice-tray-button {
     background: transparent;
     border: 1px solid #000;
     display: -webkit-box;
@@ -229,67 +229,67 @@ form .form-group .lmrtfy-skill-checks {
     cursor: pointer;
 }
 
-.lmrtfy-bonus-button  {
+.ceus-bonus-button  {
     color: #000 !important;
 }
 
-.lmrtfy-dice-tray-button:hover {
+.ceus-dice-tray-button:hover {
     color: red;
     border-color: red;
     box-shadow: 0 0 6px inset #ff6400;
 }
 
-.lmrtfy-dice-tray-checks {
+.ceus-dice-tray-checks {
     padding-left: 207px;
 }
 
-.lmrtfy-bonus-button:hover {
+.ceus-bonus-button:hover {
     color: black !important;
 }
 
-.lmrtfy-dice-svg-normal {
+.ceus-dice-svg-normal {
     height: 35px;
 }
 
-.lmrtfy-dice-svg-smaller {
+.ceus-dice-svg-smaller {
     padding: 3px;
 }
 
-.lmrtfy-dice-row-flexrow {
+.ceus-dice-row-flexrow {
     flex-wrap: nowrap;
 }
 
-.lmrtfy-dice-tray-details {
+.ceus-dice-tray-details {
     padding-top: 7px;
     margin-left: -219px;
 }
 
-.lmrtfy-dice-tray-expander {
+.ceus-dice-tray-expander {
     padding-left: 220px;
 }
 
-.lmrtfy-clear-button-area {
+.ceus-clear-button-area {
     padding-left: 214px;
 }
 
-.d35ecustom .lmrtfy {
+.d35ecustom .ceus {
 	border: 8px solid #55493B;
     border-image: url(/systems/D35E/icons/ui/dialog-frame.png) 30 round;
     background: url(/systems/D35E/icons/ui/sidebar-bg.png);
 	border-radius: 0;
 }
 
-.d35ecustom .lmrtfy .window-content {
+.d35ecustom .ceus .window-content {
 	color: white;
 	background: none;
 }
 
-.d35ecustom .lmrtfy .select-all, .d35ecustom .lmrtfy .deselect-all {
+.d35ecustom .ceus .select-all, .d35ecustom .ceus .deselect-all {
 	border-radius: 0;
 	cursor: pointer;
 }
 
-.d35ecustom .lmrtfy input[type="text"], .d35ecustom .lmrtfy input[type="number"], .d35ecustom .lmrtfy input[type="password"], .d35ecustom .lmrtfy input[type="date"], .d35ecustom .lmrtfy input[type="time"] {
+.d35ecustom .ceus input[type="text"], .d35ecustom .ceus input[type="number"], .d35ecustom .ceus input[type="password"], .d35ecustom .ceus input[type="date"], .d35ecustom .ceus input[type="time"] {
 	color: white !important;
     width: calc(100% - 2px);
     min-width: 20px;
@@ -310,7 +310,7 @@ form .form-group .lmrtfy-skill-checks {
 	user-select: text;
 }
 
-.d35ecustom .lmrtfy select {
+.d35ecustom .ceus select {
 	color: white !important;
 	height: 27px;
     background-color: rgba(0, 0, 0, 0.05) !important;
@@ -320,14 +320,14 @@ form .form-group .lmrtfy-skill-checks {
     text-overflow: ellipsis;
 }
 
-.d35ecustom .lmrtfy .lmrtfy-request-roll, 
-.d35ecustom .lmrtfy .lmrtfy-ability-check, 
-.d35ecustom .lmrtfy .lmrtfy-skill-check, 
-.d35ecustom .lmrtfy .lmrtfy-ability-save, 
-.d35ecustom .lmrtfy .lmrtfy-initiative, 
-.d35ecustom .lmrtfy .lmrtfy-perception, 
-.d35ecustom .lmrtfy .lmrtfy-save-roll,
-.d35ecustom .lmrtfy .lmrtfy-roll-table  {
+.d35ecustom .ceus .ceus-request-roll, 
+.d35ecustom .ceus .ceus-ability-check, 
+.d35ecustom .ceus .ceus-skill-check, 
+.d35ecustom .ceus .ceus-ability-save, 
+.d35ecustom .ceus .ceus-initiative, 
+.d35ecustom .ceus .ceus-perception, 
+.d35ecustom .ceus .ceus-save-roll,
+.d35ecustom .ceus .ceus-roll-table  {
 	background: none !important;
     border-image: url(/systems/D35E/icons/ui/long-button.png);
     background-size: 100% 100%;
@@ -338,7 +338,7 @@ form .form-group .lmrtfy-skill-checks {
 	cursor: pointer;
 }
 
-.d35ecustom .lmrtfy .form-group:not(.lmrtfy-actor-avatars) input[type=checkbox] + label {
+.d35ecustom .ceus .form-group:not(.ceus-actor-avatars) input[type=checkbox] + label {
     margin: 2px;
     color: white;
     background: none !important;
@@ -351,7 +351,7 @@ form .form-group .lmrtfy-skill-checks {
 	text-align: center;
 }
 
-.d35ecustom .lmrtfy .form-group:not(.lmrtfy-actor-avatars) input[type=checkbox]:checked + label {
+.d35ecustom .ceus .form-group:not(.ceus-actor-avatars) input[type=checkbox]:checked + label {
     margin: 2px;
     color: white;
     background: none !important;
@@ -365,25 +365,25 @@ form .form-group .lmrtfy-skill-checks {
 	border-radius: 2px;
 }
 
-.d35ecustom form .form-group .lmrtfy-ability-checks {
+.d35ecustom form .form-group .ceus-ability-checks {
 	flex-wrap: wrap;
 }
 
-.d35ecustom form .form-group .lmrtfy-extras div {
+.d35ecustom form .form-group .ceus-extras div {
     padding: 0px;
 }
-.d35ecustom form .form-group .lmrtfy-saving-throws .lmrtfy-ability {
+.d35ecustom form .form-group .ceus-saving-throws .ceus-ability {
     padding: 0px;
 }
 
-.d35ecustom form .form-group .lmrtfy-roll-table-list {
+.d35ecustom form .form-group .ceus-roll-table-list {
     min-height: 89px;
 }
 
-.d35ecustom form .form-group .lmrtfy-ability-checks .lmrtfy-ability {
+.d35ecustom form .form-group .ceus-ability-checks .ceus-ability {
     padding: 0px;
 }
-.d35ecustom .lmrtfy-skill-checks .lmrtfy-skill {
+.d35ecustom .ceus-skill-checks .ceus-skill {
 	flex: 3;
     padding: 0px;
     display: flex;
@@ -393,7 +393,7 @@ form .form-group .lmrtfy-skill-checks {
     width: 147px;
 }
 
-.d35ecustom .lmrtfy .lmrtfy-skill-checks input[type=checkbox] + label {
+.d35ecustom .ceus .ceus-skill-checks input[type=checkbox] + label {
     max-width: 147px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -401,15 +401,15 @@ form .form-group .lmrtfy-skill-checks {
 	overflow: hidden;
 }
 
-.system-D35E form .form-group .lmrtfy-skill-checks {
+.system-D35E form .form-group .ceus-skill-checks {
 	max-height: 600px;
 }
 
-.d35ecustom .lmrtfy fieldset {
+.d35ecustom .ceus fieldset {
 	border: none;
 }
 
-.system-pf1 form .form-group .lmrtfy-skill-checks {
+.system-pf1 form .form-group .ceus-skill-checks {
 	max-height: 600px;
 }
 
@@ -425,18 +425,18 @@ form .form-group .lmrtfy-skill-checks {
 }
 
 /* Refactor */
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .form-group.user-select {
+.ceus-requestor.ceus-refactor fieldset.select-users .form-group.user-select {
     display: inline-block;
     border: solid black 1px;
     border-radius: 10px;
 	width: 100%;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .form-group label {
+.ceus-requestor.ceus-refactor fieldset.select-users .form-group label {
 	line-height: 0.5em;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user {
+.ceus-requestor.ceus-refactor fieldset.select-users .user {
     border: solid 1px;
     margin: 5px;
     text-align: center;
@@ -445,37 +445,37 @@ form .form-group .lmrtfy-skill-checks {
 	display: inline-block;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user.inactive {
+.ceus-requestor.ceus-refactor fieldset.select-users .user.inactive {
 	opacity: 0.8;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user.selected {
+.ceus-requestor.ceus-refactor fieldset.select-users .user.selected {
 	border-radius: 10px;
 	border-width: 2.5px;
 	border-color: #CFC;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user.selected .name {
+.ceus-requestor.ceus-refactor fieldset.select-users .user.selected .name {
 	font-weight: bold;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user i {
+.ceus-requestor.ceus-refactor fieldset.select-users .user i {
     font-size: 2.5em;
 }
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .name {
+.ceus-requestor.ceus-refactor fieldset.select-users .user .name {
     font-size: 0.7em;
     width: 100%;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .user-image {
+.ceus-requestor.ceus-refactor fieldset.select-users .user .user-image {
 	width: 100%;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .user-image img {
+.ceus-requestor.ceus-refactor fieldset.select-users .user .user-image img {
 	height: 50px;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user .active {
+.ceus-requestor.ceus-refactor fieldset.select-users .user .active {
 	font-size: 0.6em;
 	border-radius: 10px;
 	padding: 2px;
@@ -484,37 +484,37 @@ form .form-group .lmrtfy-skill-checks {
 	margin-right: 2px;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor .select-buttons .button-intro {
+.ceus-requestor.ceus-refactor .select-buttons .button-intro {
 	flex: 2;
 	text-align: right; 
 	padding-right: 8px;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor .button-separator {
+.ceus-requestor.ceus-refactor .button-separator {
 	flex: 1px;
 	border: solid 1px black;
 	margin-left: 10px;
 	margin-right: 10px;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user:hover {
+.ceus-requestor.ceus-refactor fieldset.select-users .user:hover {
     border-color: #617a8f;
     cursor: pointer;
 	color: #617a8f;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user i,
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user img,
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-users .user span {
+.ceus-requestor.ceus-refactor fieldset.select-users .user i,
+.ceus-requestor.ceus-refactor fieldset.select-users .user img,
+.ceus-requestor.ceus-refactor fieldset.select-users .user span {
     cursor:pointer;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor .form-group.actor-select {
+.ceus-requestor.ceus-refactor .form-group.actor-select {
     display: inline-block;
     width: 100%;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor {
     width: 30px;
     height: 68px;
     margin: 5px;
@@ -523,118 +523,118 @@ form .form-group .lmrtfy-skill-checks {
     margin-bottom: -10px;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.invisible {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.invisible {
 	display: none;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor:hover {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor:hover {
     background-color: #CFC;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor:hover .name {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor:hover .name {
     color: #000;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor label { 
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor label { 
     line-height: 0.6em;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor-image {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor-image {
     width: 30px;
     height: 30px;
     overflow: clip;
     margin-top: -15px;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.selected .name {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.selected .name {
     font-weight: bold;
 }
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.selected img {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.selected img {
     border-radius: 5px;
     border-width: 2px;
     border-color: #CFC;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor-info {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor-info {
     height: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .name {
+.ceus-requestor.ceus-refactor fieldset.select-actors .name {
     font-size: 0.6em;
     text-overflow: ellipsis;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.friendly .actor-image {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.friendly .actor-image {
     border-top: solid 2px #0F0;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.enemy .actor-image {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.enemy .actor-image {
     border-top: solid 2px #F00;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.neutral .actor-image {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.neutral .actor-image {
     border-top: solid 2px #FF0;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor fieldset.select-actors .actor.secret .actor-image {
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.secret .actor-image {
     border-top: solid 2px #F0F;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor .select-rolls-buttons {
+.ceus-requestor.ceus-refactor .select-rolls-buttons {
     display: flex;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor .select-rolls-buttons button {
+.ceus-requestor.ceus-refactor .select-rolls-buttons button {
     margin: 5px;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor .selector-roll option.category {
+.ceus-requestor.ceus-refactor .selector-roll option.category {
   background: rgba(255,255,0,1) !important;
     color: #000;
 }
 
-.lmrtfy-requestor.lmrtfy-refactor .select-rolls .context.invisible {
+.ceus-requestor.ceus-refactor .select-rolls .context.invisible {
 	display: none;
 }
 
-.lmrtfy-results-header {
+.ceus-results-header {
     text-align: center;
     font-weight: bold;
     font-size: 1.5em;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list-item.rolled {
+.ceus-refactor .ceus-results-list-item.rolled {
     border-radius: 5px;
     border-width: 2px;
     border-style: solid;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list-item.rolled.pass {
+.ceus-refactor .ceus-results-list-item.rolled.pass {
     border-color: #AFA;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list-item.rolled.fail {
+.ceus-refactor .ceus-results-list-item.rolled.fail {
     border-color: #FAA;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list-item .total,
-.lmrtfy-refactor .lmrtfy-results-list-item .success {
+.ceus-refactor .ceus-results-list-item .total,
+.ceus-refactor .ceus-results-list-item .success {
     text-align: center;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list-item .total {
+.ceus-refactor .ceus-results-list-item .total {
 	font-size: 1.5em;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list-item .success {
+.ceus-refactor .ceus-results-list-item .success {
     font-size: 3em;
 }
 
-.lmrtfy-refactor .lmrtfy-results-roll .users .users-header,
-.lmrtfy-refactor .lmrtfy-results-roll .actors .actors-header,
-.lmrtfy-refactor .lmrtfy-results-roll .rolls .rolls-header {
+.ceus-refactor .ceus-results-roll .users .users-header,
+.ceus-refactor .ceus-results-roll .actors .actors-header,
+.ceus-refactor .ceus-results-roll .rolls .rolls-header {
     font-weight: bold;
     display: inline-block;
     width: 200px;
@@ -642,66 +642,66 @@ form .form-group .lmrtfy-skill-checks {
     margin-right: 10px;
 }
 
-.lmrtfy-refactor .lmrtfy-results-pending .actor-image img {
+.ceus-refactor .ceus-results-pending .actor-image img {
 	max-height: 100px;
 	max-width: 100px;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list .lmrtfy-results-list-item td {
+.ceus-refactor .ceus-results-list .ceus-results-list-item td {
     padding: 5px;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list .lmrtfy-results-list-item .actor .actor-image {
+.ceus-refactor .ceus-results-list .ceus-results-list-item .actor .actor-image {
     width: 100px;
 }
 
-.lmrtfy-refactor .lmrtfy-results-list .lmrtfy-results-list-item .actor .actor-image img {
+.ceus-refactor .ceus-results-list .ceus-results-list-item .actor .actor-image img {
     height: 100px;
 }
 
 
 /* Player Refactor Screen */
-.lmrtfy-request-player .actor-check-img,
-.lmrtfy-request-player .actor-check-name {
+.ceus-request-player .actor-check-img,
+.ceus-request-player .actor-check-name {
 	text-align: center;
 }
 
-.lmrtfy-request-player .actor-check-img img {
+.ceus-request-player .actor-check-img img {
 	max-height: 100px;
 	max-width: 100px;
 }
 
-.lmrtfy-request-player .actor-check-img img {
+.ceus-request-player .actor-check-img img {
 	max-height: 60px;
 }
 
-.lmrtfy-request-player .actor-selection-warning {
+.ceus-request-player .actor-selection-warning {
 	color: #F00;
 	font-weight: bold;
 	text-align: center;
 	margin: 5px;
 }
 
-.lmrtfy-request-player .actor.selected {
+.ceus-request-player .actor.selected {
 	border: solid 2px #FFF;
 	background-color: #AFA;
 }
 
-.lmrtfy-request-player .actor.selected .actor-check-name {
+.ceus-request-player .actor.selected .actor-check-name {
 	color: #000;
 }
 
-.lmrtfy-request-player .actor.done {
+.ceus-request-player .actor.done {
 	background-color: #AFA;
 	pointer-events: none;
 }
 
-.lmrtfy-request-player .check-button.done {
+.ceus-request-player .check-button.done {
 	pointer-events: none;
 	background-color: #AFA;
 }
 
-.lmrtfy.lmrtfy-result header {
+.ceus.ceus-result header {
     border: solid 1px #FFF;
     border-radius: 20px;
     text-align: center;
@@ -711,7 +711,7 @@ form .form-group .lmrtfy-skill-checks {
     font-weight: bold;
 }
 
-.lmrtfy.lmrtfy-result .result-body .result-total {
+.ceus.ceus-result .result-body .result-total {
     border: solid 1px #FFF;
     border-radius: 20px;
     text-align: center;
@@ -720,22 +720,26 @@ form .form-group .lmrtfy-skill-checks {
     font-size: 1.2em;
 }
 
-.lmrtfy.lmrtfy-result.sensitive {
+.ceus.ceus-result.sensitive {
 	background-color: rgba(70,70,70,0.3);
 }
 
-.lmrtfy.lmrtfy-result.fail .result-total {
+.ceus.ceus-result.fail .result-total {
 	border-color: #F00;
 }
 
-.lmrtfy.lmrtfy-result.pass .result-total {
+.ceus.ceus-result.pass .result-total {
 	border-color: #0F0;
 }
 
-.lmrtfy.lmrtfy-result.crit-success .result-total {
+.ceus.ceus-result.crit-success .result-total {
 	color: #0F0;
 }
 
-.lmrtfy.lmrtfy-result.crit-fail .result-total {
+.ceus.ceus-result.crit-fail .result-total {
 	color: #F00;
+}
+
+.ceus-gm-actions {
+    display: flex;
 }

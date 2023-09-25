@@ -1,30 +1,30 @@
-import { lmrtfy_RollEvent } from "./lmrtfy_RollEvent.js";
+import { ceus_RollEvent } from "./ceus_RollEvent.js";
 
 /** 
  * Old Roll Provider.
  *
  * This is provided for backwards compatibility.
  * 
- * @deprecated with the new lmrtfy_RefactorRollProvider . Do not use this with new systems. If you can, try translating a RollProvider to a RefactorRollProvider. 
+ * @deprecated with the new ceus_RefactorRollProvider . Do not use this with new systems. If you can, try translating a RollProvider to a RefactorRollProvider. 
  */
-export class lmrtfy_RollProvider {
+export class ceus_RollProvider {
 	constructor() {
 	}
 	
 	async onReady() {
-		this.failCheck = game.settings.get('lmrtfy', 'showFailButtons');
+		this.failCheck = game.settings.get('ceus', 'showFailButtons');
 		this.overrideFailCheck = false;
 	}
 	
 	getSettings() {
 		return [{
 				id: "showFailButtons",
-				name: game.i18n.localize("LMRTFY.Setting.ShowFailButtons.Name"),
-				hint: game.i18n.localize("LMRTFY.Setting.ShowFailButtons.Hint"),
+				name: game.i18n.localize("Ceus.Setting.ShowFailButtons.Name"),
+				hint: game.i18n.localize("Ceus.Setting.ShowFailButtons.Hint"),
 				scope: 'world',
-				config: LMRTFY.current.providerEngine.currentRollProvider.allowFailButtons(),
+				config: Ceus.current.providerEngine.currentRollProvider.allowFailButtons(),
 				type: Boolean,
-				default: LMRTFY.current.providerEngine.currentRollProvider.failButtonsDefault(),
+				default: Ceus.current.providerEngine.currentRollProvider.failButtonsDefault(),
 				onChange: () => window.location.reload()
 			}];
 	}
@@ -79,12 +79,12 @@ export class lmrtfy_RollProvider {
 	}
 
 	/**
-	 * lmrtfy_RollEvent that is checked for special keys if a specific roll event is run.
+	 * ceus_RollEvent that is checked for special keys if a specific roll event is run.
 	 *
-	 * @return {lmrtfy_RollEvent} for this Event
+	 * @return {ceus_RollEvent} for this Event
 	 */
 	advantageRollEvent() {
-		return new lmrtfy_RollEvent();
+		return new ceus_RollEvent();
 	}
 	
 	/**
@@ -117,12 +117,12 @@ export class lmrtfy_RollProvider {
 	}
 
 	/**
-	 * lmrtfy_RollEvent that is checked for special keys if a specific roll event is run.
+	 * ceus_RollEvent that is checked for special keys if a specific roll event is run.
 	 *
-	 * @return {lmrtfy_RollEvent} for this Event
+	 * @return {ceus_RollEvent} for this Event
 	 */
 	disadvantageRollEvent() {
-		return new lmrtfy_RollEvent();
+		return new ceus_RollEvent();
 	}
 	
 	/**
@@ -166,12 +166,12 @@ export class lmrtfy_RollProvider {
 	}
 
 	/**
-	 * lmrtfy_RollEvent that is checked for special keys if a specific roll event is run.
+	 * ceus_RollEvent that is checked for special keys if a specific roll event is run.
 	 *
-	 * @return {lmrtfy_RollEvent} for this Event
+	 * @return {ceus_RollEvent} for this Event
 	 */
 	normalRollEvent() {
-		return new lmrtfy_RollEvent();
+		return new ceus_RollEvent();
 	}
 	
 	/**
@@ -179,7 +179,7 @@ export class lmrtfy_RollProvider {
 	 *
 	 * @return {string} that should point to the template for the roll provider. */
 	requestRollTemplate() {
-		return "modules/lmrtfy/templates/request-rolls.html";
+		return "modules/ceus/templates/request-rolls.html";
 	}
 
 	/**

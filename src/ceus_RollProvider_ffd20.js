@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_ffd20 extends lmrtfy_RollProvider {
+export class ceus_RollProvider_ffd20 extends ceus_RollProvider {
 	/**
 	 * The system identifier for this specific RollProvider.
 	 *

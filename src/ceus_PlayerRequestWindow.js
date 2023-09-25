@@ -1,7 +1,7 @@
 import { Utils } from "./Utils.js";
-import { LMRTFY } from "./lmrtfy.js";
+import { Ceus } from "./ceus.js";
 
-export class lmrtfy_PlayerRequestWindow extends FormApplication {
+export class ceus_PlayerRequestWindow extends FormApplication {
 	constructor(data, ...args) {
 		super(...args);
 		this.needsToBeDisplayed = false;
@@ -11,7 +11,7 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		
 		if (this.needsToBeDisplayed) {
 			game.users.apps.push(this);
-			LMRTFY.current.socketEngine.addCompleteWatcher(this.appId, this.onComplete, this.onFilter);
+			Ceus.current.socketEngine.addCompleteWatcher(this.appId, this.onComplete, this.onFilter);
 		}
 	}
 	
@@ -25,22 +25,22 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 	
 	async _onClose(options = {}) {
 		await super._onClose(options);
-		LMRTFY.current.socketEngine.removeCompleteWatcher(this.appId);
-		LMRTFY.current.socketEngine.pushCancelResponse(this.requestOptions, game.user._id);
+		Ceus.current.socketEngine.removeCompleteWatcher(this.appId);
+		Ceus.current.socketEngine.pushCancelResponse(this.requestOptions, game.user._id);
 	}
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		options.title = game.i18n.localize("LMRTFY.Player.Title");
-		options.id = `lmrtfy-results-${this.appId}`;
-		options.template = LMRTFY.current.providerEngine.currentRollProvider.playerRequestTemplate();
+		options.title = game.i18n.localize("Ceus.Player.Title");
+		options.id = `ceus-results-${this.appId}`;
+		options.template = Ceus.current.providerEngine.currentRollProvider.playerRequestTemplate();
 		options.closeOnSubmit = false;
 		options.popOut = true;
 		options.width = 950;
 		options.height = 800;
-		options.classes = ["lmrtfy", "lmrtfy-results", "lmrtfy-refactor"];
-		if (game.settings.get('lmrtfy', 'enableParchmentTheme')) {
-			options.classes.push('lmrtfy-parchment');
+		options.classes = ["ceus", "ceus-results", "ceus-refactor"];
+		if (game.settings.get('ceus', 'enableParchmentTheme')) {
+			options.classes.push('ceus-parchment');
 		}
 		return options;
 	}
@@ -65,10 +65,10 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		const target = $(event.currentTarget);
 		const actorId = target.data("actorid");
 		const checkId = target.data("checkid");
-		const parentForm = $(target.parents('.lmrtfy-form'));
+		const parentForm = $(target.parents('.ceus-form'));
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		
 		const actorItem = requestWindow.actors.find(a => a.actor._id === actorId);
 		if (!actorItem) {
@@ -85,17 +85,17 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		if (rp.displayRequiredByMod()) {
 			await rp.displayRoll(requestWindow.requestOptions, game.user, actorItem.actor, checkItem.check, result);
 		}
-		await LMRTFY.current.socketEngine.pushCompleteResponse(requestWindow.requestOptions, game.user._id, result);
+		await Ceus.current.socketEngine.pushCompleteResponse(requestWindow.requestOptions, game.user._id, result);
 		checkItem.doneClass = "done";
 		if (requestWindow.requestOptions.rollNumber === "one") {
 			actorItem.doneClass = "done";
-			actorItem.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
+			actorItem.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollDone");
 		} else if (actorItem.checks.every(i => i.doneClass === "done")) {
 			actorItem.doneClass = "done";
-			actorItem.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
+			actorItem.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollDone");
 		} else if (requestWindow.requestOptions.rollNumber === "any") {
 			actorItem.doneClass = "any";
-			actorItem.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollAny");
+			actorItem.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollAny");
 		}
 		if (requestWindow.actors.every(a => a.checks.every(i => i.doneClass === "done"))) {
 			requestWindow.close();
@@ -111,7 +111,7 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		const user = game.user;
 		const userCharacter = user.character;
 		
-		const possibleRolls = Utils.flattenRolls(LMRTFY.current.providerEngine.currentRollProvider.getAvailableRolls());
+		const possibleRolls = Utils.flattenRolls(Ceus.current.providerEngine.currentRollProvider.getAvailableRolls());
 		
 		const requestUsers = this.requestOptions.requestUsers.find(ru => ru.userId === user._id);
 		if (!requestUsers) {
@@ -127,7 +127,7 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 				if (!roll) {
 					continue;
 				}
-				if (check.trainedOption === "HideUntrained" && !LMRTFY.current.providerEngine.currentRollProvider.isActorTrained(actor, roll.rollType, check.rollId)) {
+				if (check.trainedOption === "HideUntrained" && !Ceus.current.providerEngine.currentRollProvider.isActorTrained(actor, roll.rollType, check.rollId)) {
 					continue;
 				}
 				checks.push({ roll, check, doneClass: "" });
@@ -155,13 +155,19 @@ export class lmrtfy_PlayerRequestWindow extends FormApplication {
 		check.doneClass = "done";
 		if (this.requestOptions.rollNumber === "one") {
 			actor.doneClass = "done";
-			actor.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
+			actor.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollDone");
 		} else if (actor.checks.every(i => i.doneClass === "done")) {
 			actor.doneClass = "done";
-			actor.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollDone");
+			actor.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollDone");
 		} else if (this.requestOptions.rollNumber === "any") {
 			actor.doneClass = "any";
-			actor.doneMessage = game.i18n.localize("LMRTFY.Player.Warnings.RollAny");
+			actor.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollAny");
+		}
+		
+		if (requestWindow.actors.every(a => a.checks.every(i => i.doneClass === "done"))) {
+			requestWindow.close();
+			ui.notifications.info(game.i18n.localize("Ceus.Player.CloseInfo"));
+			return;
 		}
 		
 		const data = await this.getData();

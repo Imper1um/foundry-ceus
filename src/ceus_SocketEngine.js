@@ -1,12 +1,12 @@
-import { LMRTFY } from "./lmrtfy.js";
-import { LMRTFYRoller } from "./roller.js";
-import { lmrtfy_PlayerRequestWindow } from "./lmrtfy_PlayerRequestWindow.js";
+import { Ceus } from "./ceus.js";
+import { CeusRoller } from "./roller.js";
+import { ceus_PlayerRequestWindow } from "./ceus_PlayerRequestWindow.js";
 
-export class lmrtfy_SocketEngine {
+export class ceus_SocketEngine {
 	async onReady() {
-		game.socket.on('module.lmrtfy', this.onRequest);
+		game.socket.on('module.ceus', this.onRequest);
 		
-		console.log("LMRTFY | Socket Engine Ready");
+		console.log("Ceus | Socket Engine Ready");
 		
 		this.onLegacyRequests = [];
 		this.onRefactorRequests = [];
@@ -49,22 +49,22 @@ export class lmrtfy_SocketEngine {
 	async onRequest(data) {
 		switch (data.type) {
 			case 'refactor':
-				await LMRTFY.current.socketEngine.onRefactorRequest(data.request);
+				await Ceus.current.socketEngine.onRefactorRequest(data.request);
 				break;
 			case 'legacy':
-				await LMRTFY.current.socketEngine.onLegacyRequest(data.request);
+				await Ceus.current.socketEngine.onLegacyRequest(data.request);
 				break;
 			case 'cancel':
-				await LMRTFY.current.socketEngine.onRequestCancel(data.request);
+				await Ceus.current.socketEngine.onRequestCancel(data.request);
 				break;
 			case 'complete':
-				await LMRTFY.current.socketEngine.onRequestComplete(data.request);
+				await Ceus.current.socketEngine.onRequestComplete(data.request);
 				break;
 		}
 	}
 	
 	async onLegacyRequest(data) {
-		console.log("LMRTFY | onLegacyRequest");
+		console.log("Ceus | onLegacyRequest");
 		console.log(data);
 		if (data.user === "character" &&
             (!game.user.character || !data.actors.includes(game.user.character.id))) {
@@ -91,10 +91,10 @@ export class lmrtfy_SocketEngine {
 		for (const w of this.onLegacyRequests) {
 			w.method(actors, data);
 		}
-        //new LMRTFYRoller(actors, data).render(true);
+        //new CeusRoller(actors, data).render(true);
 	}
 	async onRefactorRequest(data) {
-		console.log("LMRTFY | onRefactorRequest");
+		console.log("Ceus | onRefactorRequest");
 		for (const w of this.onRefactorRequests) {
 			if (w.filterMethod && !(await w.filterMethod(data))) {
 				continue;
@@ -102,14 +102,14 @@ export class lmrtfy_SocketEngine {
 			await w.method(data);
 		}
 		//console.log(data);
-		// const w = new lmrtfy_PlayerRequestWindow(data);
+		// const w = new ceus_PlayerRequestWindow(data);
 		// if (w.needsToBeDisplayed) {
 			// w.render(true);
 		// }
 	}
 	
 	async onRequestCancel(data) {
-		console.log("LMRTFY | onRequestCancel");
+		console.log("Ceus | onRequestCancel");
 		for (const w of this.onCancelRequests) {
 			if (w.filterMethod && !(await w.filterMethod(data))) {
 				continue;
@@ -118,7 +118,7 @@ export class lmrtfy_SocketEngine {
 		}
 	}
 	async onRequestComplete(data) {
-		console.log("LMRTFY | onRequestComplete");
+		console.log("Ceus | onRequestComplete");
 		//console.log(data);
 		for (const w of this.onCompleteRequests) {
 			if (w.filterMethod && !(await w.filterMethod(data))) {
@@ -134,17 +134,17 @@ export class lmrtfy_SocketEngine {
 	}
 	
 	async pushRefactorRequest(request) {
-		await game.socket.emit('module.lmrtfy', {type: 'refactor', request});
-		ui.notifications.info(game.i18n.localize("LMRTFY.Requestor.Sent"));
+		await game.socket.emit('module.ceus', {type: 'refactor', request});
+		ui.notifications.info(game.i18n.localize("Ceus.Requestor.Sent"));
 	}
 	async pushCancelResponse(request, userid) {
-		await game.socket.emit('module.lmrtfy', {type: 'cancel', request: {
+		await game.socket.emit('module.ceus', {type: 'cancel', request: {
 			userid,
 			request
 		}});
 	}
 	async pushCompleteResponse(request, userid, response) {
-		await game.socket.emit('module.lmrtfy', {type: 'complete', request: {
+		await game.socket.emit('module.ceus', {type: 'complete', request: {
 			userid,
 			request,
 			response

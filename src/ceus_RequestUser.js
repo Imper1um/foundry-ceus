@@ -1,4 +1,4 @@
-export class lmrtfy_RequestUser {
+export class ceus_RequestUser {
 	constructor(
 		userId,
 		name = null,
@@ -10,6 +10,6 @@ export class lmrtfy_RequestUser {
 	}
 	
 	shrink() {
-		return new lmrtfy_RequestUser(this.userId);
+		return new ceus_RequestUser(this.userId);
 	}
 }

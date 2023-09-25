@@ -1,20 +1,20 @@
-import { lmrtfy_RollProvider_dnd5e } from "./lmrtfy_RollProvider_dnd5e.js";
+import { ceus_RollProvider_dnd5e } from "./ceus_RollProvider_dnd5e.js";
 
-export class lmrtfy_RollProvider_sw5e extends lmrtfy_RollProvider_dnd5e {
+export class ceus_RollProvider_sw5e extends ceus_RollProvider_dnd5e {
 	systemIdentifiers() {
 		return 'sw5e';
 	}
 	
 	advantageRollEvent() {
-		return new lmrtfy_RollEvent(false, true, false);
+		return new ceus_RollEvent(false, true, false);
 	}
 	
 	disadvantageRollEvent() {
-		return new lmrtfy_RollEvent(false, false, true);
+		return new ceus_RollEvent(false, false, true);
 	}
 	
 	normalRollEvent() {
-		return new lmrtfy_RollEvent(true, false, false);
+		return new ceus_RollEvent(true, false, false);
 	}
 	
 	create5eAbilities() {

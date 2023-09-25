@@ -1,4 +1,4 @@
-export class lmrtfy_Result {
+export class ceus_Result {
 	constructor(requestId, resultId, requestActorId, requestItemId, rolledUserId = null, rolledAmount = null, isRolled = false, isPass = false, rolledAdvantageDisadvantage = null, rollBreakdown = null, critFail = false, critSuccess = false) {
 		this.requestId = requestId;
 		this.resultId = resultId;

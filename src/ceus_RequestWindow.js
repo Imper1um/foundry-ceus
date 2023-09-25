@@ -1,12 +1,12 @@
-import { LMRTFY } from "./lmrtfy.js";
-import { LMRTFYRoller } from "./roller.js";
-import { lmrtfy_RequestOptions } from "./lmrtfy_RequestOptions.js";
-import { lmrtfy_RequestUser } from "./lmrtfy_RequestUser.js";
-import { lmrtfy_RequestActor } from "./lmrtfy_RequestActor.js";
-import { lmrtfy_ResultsWindow } from "./lmrtfy_ResultsWindow.js";
-import { lmrtfy_RequestItem } from "./lmrtfy_RequestItem.js";
+import { Ceus } from "./ceus.js";
+import { CeusRoller } from "./roller.js";
+import { ceus_RequestOptions } from "./ceus_RequestOptions.js";
+import { ceus_RequestUser } from "./ceus_RequestUser.js";
+import { ceus_RequestActor } from "./ceus_RequestActor.js";
+import { ceus_ResultsWindow } from "./ceus_ResultsWindow.js";
+import { ceus_RequestItem } from "./ceus_RequestItem.js";
 
-export class lmrtfy_RequestWindow extends FormApplication {
+export class ceus_RequestWindow extends FormApplication {
 	constructor(...args) {
 		super(...args);
 		if (!game.user.isGM) {
@@ -15,8 +15,8 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		}
 		game.users.apps.push(this);
 		
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
-		this.requestOptions = new lmrtfy_RequestOptions("Get rolling...", "GM is requesting a roll");
+		const rp = Ceus.current.providerEngine.currentRollProvider;
+		this.requestOptions = new ceus_RequestOptions("Get rolling...", "GM is requesting a roll");
 		this.dice = ['d2', 'd4', 'd6', 'd8', 'd10', 'd12', 'd20', 'd100'];
 		this.possibleActors = this.generatePossibleActors();
 		this.possibleUsers = this.generatePossibleUsers();
@@ -31,22 +31,22 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	static get defaultOptions() {
 		const options = super.defaultOptions;
-		options.title = game.i18n.localize("LMRTFY.Requestor.Title");
-		options.id = `lmrtfy-requestor-${this.appId}`;
-		options.template = LMRTFY.current.providerEngine.currentRollProvider.requestRollTemplate();
+		options.title = game.i18n.localize("Ceus.Requestor.Title");
+		options.id = `ceus-requestor-${this.appId}`;
+		options.template = Ceus.current.providerEngine.currentRollProvider.requestRollTemplate();
 		options.closeOnSubmit = false;
 		options.popOut = true;
 		options.width = 950;
 		options.height = 800;
-		options.classes = ["lmrtfy", "lmrtfy-requestor", "lmrtfy-refactor"];
-		if (game.settings.get('lmrtfy', 'enableParchmentTheme')) {
-			options.classes.push('lmrtfy-parchment');
+		options.classes = ["ceus", "ceus-requestor", "ceus-refactor"];
+		if (game.settings.get('ceus', 'enableParchmentTheme')) {
+			options.classes.push('ceus-parchment');
 		}
 		return options;
 	}
 	
 	async getData() {
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		this.regenerateErrors();
 		return {
 			appId: this.appId,
@@ -116,7 +116,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onMacroRequest(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
@@ -129,9 +129,9 @@ export class lmrtfy_RequestWindow extends FormApplication {
 			// Title: ${requestOptions.title}\n
 			// Message: ${requestOptions.message}\n
 			const data = ${JSON.stringify(requestOptions.shrink())};\n
-			LMRTFY.openRequest(data);`;
+			Ceus.openRequest(data);`;
 		const macro = await Macro.create({
-			name: "LMRTFY: " + (requestOptions.title || requestOptions.message),
+			name: "Ceus: " + (requestOptions.title || requestOptions.message),
 			type: "script",
 			scope: "global",
 			command: scriptContent,
@@ -142,7 +142,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onMacroGmRoll(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
@@ -155,9 +155,9 @@ export class lmrtfy_RequestWindow extends FormApplication {
 			// Title: ${requestOptions.title}\n
 			// Message: ${requestOptions.message}\n
 			const data = ${JSON.stringify(requestOptions.shrink())};\n
-			LMRTFY.gmRoll(data);`;
+			Ceus.gmRoll(data);`;
 		const macro = await Macro.create({
-			name: "LMRTFY: " + (requestOptions.title || requestOptions.message),
+			name: "Ceus: " + (requestOptions.title || requestOptions.message),
 			type: "script",
 			scope: "global",
 			command: scriptContent,
@@ -168,7 +168,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onMacroAsk(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
@@ -181,9 +181,9 @@ export class lmrtfy_RequestWindow extends FormApplication {
 			// Title: ${requestOptions.title}\n
 			// Message: ${requestOptions.message}\n
 			const data = ${JSON.stringify(requestOptions.shrink())};\n
-			LMRTFY.requestRoll(data);`;
+			Ceus.requestRoll(data);`;
 		const macro = await Macro.create({
-			name: "LMRTFY: " + (requestOptions.title || requestOptions.message),
+			name: "Ceus: " + (requestOptions.title || requestOptions.message),
 			type: "script",
 			scope: "global",
 			command: scriptContent,
@@ -194,33 +194,32 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onAsk(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
-		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, "ask");
+		const resultsWindow = new ceus_ResultsWindow(requestOptions, "ask");
 		resultsWindow.handleRequestOptions();
 		resultsWindow.render(true);
-		LMRTFY.current.socketEngine.pushRefactorRequest(requestOptions.shrink());
+		Ceus.current.socketEngine.pushRefactorRequest(requestOptions.shrink());
 	}
 	
 	async _onGmRoll(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
 		
-		const resultsWindow = new lmrtfy_ResultsWindow(requestOptions, "gmroll");
+		const resultsWindow = new ceus_ResultsWindow(requestOptions, "gmroll");
 		resultsWindow.handleRequestOptions();
 		resultsWindow.render(true);
-		const shrunkResults = requestOptions.shrink();
-		//#TODO
+		await resultsWindow.roll(requestOptions.requestActors.map(a => a.actorId));
 	}
 	
 	async _onRollPrivacyChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		
@@ -229,7 +228,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onTitleChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		
@@ -238,7 +237,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onMessageChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		
@@ -247,7 +246,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onRollRequirePrivacyChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		
@@ -256,7 +255,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onClearRolls(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestItemId = item.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
@@ -267,7 +266,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onRequestItemDelete(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestItemId = item.data('id');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
@@ -281,7 +280,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onSelectorTrainedChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
@@ -294,7 +293,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onSelectorAdvantageDisadvantageChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
@@ -307,7 +306,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onRollNumberChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		
@@ -318,7 +317,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onSelectorDcChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
@@ -331,7 +330,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onSelectorCustomBonusChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestItemParent = item.parents('.requestItem');
 		const requestItemId = requestItemParent.data('id');
@@ -344,7 +343,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onSelectorRollChange(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const id = item.data("id");
@@ -364,7 +363,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		
 		item.rollId = action.id;
 		item.rollType = action.rollType;
-		item.trainedOptions = LMRTFY.current.providerEngine.currentRollProvider.rollTrainedOptions(action.rollType, action.id);
+		item.trainedOptions = Ceus.current.providerEngine.currentRollProvider.rollTrainedOptions(action.rollType, action.id);
 		item.trainedOption = "";
 		if (item.trainedOptions && item.trainedOptions.length) {
 			item.trainedOption = item.trainedOptions.find(() => true);
@@ -372,23 +371,23 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		item.customBonus = "";
 		item.dc = "",
 		item.advantageDisadvantage = "require-normal";
-		item.allowDC = LMRTFY.current.providerEngine.currentRollProvider.allowDC(action.rollType, action.id);
-		item.permitDC = LMRTFY.current.providerEngine.currentRollProvider.permitDC();
-		item.permitAdvantageDisadvantage = LMRTFY.current.providerEngine.currentRollProvider.permitAdvantageDisadvantage();
+		item.allowDC = Ceus.current.providerEngine.currentRollProvider.allowDC(action.rollType, action.id);
+		item.permitDC = Ceus.current.providerEngine.currentRollProvider.permitDC();
+		item.permitAdvantageDisadvantage = Ceus.current.providerEngine.currentRollProvider.permitAdvantageDisadvantage();
 		item.canCritSuccess = action.canCritSuccess;
 		item.canCritFail = action.canCritFail;
 	}
 	
 	async _onAddRoll(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		var nextId = 1;
 		if (requestWindow.requestOptions.requestItems && requestWindow.requestOptions.requestItems.length) {
 			nextId = Math.max(...requestWindow.requestOptions.requestItems.map(obj => obj.id)) + 1;
 		}
-		var newItem = new lmrtfy_RequestItem("", "", "", "", "allow-all");
+		var newItem = new ceus_RequestItem("", "", "", "", "allow-all");
 		newItem.id = nextId;
 		newItem.appId = requestWindow.appId;
 		
@@ -401,7 +400,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onActorsClear(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => true, false);
@@ -409,7 +408,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onActorsAddAllNonPlayers(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => !u.isPlayer && u.isVisible, true);
@@ -417,7 +416,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onActorsAddAllPlayers(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => u.isPlayer && u.isVisible, true);
@@ -426,7 +425,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onActorsAddAllSecret(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => u.disposition === -2 && u.isVisible, true);
@@ -435,7 +434,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onActorsAddAllEnemy(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => u.disposition === -1 && u.isVisible, true);
@@ -443,7 +442,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onActorsAddAllNeutral(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => u.disposition === 0 && u.isVisible, true);
@@ -451,7 +450,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onActorsAddAllFriendly(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => u.disposition === 1 && u.isVisible, true);
@@ -462,17 +461,17 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		var preventsSubmission = false;
 		var preventsMacro = false;
 		if (!this.requestOptions.requestUsers.length) {
-			errors.push({type: "error", preventsSubmission: true, preventsMacro: true, content: game.i18n.localize("LMRTFY.Errors.NoUsers")});
+			errors.push({type: "error", preventsSubmission: true, preventsMacro: true, content: game.i18n.localize("Ceus.Errors.NoUsers")});
 			preventsSubmission = true;
 			preventsMacro = true;
 		}
 		if (!this.requestOptions.requestActors.length) {
-			errors.push({type: "error", preventsSubmission: true, preventsMacro: true, content: game.i18n.localize("LMRTFY.Errors.NoActors")});
+			errors.push({type: "error", preventsSubmission: true, preventsMacro: true, content: game.i18n.localize("Ceus.Errors.NoActors")});
 			preventsSubmission = true;
 			preventsMacro = true;
 		}
 		if (!this.requestOptions.requestItems.length) {
-			errors.push({type: "error", preventsSubmission: true, preventsMacro: true, content: game.i18n.localize("LMRTFY.Errors.NoRolls")});
+			errors.push({type: "error", preventsSubmission: true, preventsMacro: true, content: game.i18n.localize("Ceus.Errors.NoRolls")});
 			preventsSubmission = true;
 			preventsMacro = true;
 		}
@@ -485,7 +484,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 				}
 			}
 			if (!hasActive) {
-				errors.push({type: "error", preventsSubmission: true, preventsMacro: false, content: game.i18n.localize("LMRTFY.Errors.NoActive")});
+				errors.push({type: "error", preventsSubmission: true, preventsMacro: false, content: game.i18n.localize("Ceus.Errors.NoActive")});
 			}
 		}
 		this.preventsSubmission = preventsSubmission;
@@ -521,7 +520,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	async _onActorSelect(event) {
 		const item = $(event.currentTarget);
 		const id = item.data("id");
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleActors(event, u => u.actorId === id, null);
@@ -531,14 +530,14 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		event.preventDefault();
 		
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		
 		const filteredActors = this.possibleActors.filter(filterActors);
 		for (const actor of filteredActors) {
 			if ((state === true || state === null) && !actor.isSelected) {
 				actor.isSelected = true;
 				if (!this.requestOptions.requestActors.some(u => u.actorId === actor.actorId)) {
-					this.requestOptions.requestActors.push(new lmrtfy_RequestActor(actor.actorId, actor.name, actor.imgUrl));
+					this.requestOptions.requestActors.push(new ceus_RequestActor(actor.actorId, actor.name, actor.imgUrl));
 				}
 				parentForm.find(`.actor-select .actor[data-id="${actor.actorId}"]`).addClass("selected");
 				parentForm.find(`.actor-select .actor[data-id="${actor.actorId}"]`).removeClass("not-selected");
@@ -557,14 +556,14 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		event.preventDefault();
 		
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		
 		const filteredUsers = this.possibleUsers.filter(filterUsers);
 		for (const user of filteredUsers) {
 			if ((state === true || state === null) && !user.isSelected) {
 				user.isSelected = true;
 				if (!this.requestOptions.requestUsers.some(u => u.userId === user.id)) {
-					this.requestOptions.requestUsers.push(new lmrtfy_RequestUser(user.id, user.name, user.img));
+					this.requestOptions.requestUsers.push(new ceus_RequestUser(user.id, user.name, user.img));
 				}
 				parentForm.find(`.user-select .user[data-id="${user.id}"]`).addClass("selected");
 				parentForm.find(`.user-select .user[data-id="${user.id}"]`).removeClass("not-selected");
@@ -582,7 +581,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onUsersClear(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => true, false);
@@ -590,7 +589,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onUsersAddAllEveryone(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => true, true);
@@ -598,7 +597,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onUsersAddAllOnline(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => u.active, true);
@@ -606,7 +605,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onUsersAddAllPlayer(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => u.role === 1, true);
@@ -614,7 +613,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onUsersAddAllTrusted(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => u.role === 2, true);
@@ -622,7 +621,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onUsersAddAllAssistant(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => u.role === 3, true);
@@ -630,7 +629,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	async _onUsersAddAllGm(event) {
 		const item = $(event.currentTarget);
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => u.role === 4, true);
@@ -639,7 +638,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	async _onUserSelect(event) {
 		const item = $(event.currentTarget);
 		const id = item.data("id");
-		const parentForm = item.parents('.lmrtfy-form');
+		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		await requestWindow.toggleUsers(event, u => u.id === id, null);
@@ -653,7 +652,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	}
 	
 	generateAdvantageDisadvantage(rollType, id) {
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		return {
 			"id": id,
 			"rollType": rollType,
@@ -663,20 +662,20 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	}
 	
 	generatePossibleActions() {
-		const currentRollProvider = LMRTFY.current.providerEngine.currentRollProvider;
+		const currentRollProvider = Ceus.current.providerEngine.currentRollProvider;
 		const availableRolls = currentRollProvider.getAvailableRolls();
 		const actionTree = this.buildActionTree(0, availableRolls);
 		actionTree.push({
 			"type": "category",
 			"selectable": false,
-			"name": "LMRTFY.Actions.Dice",
+			"name": "Ceus.Actions.Dice",
 			"depth": 0
 		});
 		for (const die of this.dice) {
 			actionTree.push({
 				"type": "roll",
 				"id": `Roll.${die}`,
-				"rollType": LMRTFYRoller.rollTypes().DICE,
+				"rollType": CeusRoller.rollTypes().DICE,
 				"selectable": true,
 				"name": die,
 				"depth": 1
@@ -685,15 +684,15 @@ export class lmrtfy_RequestWindow extends FormApplication {
 		actionTree.push({
 			"type": "category",
 			"selectable": false,
-			"name": "LMRTFY.Actions.Custom",
+			"name": "Ceus.Actions.Custom",
 			"depth": 0
 		});
 		actionTree.push({
 			"type": "roll",
 			"id": 'Roll.Custom',
-			"rollType": LMRTFYRoller.rollTypes().CUSTOM,
+			"rollType": CeusRoller.rollTypes().CUSTOM,
 			"selectable": true,
-			"name": "LMRTFY.Actions.Custom",
+			"name": "Ceus.Actions.Custom",
 			"depth": 1
 		});
 		for (const item in actionTree) 
@@ -781,11 +780,11 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	}
 	
 	generatePossibleActors() {
-		const currentRollProvider = LMRTFY.current.providerEngine.currentRollProvider;
+		const currentRollProvider = Ceus.current.providerEngine.currentRollProvider;
 		const possibleActors = new Array();
 		const possibleRolls = this.buildAvailableRolls(currentRollProvider.getAvailableRolls());
 		for (const actor of game.actors) {
-			var possibleActor = new lmrtfy_RequestActor(actor._id, actor.name, actor.img);
+			var possibleActor = new ceus_RequestActor(actor._id, actor.name, actor.img);
 			possibleActor.isSelected = false;
 			possibleActor.isVisible = false;
 			possibleActor.disposition = actor.prototypeToken.disposition;
@@ -811,7 +810,7 @@ export class lmrtfy_RequestWindow extends FormApplication {
 	
 	buildActorAvailableRolls(possibleRolls, actor) {
 		const availableRolls = new Array();
-		const currentRollProvider = LMRTFY.current.providerEngine.currentRollProvider;
+		const currentRollProvider = Ceus.current.providerEngine.currentRollProvider;
 		for (const roll of possibleRolls) {
 			availableRolls.push({
 				"id": roll.id,

@@ -1,6 +1,5 @@
 {
     "LMRTFY.Title": "Let Me Roll That For You!",
-    "LMRTFY.ControlTitle": "Request Roll",
     "LMRTFY.AdvantageNote": "These rolls will be made with advantage",
     "LMRTFY.DisadvantageNote": "These rolls will be made with disadvantage",
     "LMRTFY.SelectUser": "Select User:",
@@ -67,6 +66,7 @@
     "LMRTFY.ShowFailButtons": "Show Fail Button",
     "LMRTFY.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form", 
     "LMRTFY": {
+		"ControlTitle": "Request Roll",
 		"Trained": {
 			"HideUntrained": "Hide Untrained Skills from view.",
 			"PreventUntrained": "Prevent Untrained Skills from being rolled.",
@@ -82,7 +82,8 @@
 				"RollDone": " [Done!]",
 				"RollAny": " [Done: More Rolls Available]"
 			},
-			"SelectionWarning": "You must select a character to roll for before you can select a roll!"
+			"SelectionWarning": "You must select a character to roll for before you can select a roll!",
+			"CloseInfo": "Roll window was closed because other users rolled all of the asked for rolls, or the GM cancelled this roll."
 		},
 		"Results": {
 			"Header": "Roll Results",
@@ -100,7 +101,29 @@
 			"Breakdown": "Breakdown",
 			"RolledBy": "Rolled by: ",
 			"Pending": "Pending Rolls",
-			"Completed": "Completed Rolls"
+			"Completed": "Completed Rolls",
+			"GMActions": {
+				"RollAll": "Roll Remaining Pending Rolls",
+				"RollThis": "Roll This",
+				"CancelAll": "Cancel Remaining Pending Rolls",
+				"CancelThis": "Cancel",
+				"RerollAll": "Reroll All",
+				"RerollThis": "Reroll",
+				"NotifyAll": "Notify Remaining Rolls",
+				"NotifyThis": "Notify",
+				"Announce": "Announce: ",
+				"AnnounceFull": "Full Results",
+				"AnnounceAnySuccess": "At Least One Success?",
+				"AnnounceSuccessBreakdown": "Success Breakdown",
+				"AnnounceThisFull": "Full",
+				"AnnounceThisSuccess": "Success/Fail"
+			},
+			"Announce": {
+				"Character": "Character",
+				"Roll": "Roll",
+				"Total": "Total",
+				"Status": "Pass/Fail"
+			}
 		},
 		"Actions": {
 			"Dice": "Dice",

@@ -1,9 +1,9 @@
-export class lmrtfy_RefactorRollProvider {
+export class ceus_RefactorRollProvider {
 	constructor() {
 	}
 	
 	async onReady() {
-		console.log("LMRTFY | Readying " + this.systemIdentifiers());
+		console.log("Ceus | Readying " + this.systemIdentifiers());
 	}
 	
 	getSettings() {
@@ -32,7 +32,7 @@ export class lmrtfy_RefactorRollProvider {
 	 *
 	 * @return {string} that should point to the template for the roll provider. */
 	requestRollTemplate() {
-		return "modules/lmrtfy/templates/refactor-request-rolls.html";
+		return "modules/ceus/templates/refactor-request-rolls.html";
 	}
 	
 	/**
@@ -40,7 +40,7 @@ export class lmrtfy_RefactorRollProvider {
 	 *
 	 * @return {string} that should point to the template for the player request. */
 	playerRequestTemplate() {
-		return "modules/lmrtfy/templates/refactor-player-request.html";
+		return "modules/ceus/templates/refactor-player-request.html";
 	}
 	
 	/**
@@ -48,7 +48,7 @@ export class lmrtfy_RefactorRollProvider {
 	 *
 	 * @return {string} that should point to the results template. */
 	resultsTemplate() {
-		return "modules/lmrtfy/templates/results.html";
+		return "modules/ceus/templates/results.html";
 	}
 
 	/** New Refactor Options **/
@@ -231,7 +231,7 @@ export class lmrtfy_RefactorRollProvider {
 			crit = "crit-fail";
 		}
 		const ispass = result.isPass == true ? "pass" : (result.isPass == false ? "fail" : "");
-		var htmlView = `<div class="lmrtfy lmrtfy-result lmrtfy-chat ${sensitive} ${ispass} ${requestOptions.rollPrivacy}" data-requestid="${requestOptions.id}" data-actorid="${actor._id}" data-userid="${user._id}" data-rollid="${check.rollId}" data-total="${result.rolledAmount}" data-ispass="${result.isPass}" data-dc="${check.dc}">
+		var htmlView = `<div class="ceus ceus-result ceus-chat ${sensitive} ${ispass} ${requestOptions.rollPrivacy}" data-requestid="${requestOptions.id}" data-actorid="${actor._id}" data-userid="${user._id}" data-rollid="${check.rollId}" data-total="${result.rolledAmount}" data-ispass="${result.isPass}" data-dc="${check.dc}">
 			<header>${check.rollId}</header>
 			<div class="result-body">
 				<div class="result-total">${result.rolledAmount}</div>
@@ -275,4 +275,4 @@ export class lmrtfy_RefactorRollProvider {
 	}
 }
 
-console.log("LMRTFY | lmrtfy_RefactorRollProvider.js loaded");
+console.log("Ceus | ceus_RefactorRollProvider.js loaded");

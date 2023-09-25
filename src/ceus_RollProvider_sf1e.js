@@ -1,7 +1,7 @@
-import { lmrtfy_RefactorRollProvider } from "./lmrtfy_RefactorRollProvider.js";
-import { LMRTFYRoller } from "./roller.js";
-import { LMRTFY } from "./lmrtfy.js";
-import { lmrtfy_Result } from "./lmrtfy_Result.js";
+import { ceus_RefactorRollProvider } from "./ceus_RefactorRollProvider.js";
+import { CeusRoller } from "./roller.js";
+import { Ceus } from "./ceus.js";
+import { ceus_Result } from "./ceus_Result.js";
 
 /**
  * RollProvider for Starfinder (1st Edition) (sfrpg)
@@ -17,7 +17,7 @@ import { lmrtfy_Result } from "./lmrtfy_Result.js";
  * rollMode setting: no
  *  - Again, there's not enough data being passed to the roll system to permit requiring rolls or not.
  */
-export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
+export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 	constructor() {
 		super();
 	}
@@ -36,14 +36,14 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	rollTrainedOptions(rollType, id) {
-		if (rollType == LMRTFYRoller.rollTypes().INITIATIVE) {
+		if (rollType == CeusRoller.rollTypes().INITIATIVE) {
 			return [ "AllowUntrained" ];
 		}
 		return this.trainedOptions();
 	}
 	
 	isActorTrained(actor, rollType, id) {
-		if (rollType != LMRTFYRoller.rollTypes().SKILL) {
+		if (rollType != CeusRoller.rollTypes().SKILL) {
 			return true;
 		}
 		return actor.system.skills[id].ranks > 0;
@@ -87,8 +87,8 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				name: "SFRPG.Special",
 				type: "category",
 				rolls: [
-					{ id: "Initiative", name: "SFRPG.InitiativeLabel", type: "roll", rollType: LMRTFYRoller.rollTypes().INITIATIVE, method: this.rollInitiative, contexts: this.getInitiativeContexts, canCritSuccess: false, canCritFail: false },
-					{ id: "Perception", name: "SFRPG.SkillPer", type: "roll", rollType:LMRTFYRoller.rollTypes().PERCEPTION, method: this.rollPerception, canCritSuccess: true, canCritFail: true }
+					{ id: "Initiative", name: "SFRPG.InitiativeLabel", type: "roll", rollType: CeusRoller.rollTypes().INITIATIVE, method: this.rollInitiative, contexts: this.getInitiativeContexts, canCritSuccess: false, canCritFail: false },
+					{ id: "Perception", name: "SFRPG.SkillPer", type: "roll", rollType:CeusRoller.rollTypes().PERCEPTION, method: this.rollPerception, canCritSuccess: true, canCritFail: true }
 				]
 			},
 			{
@@ -113,7 +113,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	async rollSkill(requestOptions, actor, requestItem) {
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const skillRoll = rp.getAvailableRolls().find(r => r.id === "Skills").rolls.find(r => r.id === requestItem.id);
 		const skillId = skillRoll.skillId;
 		const skill = actor.system.skills[skillRoll.skillId];
@@ -121,7 +121,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		switch (requestItem.trainedOption) {
 			case "HideUntrained":
 				if (skill.isTrainedOnly && skl.ranks < 1) {
-					return new lmrtfy_Result(
+					return new ceus_Result(
 						requestOptions.requestId,
 						actor._id,
 						requestItem.id,
@@ -150,21 +150,21 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	async rollSave(requestOptions, actor, requestItem) {
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const saveRoll = rp.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.id);
 		const completeRoll = await actor.rollSave(saveRoll.saveId, rp.baseRollOptions());
 		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
 	async rollAbility(requestOptions, actor, requestItem) {
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const abilityRoll = rp.getAvailableRolls().find(r => r.id === "Abilities").rolls.find(r => r.id === requestItem.id);
 		const completeRoll = await actor.rollAbility(abilityRoll.abilityId, rp.baseRollOptions());
 		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
 	async rollInitiative(requestOptions, actor, requestItem) {
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const combat = game.combats.get(requestOptions.contextId);
 		if (!combat) { return; }
 		var rollOptions = {formula: null, updateTurn: true, messageOptions: {}, requireMode: null, requireRollState: null};
@@ -186,7 +186,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		const newCombat = await combat.rollInitiative(actor._id, rollOptions); 
 		const newTurn = newCombat.turns.find(t => t.actorId === actor._id);
 		if (!newTurn) { return; }
-		const result = new lmrtfy_Result(
+		const result = new ceus_Result(
 			requestOptions.id,
 			requestOptions.resultId,
 			actor._id,
@@ -200,7 +200,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 	}
 	
 	async rollPerception(requestOptions, actor, requestItem) {
-		const rp = LMRTFY.current.providerEngine.currentRollProvider;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const skill = actor.system.skills["per"];
 		const skillId = "per";
 		const completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
@@ -240,7 +240,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 			if (isCritFail) { isPass = false; }
 		}
 		
-		return new lmrtfy_Result(
+		return new ceus_Result(
 			requestOptions.id,
 			requestOptions.resultId,
 			actor._id,
@@ -264,7 +264,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				id: `Ability${capitalizedKey}`,
 				name: `SFRPG.Ability${capitalizedKey}`,
 				type: "roll",
-				rollType: LMRTFYRoller.rollTypes().ABILITY,
+				rollType: CeusRoller.rollTypes().ABILITY,
 				method: this.rollAbility,
 				abilityId: key,
 				canCritSuccess: true,
@@ -281,7 +281,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				id: `${saveName}Save`,
 				name: `SFRPG.${saveName}Save`,
 				type: "roll",
-				rollType: LMRTFYRoller.rollTypes().SAVE,
+				rollType: CeusRoller.rollTypes().SAVE,
 				method: this.rollSave,
 				saveId: key,
 				canCritSuccess: true,
@@ -303,7 +303,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 				id: `Skill${capitalizedKey}`,
 				name: `SFRPG.Skill${translateKey}`,
 				type: "roll",
-				rollType: LMRTFYRoller.rollTypes().SKILL,
+				rollType: CeusRoller.rollTypes().SKILL,
 				method: this.rollSkill,
 				skillId: key,
 				canCritSuccess: true,
@@ -342,7 +342,7 @@ export class lmrtfy_RollProvider_sf1e extends lmrtfy_RefactorRollProvider {
 		return true;
 	}
 	allowDC(rollType, id) {
-		if (rollType == LMRTFYRoller.rollTypes().INITIATIVE) {
+		if (rollType == CeusRoller.rollTypes().INITIATIVE) {
 			return false;
 		}
 		return true;

@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_degenesis extends lmrtfy_RollProvider {
+export class ceus_RollProvider_degenesis extends ceus_RollProvider {
 	/**
 	 * The system identifier for this specific RollProvider.
 	 *
@@ -11,7 +11,7 @@ export class lmrtfy_RollProvider_degenesis extends lmrtfy_RollProvider {
 	}
 	
 	requestRollTemplate() {
-		return "modules/lmrtfy/templates/degenesis-request-rolls.html";
+		return "modules/ceus/templates/degenesis-request-rolls.html";
 	}
 
 	/**

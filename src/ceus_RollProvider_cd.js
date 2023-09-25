@@ -1,6 +1,6 @@
-import { lmrtfy_RollProvider } from "./lmrtfy_RollProvider.js";
+import { ceus_RollProvider } from "./ceus_RollProvider.js";
 
-export class lmrtfy_RollProvider_cd extends lmrtfy_RollProvider {
+export class ceus_RollProvider_cd extends ceus_RollProvider {
 	/**
 	 * The system identifier for this specific RollProvider.
 	 *
@@ -71,12 +71,12 @@ export class lmrtfy_RollProvider_cd extends lmrtfy_RollProvider {
 
 		switch (rollMethod) {
 			case 'attributeRoll':
-				label = LMRTFY.currentRollProvider.abilities()[key];
+				label = Ceus.currentRollProvider.abilities()[key];
 				formula = `1d20-${attributeMods[key]}`;
 				target = attributes[key];
 				break;
 			case 'saveRoll':
-				label = LMRTFY.currentRollProvider.saves()[key];
+				label = Ceus.currentRollProvider.saves()[key];
 				formula = `1d20+${saves.mods[key]}`;
 				target = saves.targets[key];
 				break;
