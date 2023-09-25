@@ -1,430 +1,9 @@
-.ceus.ceus-parchment .window-content {
-	background: url(../images/parchment.jpg);
-	padding: 5px;
-}
-
-/* request-rolls.html */
-.ceus .ceus-actor-avatars input[type=checkbox] {
-	display:none;
-}
-.ceus.ceus-parchment input[type=checkbox] {
-	display:none;
-}
-.ceus.ceus-parchment select,
-.ceus.ceus-parchment input[type=text] {
-	background-color: rgba(220, 200, 160, 0.5);
-}
-
 .ceus input[type=checkbox] + label {
 	flex: 1;
 }
-.ceus.ceus-parchment input[type=checkbox] + label {
-	margin: 3px;
-}
-.ceus.ceus-parchment input[type=checkbox]:checked + label {
-	margin: 2px;
-	color: red;
-	font-weight: bold;
-}
-
-.ceus-actor-avatars {
-	justify-content: center;
-}
-.ceus-actor-avatars > div {
-	position: relative;
-	flex: 0 0 45px;
-}
-.ceus-actor-avatars img {
-	width: 45px;
-	height: 45px;
-	transition-duration: 0.2s;
-	transform-origin: 50% 50%;
-}
-.ceus-actor-avatars input:checked + label img {
-	transform: scale(0.9);
-	box-shadow: 0 0 5px #ff0000;
-}
-
-form .form-group .ceus-ability-checks,
-form .form-group .ceus-saving-throws,
-form .form-group .ceus-extras {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-}
-.ceus-parchment form .form-group .ceus-ability-checks,
-.ceus-parchment form .form-group .ceus-saving-throws,
-.ceus-parchment form .form-group .ceus-extras {
-	flex-wrap: nowrap;
-}
-
-form .form-group .ceus-skill-checks {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
-	justify-content: space-evenly;
-	max-height: 220px;
-	flex: 8;
-}
-.ceus-parchment form .form-group .ceus-skill-checks {
-	max-height: 200px;
-}
-
-.ceus-ability-checks > div,
-.ceus-saving-throws > div,
-.ceus-skill-checks > div ,
-.ceus-extras > div {
-	flex: 3;
-	padding: 4px;
-	display: flex;
-}
-
-.ceus-submit {
-		text-align: center;
-}
-.ceus-request-roll,
-.ceus-save-roll {
-	text-align: center;
-}
-
-.ceus-parchment .ceus-request-roll,
-.ceus-parchment .ceus-save-roll {
-	background: url(../images/button.png);
-	background-repeat: no-repeat ;
-	background-size: 100% 100%;
-	color: black;
-	height: 40px;
-}
-.select-all,
-.deselect-all {
-	flex: 1;
-}
-.ceus-parchment .select-all,
-.ceus-parchment .deselect-all {
-	background-color: rgba(220, 200, 160, 0.75);
-	border-radius: 10px;
-}
-
-
-/* Roller.html */
-.ceus-avatar {
-	text-align: center;
-	margin: 2px;
-}
-.ceus-avatar img {
-	width: 64px;
-	height: 64px;
-}
-
-.ceus-actor-list {
-	justify-content: center;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-}
-.ceus-actor-list > div {
-	flex: 0 0 64px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-.ceus-ability-check,
-.ceus-ability-check-fail,
-.ceus-ability-save,
-.ceus-ability-save-fail,
-.ceus-skill-check,
-.ceus-skill-check-fail,
-.ceus-custom-formula,
-.ceus-initiative,
-.ceus-death-save,
-.ceus-perception,
-.ceus-roll-table {
-	height: 48px;
-	text-align: center;
-	margin-top: 4px;
-}
-.ceus-parchment .ceus-ability-check,
-.ceus-parchment .ceus-ability-check-fail,
-.ceus-parchment .ceus-ability-save,
-.ceus-parchment .ceus-ability-save-fail,
-.ceus-parchment .ceus-skill-check,
-.ceus-parchment .ceus-skill-check-fail,
-.ceus-parchment .ceus-custom-formula,
-.ceus-parchment .ceus-initiative,
-.ceus-parchment .ceus-death-save,
-.ceus-parchment .ceus-perception,
-.ceus-parchment .ceus-roll-table {
-	background: url(../images/button.png);
-	background-repeat: no-repeat;
-	background-size: 100% 100%;
-	color: black;
-	height: 78px;
-}
-
-.enable-ceus-ability-check-fail,
-.enable-ceus-ability-save-fail,
-.enable-ceus-skill-check-fail {
-    width: 10%;
-    position: absolute !important;
-    margin-top: -57px !important;
-    right: 27px;    
-}
-
-.ceus-roller button:disabled {
-	opacity: 0.5;
-}
-
-.ceus-actor .tooltip {
-	display: block;
-	min-width: 148px;
-	height: 26px;
-	padding: 2px 4px;
-	position: absolute;
-	top: -32px;
-	left: -50px;
-	background: rgba(0, 0, 0, 0.9);
-	border: 1px solid #191813;
-	border-radius: 3px;
-	color: #f0f0e0;
-	line-height: 22px;
-	text-align: center;
-	white-space: nowrap;
-	word-break: break-all;
-}
-
-.ceus-dice-tray-buttons {
-    width: 75%;
-    padding-left: 207px;
-    margin-left: 95px;
-}
-
-.ceus-dice-tray-button {
-    background: transparent;
-    border: 1px solid #000;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    color: #fff;
-    font-weight: bold;
-    font-size: 18px;
-    -webkit-box-shadow: 0 0 6px inset #8d9ea7;
-    box-shadow: 0 0 6px inset #8d9ea7;
-    -webkit-transition: all ease-in-out 0.25s;
-    -o-transition: all ease-in-out 0.25s;
-    transition: all ease-in-out 0.25s;
-    position: relative;
-    margin: 6px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.ceus-bonus-button  {
-    color: #000 !important;
-}
-
-.ceus-dice-tray-button:hover {
-    color: red;
-    border-color: red;
-    box-shadow: 0 0 6px inset #ff6400;
-}
-
-.ceus-dice-tray-checks {
-    padding-left: 207px;
-}
-
-.ceus-bonus-button:hover {
-    color: black !important;
-}
-
-.ceus-dice-svg-normal {
-    height: 35px;
-}
-
-.ceus-dice-svg-smaller {
-    padding: 3px;
-}
-
-.ceus-dice-row-flexrow {
-    flex-wrap: nowrap;
-}
-
-.ceus-dice-tray-details {
-    padding-top: 7px;
-    margin-left: -219px;
-}
-
-.ceus-dice-tray-expander {
-    padding-left: 220px;
-}
-
-.ceus-clear-button-area {
-    padding-left: 214px;
-}
-
-.d35ecustom .ceus {
-	border: 8px solid #55493B;
-    border-image: url(/systems/D35E/icons/ui/dialog-frame.png) 30 round;
-    background: url(/systems/D35E/icons/ui/sidebar-bg.png);
-	border-radius: 0;
-}
-
-.d35ecustom .ceus .window-content {
-	color: white;
-	background: none;
-}
-
-.d35ecustom .ceus .select-all, .d35ecustom .ceus .deselect-all {
-	border-radius: 0;
-	cursor: pointer;
-}
-
-.d35ecustom .ceus input[type="text"], .d35ecustom .ceus input[type="number"], .d35ecustom .ceus input[type="password"], .d35ecustom .ceus input[type="date"], .d35ecustom .ceus input[type="time"] {
-	color: white !important;
-    width: calc(100% - 2px);
-    min-width: 20px;
-    height: 26px;
-    background: rgba(0, 0, 0, 0.05) !important;
-    padding: 1px 3px;
-    margin: 0;
-    color: #191813;
-    font-family: inherit;
-    font-size: inherit;
-    text-align: inherit;
-    line-height: inherit;
-    border: 1px solid #7a7971;
-    border-radius: 3px;
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-	user-select: text;
-}
-
-.d35ecustom .ceus select {
-	color: white !important;
-	height: 27px;
-    background-color: rgba(0, 0, 0, 0.05) !important;
-    border: 1px solid #7a7971;
-    border-radius: 3px;
-    padding: 0 3px;
-    text-overflow: ellipsis;
-}
-
-.d35ecustom .ceus .ceus-request-roll, 
-.d35ecustom .ceus .ceus-ability-check, 
-.d35ecustom .ceus .ceus-skill-check, 
-.d35ecustom .ceus .ceus-ability-save, 
-.d35ecustom .ceus .ceus-initiative, 
-.d35ecustom .ceus .ceus-perception, 
-.d35ecustom .ceus .ceus-save-roll,
-.d35ecustom .ceus .ceus-roll-table  {
-	background: none !important;
-    border-image: url(/systems/D35E/icons/ui/long-button.png);
-    background-size: 100% 100%;
-    color: white;
-	height: 40px;
-	border-image-slice: 80 80 fill;
-	border-image-width: 600px;
-	cursor: pointer;
-}
-
-.d35ecustom .ceus .form-group:not(.ceus-actor-avatars) input[type=checkbox] + label {
-    margin: 2px;
-    color: white;
-    background: none !important;
-    border-image: url(/systems/D35E/icons/ui/toggle-off.png);
-    border-image-slice: 20 20 fill;
-    border-image-width: 170px;
-    cursor: pointer;
-    padding: 1px 16px;
-	border-radius: 2px;
-	text-align: center;
-}
-
-.d35ecustom .ceus .form-group:not(.ceus-actor-avatars) input[type=checkbox]:checked + label {
-    margin: 2px;
-    color: white;
-    background: none !important;
-    border-image: url(/systems/D35E/icons/ui/toggle-on.png);
-    border-image-slice: 20 20 fill;
-    border-image-width: 170px;
-    cursor: pointer;
-	padding: 1px 16px;
-	
-	font-weight: normal;
-	border-radius: 2px;
-}
-
-.d35ecustom form .form-group .ceus-ability-checks {
-	flex-wrap: wrap;
-}
-
-.d35ecustom form .form-group .ceus-extras div {
-    padding: 0px;
-}
-.d35ecustom form .form-group .ceus-saving-throws .ceus-ability {
-    padding: 0px;
-}
-
-.d35ecustom form .form-group .ceus-roll-table-list {
-    min-height: 89px;
-}
-
-.d35ecustom form .form-group .ceus-ability-checks .ceus-ability {
-    padding: 0px;
-}
-.d35ecustom .ceus-skill-checks .ceus-skill {
-	flex: 3;
-    padding: 0px;
-    display: flex;
-    max-width: 147px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    width: 147px;
-}
-
-.d35ecustom .ceus .ceus-skill-checks input[type=checkbox] + label {
-    max-width: 147px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-	width: 147px;
-	overflow: hidden;
-}
-
-.system-D35E form .form-group .ceus-skill-checks {
-	max-height: 600px;
-}
-
-.d35ecustom .ceus fieldset {
-	border: none;
-}
-
-.system-pf1 form .form-group .ceus-skill-checks {
-	max-height: 600px;
-}
-
-.disabled-button {
-    cursor: default !important;
-    filter: opacity(0.5) !important;
-}
-
-.disabled-button:hover {
-    color: #000 !important;
-    border-color: #000 !important;
-    box-shadow: 0 0 6px inset #8d9ea7 !important;
-}
 
 /* Refactor */
+/** Requestor **/
 .ceus-requestor.ceus-refactor fieldset.select-users .form-group.user-select {
     display: inline-block;
     border: solid black 1px;
@@ -543,7 +122,11 @@ form .form-group .ceus-skill-checks {
     width: 30px;
     height: 30px;
     overflow: clip;
-    margin-top: -15px;
+}
+
+.ceus-requestor.ceus-refactor .select-actors input,
+.ceus-requestor.ceus-refactor .select-users input {
+	display: none;
 }
 
 .ceus-requestor.ceus-refactor fieldset.select-actors .actor.selected .name {
@@ -597,12 +180,6 @@ form .form-group .ceus-skill-checks {
 
 .ceus-requestor.ceus-refactor .select-rolls .context.invisible {
 	display: none;
-}
-
-.ceus-results-header {
-    text-align: center;
-    font-weight: bold;
-    font-size: 1.5em;
 }
 
 .ceus-refactor .ceus-results-list-item.rolled {
@@ -660,7 +237,7 @@ form .form-group .ceus-skill-checks {
 }
 
 
-/* Player Refactor Screen */
+/* Player Rolling Screen */
 .ceus-request-player .actor-check-img,
 .ceus-request-player .actor-check-name {
 	text-align: center;
@@ -699,6 +276,13 @@ form .form-group .ceus-skill-checks {
 .ceus-request-player .check-button.done {
 	pointer-events: none;
 	background-color: #AFA;
+}
+
+/** Results Screen **/
+.ceus-results-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
 }
 
 .ceus.ceus-result header {
@@ -740,6 +324,6 @@ form .form-group .ceus-skill-checks {
 	color: #F00;
 }
 
-.ceus-gm-actions {
+.ceus.ceus-result .ceus-gm-actions {
     display: flex;
 }
