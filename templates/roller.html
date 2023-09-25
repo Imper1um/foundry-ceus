@@ -1,74 +1,74 @@
-<div class="lmrtfy-dialog">
-    <div class="lmrtfy-roller-intro">
-        <span>{{localize "LMRTFY.RollerIntro"}}</span>
+<div class="ceus-dialog">
+    <div class="ceus-roller-intro">
+        <span>{{localize "Ceus.RollerIntro"}}</span>
     </div>
-    <div class="lmrtfy-actor-list">
+    <div class="ceus-actor-list">
         {{#each actors}}
-            <div class="lmrtfy-avatar">
+            <div class="ceus-avatar">
                 <img src="{{this.img}}"/>
                 <strong><em>{{this.name}}</em></strong>
             </div>
         {{/each}}
     </div>
     {{#if message}}
-    <div class="lmrtfy-reason">
-        <span><strong>{{localize "LMRTFY.Reason"}}</strong> {{message}}</span>
+    <div class="ceus-reason">
+        <span><strong>{{localize "Ceus.Reason"}}</strong> {{message}}</span>
     </div>
     {{/if}}
 
     {{#if chooseOne}}
-    <div class="lmrtfy-choose-one">
-        <span><strong>{{localize "LMRTFY.ChooseOne"}}</strong></span>
+    <div class="ceus-choose-one">
+        <span><strong>{{localize "Ceus.ChooseOne"}}</strong></span>
     </div>
     {{/if}}
     
-    <div class="lmrtfy-note">{{note}}</div>
+    <div class="ceus-note">{{note}}</div>
 
     {{#each abilities as |name ability|}}
     <div>
-        <button type="button" class="lmrtfy-ability-check" data-ability={{ability}}>{{localize "LMRTFY.AbilityCheck"}} {{localize name}}</button>
+        <button type="button" class="ceus-ability-check" data-ability={{ability}}>{{localize "Ceus.AbilityCheck"}} {{localize name}}</button>
     </div>
         {{#canFailAbilityChecks name ability}}
         {{/canFailAbilityChecks}}
     {{/each}}
     {{#each saves as |name ability|}}
     <div>
-        <button type="button" class="lmrtfy-ability-save" data-ability="{{ability}}">{{localize "LMRTFY.SavingThrow"}} {{localize name}}</button>
+        <button type="button" class="ceus-ability-save" data-ability="{{ability}}">{{localize "Ceus.SavingThrow"}} {{localize name}}</button>
     </div>
         {{#canFailSaveChecks name ability}}
         {{/canFailSaveChecks}}
     {{/each}}
     {{#each skills as |name skill|}}
     <div>
-        <button type="button" class="lmrtfy-skill-check" data-skill="{{skill}}">{{localize "LMRTFY.SkillCheck"}} {{localize name}}</button>
+        <button type="button" class="ceus-skill-check" data-skill="{{skill}}">{{localize "Ceus.SkillCheck"}} {{localize name}}</button>
     </div>
         {{#canFailSkillChecks name skill}}
         {{/canFailSkillChecks}}
     {{/each}}
     {{#if customFormula}}
     <div>
-        <button type="button" class="lmrtfy-custom-formula" data-formula="{{customFormula}}">{{localize "LMRTFY.CustomFormula"}} {{customFormula}}</button>
+        <button type="button" class="ceus-custom-formula" data-formula="{{customFormula}}">{{localize "Ceus.CustomFormula"}} {{customFormula}}</button>
     </div>
     {{/if}}
     {{#if initiative}}
     <div>
-        <button type="button" class="lmrtfy-initiative">{{localize "LMRTFY.Initiative"}}</button>
+        <button type="button" class="ceus-initiative">{{localize "Ceus.Initiative"}}</button>
     </div>
     {{/if}}
     {{#if deathsave}}
     <div>
-        <button type="button" class="lmrtfy-death-save">{{localize "LMRTFY.DeathSave"}}</button>
+        <button type="button" class="ceus-death-save">{{localize "Ceus.DeathSave"}}</button>
     </div>
     {{/if}}
     {{#if perception}}
     <div>
-        <button type="button" class="lmrtfy-perception">{{localize "LMRTFY.Perception"}}</button>
+        <button type="button" class="ceus-perception">{{localize "Ceus.Perception"}}</button>
     </div>
     {{/if}}
     {{#if tables}}
     {{#each tables as |table|}}
     <div>
-        <button type="button" class="lmrtfy-roll-table" data-table="{{table}}">{{localize "LMRTFY.RollTables"}} {{table}}</button>
+        <button type="button" class="ceus-roll-table" data-table="{{table}}">{{localize "Ceus.RollTables"}} {{table}}</button>
     </div>
     {{/each}}
     {{/if}}    

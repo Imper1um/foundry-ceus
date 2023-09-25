@@ -1,4 +1,4 @@
-<form autocomplete="off" onsubmit="event.preventDefault();" data-appid="{{appId}}" class="lmrtfy-form lmrtfy-request lmrtfy-request-player" data-requestid="{{requestOptions.requestId}}" data-isand="{{isAnd}}" data-isor="{{isOr}}">
+<form autocomplete="off" onsubmit="event.preventDefault();" data-appid="{{appId}}" class="ceus-form ceus-request ceus-request-player" data-requestid="{{requestOptions.requestId}}" data-isand="{{isAnd}}" data-isor="{{isOr}}">
 	<div class="header">
 		<h1 class="header-title">{{requestOptions.title}}</h1>
 		<div class="header-content">{{requestOptions.message}}</div>
@@ -14,10 +14,10 @@
 				<button class="check-button {{this.doneClass}}" id="check-button-{{this.roll.id}}" data-actorid="{{../actor._id}}" data-checkid="{{this.roll.id}}">{{localize this.roll.name}}</button>
 				{{#if this.isNotLast}}
 					{{#if ../../isAnd}}
-					<div class="check-separator check-and">{{localize "LMRTFY.Player.And"}}</div>
+					<div class="check-separator check-and">{{localize "Ceus.Player.And"}}</div>
 					{{/if}}
 					{{#if ../../isOr}}
-					<div class="check-separator check-or">{{localize "LMRTFY.Player.Or"}}</div>
+					<div class="check-separator check-or">{{localize "Ceus.Player.Or"}}</div>
 					{{/if}}
 				{{/if}}
 			{{/each}}

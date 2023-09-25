@@ -2,15 +2,15 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
     <fieldset>
         <div class="form-group">
-            <label>{{localize "LMRTFY.SelectUser"}}</label>
+            <label>{{localize "Ceus.SelectUser"}}</label>
 
             <select name="user" data-dtype="String">
-                <option value="tokens" selected>{{localize "LMRTFY.ControlledTokens"}}</option>
-                <option value="character">{{localize "LMRTFY.AssignedCharacters"}}</option>
-                <optgroup label="{{localize "LMRTFY.Macros"}}">
-                    <option value="selected">{{localize "LMRTFY.Selected"}}</option>
+                <option value="tokens" selected>{{localize "Ceus.ControlledTokens"}}</option>
+                <option value="character">{{localize "Ceus.AssignedCharacters"}}</option>
+                <optgroup label="{{localize "Ceus.Macros"}}">
+                    <option value="selected">{{localize "Ceus.Selected"}}</option>
                 </optgroup>
-                <optgroup label="{{localize "LMRTFY.Users"}}">
+                <optgroup label="{{localize "Ceus.Users"}}">
                     {{#each users}}
                     <option value="{{this.id}}">{{this.name}}</option>
                     {{/each}}
@@ -18,16 +18,16 @@
             </select>
         </div>
         <div class="form-group">
-            <label>{{localize "LMRTFY.SelectCharacters"}}</label>
-            <button type="button" class="select-all"><i class="fas fa-check-square"></i>{{localize "LMRTFY.SelectAll"}}</button>
-            <button type="button" class="deselect-all"><i class="fas fa-square"></i>{{localize "LMRTFY.SelectNone"}}</button>
+            <label>{{localize "Ceus.SelectCharacters"}}</label>
+            <button type="button" class="select-all"><i class="fas fa-check-square"></i>{{localize "Ceus.SelectAll"}}</button>
+            <button type="button" class="deselect-all"><i class="fas fa-square"></i>{{localize "Ceus.SelectNone"}}</button>
         </div>
-        <div class="form-group lmrtfy-actor-avatars">
+        <div class="form-group ceus-actor-avatars">
         {{#each actors}}
-            <div class="lmrtfy-actor" data-id="{{this.id}}">
-                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" {{#if (lmrtfy-controlledToken this)}}checked{{/if}} />
+            <div class="ceus-actor" data-id="{{this.id}}">
+                <input type="checkbox" name="actor-{{this.id}}" id="lmrtf-actor-{{this.id}}" data-dtype="Boolean" {{#if (ceus-controlledToken this)}}checked{{/if}} />
                 <label for="lmrtf-actor-{{this.id}}">                
-                {{#if (lmrtfy-showTokenImage this)}}<img src="{{this.prototypeToken.texture.src}}" />{{else}}<img src="{{this.img}}" />{{/if}}
+                {{#if (ceus-showTokenImage this)}}<img src="{{this.prototypeToken.texture.src}}" />{{else}}<img src="{{this.img}}" />{{/if}}
                 </label>
             </div>
         {{/each}}
@@ -36,13 +36,13 @@
 
     <fieldset>
         <div class="form-group">
-            <label>{{localize "LMRTFY.Modifiers"}}</label>
+            <label>{{localize "Ceus.Modifiers"}}</label>
             
             <select name="advantage" data-dtype="Number">
-                <option value="0">{{localize "LMRTFY.NormalRoll"}}</option>
-                <option value="1">{{localize "LMRTFY.AdvantageRoll"}}</option>
-                <option value="-1">{{localize "LMRTFY.DisadvantageRoll"}}</option>
-                <option value="2">{{localize "LMRTFY.QueryRoll"}}</option>
+                <option value="0">{{localize "Ceus.NormalRoll"}}</option>
+                <option value="1">{{localize "Ceus.AdvantageRoll"}}</option>
+                <option value="-1">{{localize "Ceus.DisadvantageRoll"}}</option>
+                <option value="2">{{localize "Ceus.QueryRoll"}}</option>
             </select>
 
             <select name="mode" data-dtype="String">
@@ -52,18 +52,18 @@
             </select>
         </div>
         <div class="form-group">
-            <label>{{localize "LMRTFY.WindowTitle"}}</label>
-            <input type="text" name="title" value='{{localize "LMRTFY.WindowTitleValue"}}' placeholder='{{localize "LMRTFY.WindowTitlePlaceholder"}}' data-dtype="String"/>
+            <label>{{localize "Ceus.WindowTitle"}}</label>
+            <input type="text" name="title" value='{{localize "Ceus.WindowTitleValue"}}' placeholder='{{localize "Ceus.WindowTitlePlaceholder"}}' data-dtype="String"/>
         </div>
         <div class="form-group">
-            <label>{{localize "LMRTFY.Message"}}</label>
-            <input type="text" name="message" value='' placeholder='{{localize "LMRTFY.MessagePlaceholder"}}' data-dtype="String"/>
+            <label>{{localize "Ceus.Message"}}</label>
+            <input type="text" name="message" value='' placeholder='{{localize "Ceus.MessagePlaceholder"}}' data-dtype="String"/>
         </div>
         <div class="form-group">
-            <label>{{localize "LMRTFY.ChooseOneDM"}}</label>
-            <div class="lmrtfy-extra-perception">
+            <label>{{localize "Ceus.ChooseOneDM"}}</label>
+            <div class="ceus-extra-perception">
                 <input type="checkbox" name="choose-one" id="lmrtf-choose-one" data-dtype="Boolean" />
-                <label for="lmrtf-choose-one">{{localize "LMRTFY.Enabled"}}</label>
+                <label for="lmrtf-choose-one">{{localize "Ceus.Enabled"}}</label>
             </div>
         </div>
     </fieldset>
@@ -71,10 +71,10 @@
     {{#if showDC}}
     <fieldset>
         <div class="form-group">
-            <label>{{localize "LMRTFY.DC"}}</label>
+            <label>{{localize "Ceus.DC"}}</label>
             <input type="number" name="dc" value="" placeholder="20" data-dtype="Integer"/>
             
-            <label>&nbsp;{{localize "LMRTFY.Visibility"}}</label>
+            <label>&nbsp;{{localize "Ceus.Visibility"}}</label>
             <select name="visibility" data-dtype="String">
                 <option value="gm" selected>{{localize "USER.RoleGamemaster"}}</option>
                 <option value="owner">{{localize "PERMISSION.OWNER"}}</option>
@@ -86,26 +86,26 @@
 
     <fieldset>
         <div class="form-group">
-            <label>{{localize "LMRTFY.Extras"}}</label>
+            <label>{{localize "Ceus.Extras"}}</label>
                 
-            <div class="lmrtfy-extras">
+            <div class="ceus-extras">
                 {{#if specialRolls.initiative}}
-                <div class="lmrtfy-extra-initiative">
+                <div class="ceus-extra-initiative">
                     <input type="checkbox" name="extra-initiative" id="lmrtf-extra-initiative" data-dtype="Boolean" />
-                    <label for="lmrtf-extra-initiative">{{localize "LMRTFY.Initiative"}}</label>
+                    <label for="lmrtf-extra-initiative">{{localize "Ceus.Initiative"}}</label>
                     
                 </div>
                 {{/if}}
                 {{#if specialRolls.deathsave}}
-                <div class="lmrtfy-extra-death-save">
+                <div class="ceus-extra-death-save">
                     <input type="checkbox" name="extra-death-save" id="lmrtf-extra-death-save" data-dtype="Boolean" />
-                    <label for="lmrtf-extra-death-save">{{localize "LMRTFY.DeathSave"}}</label>
+                    <label for="lmrtf-extra-death-save">{{localize "Ceus.DeathSave"}}</label>
                 </div>
                 {{/if}}
                 {{#if specialRolls.perception}}
-                <div class="lmrtfy-extra-perception">
+                <div class="ceus-extra-perception">
                     <input type="checkbox" name="extra-perception" id="lmrtf-extra-perception" data-dtype="Boolean" />
-                    <label for="lmrtf-extra-perception">{{localize "LMRTFY.Perception"}}</label>
+                    <label for="lmrtf-extra-perception">{{localize "Ceus.Perception"}}</label>
                 </div>
                 {{/if}}
             </div>
@@ -114,16 +114,16 @@
 
     <fieldset>
         <div class="form-group">
-            <label>{{localize "LMRTFY.CustomFormula"}}</label>
-            <input type="text" class="custom-formula" name="formula" value='' placeholder='{{localize "LMRTFY.CustomFormulaPlaceholder"}}' data-dtype="String"/>
+            <label>{{localize "Ceus.CustomFormula"}}</label>
+            <input type="text" class="custom-formula" name="formula" value='' placeholder='{{localize "Ceus.CustomFormulaPlaceholder"}}' data-dtype="String"/>
         </div>
-        <details class="lmrtfy-dice-tray-details">
-            <summary class="lmrtfy-dice-tray-expander">{{localize "LMRTFY.Selectors"}}</summary>
+        <details class="ceus-dice-tray-details">
+            <summary class="ceus-dice-tray-expander">{{localize "Ceus.Selectors"}}</summary>
             <div>
-                <div class="lmrtfy-dice-tray-buttons flexrow lmrtfy-dice-row-flexrow">
+                <div class="ceus-dice-tray-buttons flexrow ceus-dice-row-flexrow">
                     <!-- d4 -->
-                    <div class="lmrtfy-dice-tray-button" data-value="d4">                
-                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <div class="ceus-dice-tray-button" data-value="d4">                
+                        <svg class="ceus-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
                             <g>
                             <polygon points="31.7,15.7 13.2,47.8 31.7,37.1 	"/>
@@ -133,8 +133,8 @@
                         </svg>
                     </div>
                     <!-- d6 -->
-                    <div class="lmrtfy-dice-tray-button" data-value="d6">
-                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <div class="ceus-dice-tray-button" data-value="d6">
+                        <svg class="ceus-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
                             <g>
                                 <path d="M11.5,9h41c1.4,0,2.6,1.1,2.6,2.6v41c0,1.4-1.1,2.6-2.6,2.6h-41C10.1,55,9,53.9,9,52.5v-41C9,10.1,10.1,9,11.5,9z"/>
@@ -142,8 +142,8 @@
                         </svg>
                     </div>
                     <!-- d8 -->
-                    <div class="lmrtfy-dice-tray-button" data-value="d8">                
-                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <div class="ceus-dice-tray-button" data-value="d8">                
+                        <svg class="ceus-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
                             <g>
                                 <g transform="translate(-242.40981,-473.89862)">
@@ -156,8 +156,8 @@
                         </svg>
                     </div>
                     <!-- d10 -->
-                    <div class="lmrtfy-dice-tray-button" data-value="d10">                
-                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <div class="ceus-dice-tray-button" data-value="d10">                
+                        <svg class="ceus-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
                             <g>
                                 <g transform="matrix(1.1679092,0,0,1.1679092,-274.931,-137.53749)">
@@ -171,8 +171,8 @@
                         </svg>
                     </div>
                     <!-- d12 -->
-                    <div class="lmrtfy-dice-tray-button" data-value="d12">                
-                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <div class="ceus-dice-tray-button" data-value="d12">                
+                        <svg class="ceus-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
                             <g>
                                 <path d="M24,43.7l-5.4-16.3l13.7-10.8l14.1,10.8L41.2,44L24,43.7z"/>
@@ -185,8 +185,8 @@
                         </svg>
                     </div>
                     <!-- d20 -->
-                    <div class="lmrtfy-dice-tray-button" data-value="d20">                
-                        <svg class="lmrtfy-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <div class="ceus-dice-tray-button" data-value="d20">                
+                        <svg class="ceus-dice-svg-normal" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
                             <g transform="translate(-246.69456,-375.66745)">
                                 <path d="M278.2,382.1c-0.1,0-0.2,0-0.3,0.1L264.8,398c-0.2,0.3-0.2,0.3,0.1,0.3l26.4-0.1c0.4,0,0.4,0,0.1-0.3l-13-15.8
@@ -204,8 +204,8 @@
                         </svg>
                     </div>
                     <!-- d100 -->
-                    <div class="lmrtfy-dice-tray-button" data-value="d100">                
-                        <svg class="lmrtfy-dice-svg-normal lmrtfy-dice-svg-smaller" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                    <div class="ceus-dice-tray-button" data-value="d100">                
+                        <svg class="ceus-dice-svg-normal ceus-dice-svg-smaller" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
                             viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
                             <g>
                                 <g transform="matrix(1.1679092,0,0,1.1679092,-274.931,-137.53749)">
@@ -231,26 +231,26 @@
                         </svg>
                     </div>
                 </div>
-                <div class="lmrtfy-dice-tray-buttons flexrow lmrtfy-dice-row-flexrow">
-                    <div class="lmrtfy-dice-tray-button lmrtfy-bonus-button" data-value="-1">
+                <div class="ceus-dice-tray-buttons flexrow ceus-dice-row-flexrow">
+                    <div class="ceus-dice-tray-button ceus-bonus-button" data-value="-1">
                         -
                     </div>
-                    <div class="lmrtfy-dice-tray-button lmrtfy-bonus-button" data-value="+1">
+                    <div class="ceus-dice-tray-button ceus-bonus-button" data-value="+1">
                         +
                     </div>
                 </div>
-                <div class="form-group lmrtfy-dice-tray-checks">
-                    <div class="lmrtfy-ability-checks">
+                <div class="form-group ceus-dice-tray-checks">
+                    <div class="ceus-ability-checks">
                         {{#each abilityModifiers as |name key|}}
-                        <div class="lmrtfy-ability">
-                            <input type="checkbox" class="lmrtfy-formula-ability" name="lmrtfy-formula-{{key}}" id="lmrtfy-formula-{{key}}" data-value="{{key}}" />
-                            <label for="lmrtfy-formula-{{key}}">{{localize name}}</label>                
+                        <div class="ceus-ability">
+                            <input type="checkbox" class="ceus-formula-ability" name="ceus-formula-{{key}}" id="ceus-formula-{{key}}" data-value="{{key}}" />
+                            <label for="ceus-formula-{{key}}">{{localize name}}</label>                
                         </div>
                         {{/each}}
                     </div>
                 </div>
-                <div class="lmrtfy-clear-button-area">
-                    <button type="button" class="lmrtfy-clear-formula" name="lmrtfy-clear-custom" value="1"><i class="fas fa-pump-soap"></i>{{localize "LMRTFY.ClearCustomFormula"}}</button>
+                <div class="ceus-clear-button-area">
+                    <button type="button" class="ceus-clear-formula" name="ceus-clear-custom" value="1"><i class="fas fa-pump-soap"></i>{{localize "Ceus.ClearCustomFormula"}}</button>
                 </div>
             </div>
         </details>        
@@ -258,11 +258,11 @@
  
     <fieldset>
     <div class="form-group">
-        <label>{{localize "LMRTFY.AbilityChecks"}}</label>
+        <label>{{localize "Ceus.AbilityChecks"}}</label>
         
-        <div class="lmrtfy-ability-checks">
+        <div class="ceus-ability-checks">
             {{#each abilities as |name key|}}
-            <div class="lmrtfy-ability">
+            <div class="ceus-ability">
                 <input type="checkbox" name="check-{{key}}" id="lmrtf-check-{{key}}" data-dtype="Boolean" />
                 <label for="lmrtf-check-{{key}}">{{localize name}}</label>
                 
@@ -274,11 +274,11 @@
 
     <fieldset>
     <div class="form-group">
-        <label>{{localize "LMRTFY.SavingThrows"}}</label>
+        <label>{{localize "Ceus.SavingThrows"}}</label>
         
-        <div class="lmrtfy-saving-throws">
+        <div class="ceus-saving-throws">
             {{#each saves as |name key|}}
-            <div class="lmrtfy-ability">
+            <div class="ceus-ability">
                 <input type="checkbox" name="save-{{key}}" id="lmrtf-save-{{key}}" data-dtype="Boolean" />
                 <label for="lmrtf-save-{{key}}">{{localize name}}</label>            
             </div>
@@ -289,10 +289,10 @@
 
     <fieldset>
         <div class="form-group">
-            <label>{{localize "LMRTFY.SkillChecks"}}</label>
-            <div class="lmrtfy-skill-checks">
+            <label>{{localize "Ceus.SkillChecks"}}</label>
+            <div class="ceus-skill-checks">
                 {{#each skills as |name key|}}
-                <div class="lmrtfy-skill">
+                <div class="ceus-skill">
                     <input type="checkbox" name="skill-{{key}}" id="lmrtf-skill-{{key}}" data-dtype="Boolean" />
                     <label for="lmrtf-skill-{{key}}">{{localize name}}</label>
                 </div>
@@ -304,9 +304,9 @@
     {{#if tables}}
     <fieldset>
         <div class="form-group">
-            <label>{{localize "LMRTFY.RollTables"}}</label>
+            <label>{{localize "Ceus.RollTables"}}</label>
 
-            <select name="table" class="lmrtfy-roll-table-list" data-dtype="String" multiple="multiple">
+            <select name="table" class="ceus-roll-table-list" data-dtype="String" multiple="multiple">
                 {{#each tables as |name|}}
                     <option value="{{name}}">{{name}}</option>
                 {{/each}}
@@ -315,8 +315,8 @@
     </fieldset>
     {{/if}}
 
-    <div class="lmrtfy-submit">
-        <button type="submit" class="lmrtfy-request-roll" name="submit" value="1"><i class="fas fa-dice"></i>{{localize "LMRTFY.RequestRolls"}}</button>
-        <button type="button" class="lmrtfy-save-roll" name="submit" value="1"><i class="fas fa-download"></i>{{localize "LMRTFY.SaveRequest"}}</button>
+    <div class="ceus-submit">
+        <button type="submit" class="ceus-request-roll" name="submit" value="1"><i class="fas fa-dice"></i>{{localize "Ceus.RequestRolls"}}</button>
+        <button type="button" class="ceus-save-roll" name="submit" value="1"><i class="fas fa-download"></i>{{localize "Ceus.SaveRequest"}}</button>
     </div>
 </form>
