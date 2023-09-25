@@ -39,9 +39,6 @@ export class ceus_RequestWindow extends FormApplication {
 		options.width = 950;
 		options.height = 800;
 		options.classes = ["ceus", "ceus-requestor", "ceus-refactor"];
-		if (game.settings.get('ceus', 'enableParchmentTheme')) {
-			options.classes.push('ceus-parchment');
-		}
 		return options;
 	}
 	
