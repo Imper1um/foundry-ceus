@@ -22,6 +22,7 @@ export class ceus_LogEngine {
 	}
 	
 	Error(module, message, error = null, system = null) {
+		if (!Ceus.current.settingsEngine || !Ceus.current.settingsEngine.isInitialized) { return; }
 		if (system == null) { system = this.system; }
 		if (typeof message !== "string") { message = JSON.stringify(message); }
 		const logLevel = Ceus.current.settingsEngine.LogLevel;
@@ -41,6 +42,7 @@ export class ceus_LogEngine {
 	}
 	
 	Warn(module, message, error = null, system = null) {
+		if (!Ceus.current.settingsEngine || !Ceus.current.settingsEngine.isInitialized) { return; }
 		if (system == null) { system = this.system; }
 		if (typeof message !== "string") { message = JSON.stringify(message); }
 		const logLevel = Ceus.current.settingsEngine.LogLevel;
@@ -60,6 +62,7 @@ export class ceus_LogEngine {
 	}
 	
 	Info(module, message, error = null, system = null) {
+		if (!Ceus.current.settingsEngine || !Ceus.current.settingsEngine.isInitialized) { return; }
 		if (system == null) { system = this.system; }
 		if (typeof message !== "string") { message = JSON.stringify(message); }
 		const logLevel = Ceus.current.settingsEngine.LogLevel;
@@ -79,6 +82,7 @@ export class ceus_LogEngine {
 	}
 	
 	Debug(module, message, error = null, system = null) {
+		if (!Ceus.current.settingsEngine || !Ceus.current.settingsEngine.isInitialized) { return; }
 		if (system == null) { system = this.system; }
 		if (typeof message !== "string") { message = JSON.stringify(message); }
 		const logLevel = Ceus.current.settingsEngine.LogLevel;
@@ -98,6 +102,7 @@ export class ceus_LogEngine {
 	}
 	
 	Trace(module, message, error = null, system = null) {
+		if (!Ceus.current.settingsEngine || !Ceus.current.settingsEngine.isInitialized) { return; }
 		if (system == null) { system = this.system; }
 		if (typeof message !== "string") { message = JSON.stringify(message); }
 		const logLevel = Ceus.current.settingsEngine.LogLevel;

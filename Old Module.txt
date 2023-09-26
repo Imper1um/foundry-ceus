@@ -1,7 +1,6 @@
 This file is just holding old module.json information for later.
 "dnd5e",
 		"dnd5eJP",
-		"pf1",
 		"pf2e",
 		"D35E",
 		"sw5e",
@@ -26,14 +25,7 @@ This file is just holding old module.json information for later.
 				"id": "dnd5eJP",
 				"type": "system"
 			},
-			{
-				"id": "pf1",
-				"type": "system",
-				"manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/v0.82.1/downloads/system.json",
-				"compatibility": {
-					"verified": "0.82.1"
-				}
-			},
+			,
 			{
 				"id": "pf2e",
 				"type": "system",

@@ -212,7 +212,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const saveRoll = rp.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.rollId);
 		const completeRoll = await actor.rollSave(saveRoll.saveId, rp.baseRollOptions());
-		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
 	async rollAbility(requestOptions, actor, requestItem) {
