@@ -423,7 +423,7 @@ export class ceus_ResultsWindow extends FormApplication {
 				});
 			}
 			pendingRoll.possibleUsers = pendingRoll.users.map(u => u.name).join("<br />");
-			pendingRoll.possibleRolls = pendingRoll.rolls.map(u => `<div class="roll" data-rollid="${u.roll.rollId}">${possibleRollName}</div>`).join("");
+			pendingRoll.possibleRolls = pendingRoll.rolls.map(u => `<div class="roll" data-rollid="${u.roll.rollId}">${u.possibleRollName}</div>`).join("");
 			this.pendingRolls.push(pendingRoll);
 		}
 	}
