@@ -377,4 +377,16 @@
 	color: #F00;
 }
 
+.ceus.announce-result .result.crit-success .roll-total {
+    font-weight: 1000;
+    color: #0F0;
+    border: solid #0F0 1px;
+    text-align: center;
+}
 
+.ceus.announce-result .result.crit-fail .roll-total {
+    font-weight: 1000;
+    color: #F00;
+    border: solid #F00 1px;
+    text-align: center;
+}

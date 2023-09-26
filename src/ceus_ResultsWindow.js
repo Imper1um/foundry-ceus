@@ -160,7 +160,7 @@ export class ceus_ResultsWindow extends FormApplication {
 				for (const roll of rolls) {
 					const passFail = roll.isPass ? "✅" : (roll.isFail ? "❌": "");
 					const passClass = roll.isPass ? "pass" : (roll.isFail ? "fail" : "");
-					const critClass = roll.critFail ? "crit-fail" : (roll.critSuccess ? "crit-success" : "");
+					const critClass = roll.result.critFail ? "crit-fail" : (roll.result.critSuccess ? "crit-success" : "");
 				dataSend += `<tr class="result ${passClass} ${critClass}"><td class="character">${roll.actor.name}</td><td class="roll-name">${game.i18n.localize(roll.possibleRoll.name)}</td><td class="roll-total">${roll.result.rolledAmount}</td><td class="roll-status">${passFail}</td></tr>`;
 				}
 				dataSend += "</table>";
@@ -234,8 +234,12 @@ export class ceus_ResultsWindow extends FormApplication {
 		var possibleRolls = Utils.flattenRolls(rp.getAvailableRolls());
 		var actorList = game.actors.entities || game.actors.contents;
 		var userList = game.users.entities || game.users.contents;
+		var rerollList = [];
 		for (const roll of rolls) {
+			const actorItem = actorList.find(al => al._id === roll.actor._id);
 			var pendingRoll = this.pendingRolls.find(r => r.id == roll.actor._id);
+			const possibleRoll = possibleRolls.find(pr => pr.id === roll.roll.rollId);
+			const originalRequestItem = this.requestOptions.requestItems.find(ri => ri.id === roll.roll.id);
 			var alreadyExists = true;
 			if (!pendingRoll) {
 				alreadyExists = false;
@@ -253,7 +257,7 @@ export class ceus_ResultsWindow extends FormApplication {
 				pendingRoll.rolls.push(roll);
 			}
 			roll.isRolled = false;
-			if (!users.length) {
+			if (!pendingRoll.users.length) {
 				for (const u of this.requestOptions.requestUsers) {
 					const userItem = userList.find(ul => ul._id === u.userId);
 					if (!userItem) { continue; }
@@ -261,13 +265,18 @@ export class ceus_ResultsWindow extends FormApplication {
 					pendingRoll.users.push(userItem);
 				}
 			}
+			if (!rerollList.some(l => l.id === roll.roll.id)) {
+				rerollList.push(originalRequestItem);
+			}
+			this.pendingRolls.push(pendingRoll);
 			this.completedRolls = this.completedRolls.filter(r => !(r.actor._id == roll.actor._id && r.roll.id == roll.roll.id));
 		}
 		
 		const newNotification = this.requestOptions.shrink();
 		const rerollActors = rolls.map(r => r.actor._id);
-		const rerollRolls = rolls.map(r => r.roll.id);
 		newNotification.requestActors = newNotification.requestActors.filter(ra => rerollActors.includes(ra.actorId));
+		newNotification.requestItems = rerollList;
+		Ceus.current.socketEngine.pushRefactorRequest(newNotification.shrink());
 		
 		this.render(false);
 	}
