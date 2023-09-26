@@ -25,7 +25,7 @@ jobs:
 
 
       - name: Authenticate with GitHub CLI
-        run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+        run: echo ${{ secrets.FINE_GRAINED_PAT }} | gh auth login --with-token
 
       - name: Extract and Increment Version
         run: |
@@ -72,4 +72,4 @@ jobs:
           pr_body: "Auto PR to update version number."
           pr_label: "automerge"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.FINE_GRAINED_PAT }}
