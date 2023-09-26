@@ -7,6 +7,8 @@ It's simple to say, pronounced like 'cues.' The name's inspired by Coeus, a Gree
 # Rebrand / Refactor
 This new functionality completely changes how the asking for rolls works. Ceus no longer supports any legacy versions of `RollProvider` and those systems are now removed to prevent collisions. The code remaining is just kept around for documentation.
 
+For information on how to use Ceus and its features check out [USAGE.md](USAGE.md).
+
 ## Abstracting Roll functionality
 
 Each system has a different way of accomplishing rolls. As such, asking for a roll is handled by each `RefactorRollProvider`. All of the figuring out how to roll will be handled by the Provider, rather than a weird way of handling it in the rolling system.
