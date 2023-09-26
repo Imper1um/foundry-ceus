@@ -1,10 +1,13 @@
 # Ceus
+
 Ceus is a module that helps Game Masters ask for rolls for specific players. This speeds up the game as you don't have players hunting their character sheet for rolls, or asking what things to add that the GM is looking for, or even reminding players what kind of roll they should be doing. It also can roll for players when you want to do an en masse roll without worrying about the players doing it, or letting them know it exists.
 
 ## What is a Ceus?
+
 It's simple to say, pronounced like 'cues.' The name's inspired by Coeus, a Greek Titan linked to intelligence. This project is a fork of LMRTFY, but honestly, the name was a pain to type and had a negative vibe, since it was linked to "LMGTFY (Let Me Google That For You)", a website commenters use as a snarky response when someone asks a simple question that could be answered by a 5 second Google search. Plus, I've changed so much of the code that it was time for a fresh start. Imper1um thought it was clever he made it.
 
 # Rebrand / Refactor
+
 This new functionality completely changes how the asking for rolls works. Ceus no longer supports any legacy versions of `RollProvider` and those systems are now removed to prevent collisions. The code remaining is just kept around for documentation.
 
 For information on how to use Ceus and its features check out [USAGE.md](USAGE.md).
