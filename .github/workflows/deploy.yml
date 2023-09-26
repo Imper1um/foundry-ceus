@@ -18,6 +18,16 @@ jobs:
       - name: Install jq
         run: sudo apt-get install jq
 
+      - name: Install GitHub CLI
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key C99B11DEB97541F0
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt update
+          sudo apt install gh
+
+      - name: Authenticate with GitHub CLI
+        run: echo ${{ secrets.GITHUB_TOKEN }} | gh auth login --with-token
+
       - name: Extract and Increment Version
         run: |
           VERSION=$(jq -r '.version' module.json)
@@ -27,16 +37,9 @@ jobs:
           mv temp.json module.json
 
       - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        with:
-          tag_name: ${{ env.NEW_VERSION }}
-          release_name: Release ${{ env.NEW_VERSION }}
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
+        run: |
+          gh release create ${{ env.NEW_VERSION }} -t "Release ${{ env.NEW_VERSION }}" -n "Release notes for ${{ env.NEW_VERSION }}"
+          
       - name: Update module.json with Download URL
         run: |
           DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${{ env.NEW_VERSION }}/module.zip"
@@ -47,36 +50,11 @@ jobs:
         run: |
           zip -r module.zip module.json css/* lang/* src/* templates/*
           tar -zcvf module.tar.gz module.json css lang src templates
-          
-      - name: Upload module.json Asset
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./module.json
-          asset_name: module.json
-          asset_content_type: application/json
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
 
-      - name: Upload Release Assets
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./module.zip
-          asset_name: module.zip
-          asset_content_type: application/zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      
-      - name: Upload TAR.GZ Asset
-        uses: actions/upload-release-asset@v1
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./module.tar.gz
-          asset_name: module.tar.gz
-          asset_content_type: application/gzip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Assets to GitHub Release
+        run: |
+          gh release upload ${{ env.NEW_VERSION }} module.zip
+          gh release upload ${{ env.NEW_VERSION }} module.tar.gz
 
       - name: Commit and Push Updated module.json to deploy branch
         run: |
@@ -85,7 +63,7 @@ jobs:
           git add module.json
           git commit -m "Update version in module.json"
           git push origin deploy
-          
+
       - name: Create Pull Request to push new version back to master
         uses: repo-sync/pull-request@v2
         with:
