@@ -84,10 +84,10 @@
 		<div class="form-group roll-privacy">
 			<label for="roll-privacy">{{localize "Ceus.Requestor.SelectRolls.RollPrivacyName"}}</label>
 			<select id="roll-privacy" name="roll-privacy">
-				<option value="public">Public Roll</option>
-				<option value="blind">Blind GM Roll</option>
-				<option value="gm">GM Roll</option>
-				<option value="self">Self Roll</option>
+				<option value="public" {{#if rollPrivacy.public}}selected{{/if}}>Public Roll</option>
+				<option value="blind" {{#if rollPrivacy.blind}}selected{{/if}}>Blind GM Roll</option>
+				<option value="gm" {{#if rollPrivacy.gm}}selected{{/if}}>GM Roll</option>
+				<option value="self" {{#if rollPrivacy.self}}selected{{/if}}>Self Roll</option>
 			</select>
 			<p class="hint">{{localize "Ceus.Requestor.SelectRolls.RollPrivacyHint"}}</p>
 		</div>
@@ -102,9 +102,9 @@
 		<div class="form-group roll-number">
 			<label for="roll-number">{{localize "Ceus.Requestor.SelectRolls.RollNumberName"}}</label>
 			<select id="roll-number" name="roll-number">
-				<option value="any">Roll Any</option>
-				<option value="one">Roll only one</option>
-				<option value="all">Roll All</option>
+				<option value="any" {{#if rollNumber.any}}selected{{/if}}>Roll Any</option>
+				<option value="one" {{#if rollNumber.one}}selected{{/if}}>Roll only one</option>
+				<option value="all" {{#if rollNumber.all}}selected{{/if}}>Roll All</option>
 			</select>
 			<p class="hint">{{localize "Ceus.Requestor.SelectRolls.RollNumberHint"}}</p>
 		</div>

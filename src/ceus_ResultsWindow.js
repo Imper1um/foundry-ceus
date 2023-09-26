@@ -3,6 +3,7 @@ import { Ceus } from "./ceus.js";
 import { ceus_SocketEngine } from "./ceus_SocketEngine.js";
 import { ceus_RequestUser } from "./ceus_RequestUser.js";
 import { ceus_Result } from "./ceus_Result.js";
+import { ceus_LogEngine } from "./ceus_LogEngine.js";
 
 export class ceus_ResultsWindow extends FormApplication {
 	constructor(requestOptions, requestType, ...args) {
@@ -21,6 +22,13 @@ export class ceus_ResultsWindow extends FormApplication {
 			requestOptions.id, 
 			async (data) => this.onCancelReceived(data),
 			async (data) => this.onFilter(data));
+	}
+	
+	static get log() {
+		if (!ceus_ResultsWindow._log) {
+			ceus_ResultsWindow._log = new ceus_LogEngine("ceus_ResultsWindow");
+		}
+		return ceus_ResultsWindow._log;
 	}
 	
 	async onFilter(data) {
@@ -52,9 +60,6 @@ export class ceus_ResultsWindow extends FormApplication {
 		options.width = 950;
 		options.height = 800;
 		options.classes = ["ceus", "ceus-results", "ceus-refactor"];
-		if (game.settings.get('ceus', 'enableParchmentTheme')) {
-			options.classes.push('ceus-parchment');
-		}
 		return options;
 	}
 	
@@ -408,14 +413,17 @@ export class ceus_ResultsWindow extends FormApplication {
 			}
 			for (const r of this.requestOptions.requestItems) {
 				if (r.trainedOption === "HideUntrained" && !rp.isActorTrained(actorItem, r.rollType, r.rollId)) { continue; }
+				const possibleRoll = possibleRolls.find(pr => pr.id === r.rollId);
 				pendingRoll.rolls.push({
 					actor: actorItem,
 					roll: r,
-					isRolled: false
+					isRolled: false,
+					possibleRoll: possibleRoll,
+					possibleRollName: possibleRoll ? game.i18n.localize(possibleRoll.name) : r.rollId
 				});
 			}
 			pendingRoll.possibleUsers = pendingRoll.users.map(u => u.name).join("<br />");
-			pendingRoll.possibleRolls = pendingRoll.rolls.map(u => `<div class="roll" data-rollid="${u.roll.rollId}"> ${u.roll.rollId}</div>`).join("");
+			pendingRoll.possibleRolls = pendingRoll.rolls.map(u => `<div class="roll" data-rollid="${u.roll.rollId}">${possibleRollName}</div>`).join("");
 			this.pendingRolls.push(pendingRoll);
 		}
 	}

@@ -60,7 +60,18 @@ export class ceus_RequestWindow extends FormApplication {
 			preventsMacro: this.preventsMacro,
 			preventsSubmission: this.preventsSubmission,
 			permitSetRollPrivacy: rp.permitSetRollPrivacy(),
-			permitRequireRollPrivacy: rp.permitRequireRollPrivacy()
+			permitRequireRollPrivacy: rp.permitRequireRollPrivacy(),
+			rollNumber: {
+				one: this.requestOptions.rollNumber === "one",
+				any: this.requestOptions.rollNumber === "any",
+				all: this.requestOptions.rollNumber === "all"
+			},
+			rollPrivacy: {
+				public: this.requestOptions.rollPrivacy === "public",
+				gm: this.requestOptions.rollPrivacy === "gm",
+				blind: this.requestOptions.rollPrivacy === "blind",
+				self: this.requestOptions.rollPrivacy === "self"
+			}
 		};
 	}
 	
@@ -221,6 +232,8 @@ export class ceus_RequestWindow extends FormApplication {
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		
 		requestWindow.requestOptions.rollPrivacy = item.val();
+		
+		requestWindow.render(false);
 	}
 	
 	async _onTitleChange(event) {
