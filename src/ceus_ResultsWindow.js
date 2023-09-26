@@ -205,7 +205,7 @@ export class ceus_ResultsWindow extends FormApplication {
 					const passClass = actor.rollStatus == true ? "pass" : (actor.rollStatus == true ? "fail" : "");
 					dataSend += `<tr class="result ${passClass}"><td>${actor.name}</td><td>${passFail}</td></tr>`;
 				}
-				dataSend += "</table>";
+				dataSend += "</tbody></table>";
 				break;
 			case "success":
 				for (const roll of rolls) {
