@@ -230,9 +230,12 @@ export class ceus_RefactorRollProvider {
 		} else if (check.canCritFail && result.critFail) {
 			crit = "crit-fail";
 		}
+		const possibleRolls = Utils.flattenRolls(this.getAvailableRolls());
+		const possibleRoll = possibleRolls.find(pr => pr.id === check.rollId);
+		const rollName = possibleRoll ? game.i18n.localize(possibleRoll.name) : check.rollId;
 		const ispass = result.isPass == true ? "pass" : (result.isPass == false ? "fail" : "");
 		var htmlView = `<div class="ceus ceus-result ceus-chat ${sensitive} ${ispass} ${requestOptions.rollPrivacy}" data-requestid="${requestOptions.id}" data-actorid="${actor._id}" data-userid="${user._id}" data-rollid="${check.rollId}" data-total="${result.rolledAmount}" data-ispass="${result.isPass}" data-dc="${check.dc}">
-			<header>${check.rollId}</header>
+			<header>${rollName}</header>
 			<div class="result-body">
 				<div class="result-total">${result.rolledAmount}</div>
 				<div class="result-breakdown">${result.rollBreakdown}</div>

@@ -418,12 +418,9 @@ export class ceus_ResultsWindow extends FormApplication {
 					actor: actorItem,
 					roll: r,
 					isRolled: false,
-					possibleRoll: possibleRoll,
-					possibleRollName: possibleRoll ? game.i18n.localize(possibleRoll.name) : r.rollId
+					possibleRoll: possibleRoll
 				});
 			}
-			pendingRoll.possibleUsers = pendingRoll.users.map(u => u.name).join("<br />");
-			pendingRoll.possibleRolls = pendingRoll.rolls.map(u => `<div class="roll" data-rollid="${u.roll.rollId}">${u.possibleRollName}</div>`).join("");
 			this.pendingRolls.push(pendingRoll);
 		}
 	}

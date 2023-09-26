@@ -324,6 +324,15 @@
 	color: #F00;
 }
 
-.ceus.ceus-result .ceus-gm-actions {
+.ceus .ceus-gm-actions {
     display: flex;
+    flex-wrap: wrap;
+}
+
+.ceus .ceus-gm-actions .gm-action-all {
+    flex: 1;
+}
+
+.ceus .ceus-gm-actions .gm-action-all.gm-action-reroll {
+    flex: 100%;
 }
