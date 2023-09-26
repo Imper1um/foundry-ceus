@@ -273,9 +273,29 @@
 	pointer-events: none;
 }
 
+.ceus .checks fieldset {
+	display: flex;
+}
+
+.ceus .checks fieldset legend {
+	border: solid 1px;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.ceus-request-player fieldset .check-button,
+.ceus-request-player fieldset .check-separator {
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 8px;
+}
+
 .ceus-request-player .check-button.done {
 	pointer-events: none;
-	background-color: #AFA;
+	background-color: #353;
+	text-decoration: line-through;
+	color: #AAA;
 }
 
 /** Results Screen **/

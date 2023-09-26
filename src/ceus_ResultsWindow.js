@@ -219,7 +219,7 @@ export class ceus_ResultsWindow extends FormApplication {
 		}
 		
 		let chatData = {
-			user: user.id,
+			user: game.user.id,
 			content: dataSend,
 			type: CONST.CHAT_MESSAGE_TYPES.OTHER
 		};
