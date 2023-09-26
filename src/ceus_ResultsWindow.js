@@ -116,18 +116,18 @@ export class ceus_ResultsWindow extends FormApplication {
 		const actorid = button.data("actorid");
 		switch (action) {
 			case "roll":
-				return await this.roll(this.pendingRolls.find(r => r.id === actorid).id);
+				return await this.roll([this.pendingRolls.find(r => r.id === actorid).id]);
 			case "notify":
-				return await this.notify(this.pendingRolls.find(r => r.id === actorid).id);
+				return await this.notify([this.pendingRolls.find(r => r.id === actorid).id]);
 			case "cancel":
-				return await this.cancel(this.pendingRolls.find(r => r.id === actorid).id);
+				return await this.cancel([this.pendingRolls.find(r => r.id === actorid).id]);
 			case "reroll":
 				const reroll = this.completedRolls.find(r => r.actor._id === actorid && r.roll.id === button.data("roll"));
-				return await this.reroll(reroll);
+				return await this.reroll([reroll]);
 		}
 		if (action.startsWith("announce")) {
 			const announce = this.completedRolls.find(r => r.actor._id === actorid && r.roll.id === button.data("roll"));
-			return await this.announce(announce, action.split('-')[1]);
+			return await this.announce([announce], action.split('-')[1]);
 		}
 	}
 	
