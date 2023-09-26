@@ -31,6 +31,7 @@ This new branch is a new way of thinking on how rolls can be accomplished, compl
 For more information, see the [REFACTOR.md](/REFACTOR.md) .
 
 ## Updated Systems:
+- Pathfinder - 1st Edition (pf1e)
 - Starfinder - 1st Edition (SFRPG)
 
 Updating LMRTFY on this branch with systems requires that you adhere to the [REFACTOR.md](/REFACTOR.md) rules. Legacy systems for LMRTFY on this branch will no longer be accepted. Once you have created a new `RefactorRollProvider`, you can check out [CONTRIBUTING.md](/CONTRIBUTING.md) on instructions on how to create a Pull Request.
@@ -38,10 +39,9 @@ Updating LMRTFY on this branch with systems requires that you adhere to the [REF
 ## Planned Systems:
 These systems are planned on upgrading to Ceus-compatible. I have ordered these in priority:
 
-1. Pathfinder - 1st Edition (pf1e)
-2. Pathfinder - 2nd Edition (pf2e)
-3. Dungeons and Dragons - 5th Edition (dnd5e)
-4. Dungeons and Dragons - 3.5 Edition (D35E)
+1. Pathfinder - 2nd Edition (pf2e)
+2. Dungeons and Dragons - 5th Edition (dnd5e)
+3. Dungeons and Dragons - 3.5 Edition (D35E)
 
 ## Unplanned Systems
 These systems were compatible with the old LMRTFY, but I do not have any immediate plans on upgrading their functionality. Check out [CONTRIBUTING.md](/CONTRIBUTING.md) if you want to help!
