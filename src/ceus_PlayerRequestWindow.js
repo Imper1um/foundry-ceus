@@ -94,7 +94,8 @@ export class ceus_PlayerRequestWindow extends FormApplication {
 			actorItem.doneClass = "any";
 			actorItem.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollAny");
 		}
-		if (requestWindow.actors.every(a => a.checks.every(i => i.doneClass === "done"))) {
+		if (requestWindow.actors.every(a => a.checks.every(i => i.doneClass === "done")) ||
+			requestWindow.requestOptions.rollNumber === "one" && requestWindow.actors.every(a => a.checks.some(i => i.doneClass === "done"))) {
 			requestWindow.close();
 			return;
 		}
@@ -161,7 +162,8 @@ export class ceus_PlayerRequestWindow extends FormApplication {
 			actor.doneMessage = game.i18n.localize("Ceus.Player.Warnings.RollAny");
 		}
 		
-		if (requestWindow.actors.every(a => a.checks.every(i => i.doneClass === "done"))) {
+		if (requestWindow.actors.every(a => a.checks.every(i => i.doneClass === "done")) ||
+			requestWindow.requestOptions.rollNumber === "one" && requestWindow.actors.every(a => a.checks.some(i => i.doneClass === "done"))) {
 			requestWindow.close();
 			ui.notifications.info(game.i18n.localize("Ceus.Player.CloseInfo"));
 			return;
