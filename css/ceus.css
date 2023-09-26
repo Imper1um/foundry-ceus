@@ -293,9 +293,19 @@
 
 .ceus-request-player .check-button.done {
 	pointer-events: none;
-	background-color: #353;
+	background-color: #353 !important;
 	text-decoration: line-through;
 	color: #AAA;
+}
+
+.ceus-request-player .checks-actor.done .check-separator,
+.ceus-request-player .checks-actor.done .check-button {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.ceus-request-player .checks-actor.done legend {
+	background-color: #353;
 }
 
 /** Results Screen **/
@@ -303,45 +313,6 @@
     text-align: center;
     font-weight: bold;
     font-size: 1.5em;
-}
-
-.ceus.ceus-result header {
-    border: solid 1px #FFF;
-    border-radius: 20px;
-    text-align: center;
-    background-color: #000;
-    margin: 4px;
-    font-size: 1.5em;
-    font-weight: bold;
-}
-
-.ceus.ceus-result .result-body .result-total {
-    border: solid 1px #FFF;
-    border-radius: 20px;
-    text-align: center;
-    background-color: #000;
-    margin: 4px;
-    font-size: 1.2em;
-}
-
-.ceus.ceus-result.sensitive {
-	background-color: rgba(70,70,70,0.3);
-}
-
-.ceus.ceus-result.fail .result-total {
-	border-color: #F00;
-}
-
-.ceus.ceus-result.pass .result-total {
-	border-color: #0F0;
-}
-
-.ceus.ceus-result.crit-success .result-total {
-	color: #0F0;
-}
-
-.ceus.ceus-result.crit-fail .result-total {
-	color: #F00;
 }
 
 .ceus .ceus-gm-actions {
@@ -356,3 +327,54 @@
 .ceus .ceus-gm-actions .gm-action-all.gm-action-reroll {
     flex: 100%;
 }
+
+/** Announcements **/
+.ceus.ceus-result header,
+.ceus .announce.announce-any .announce-key,
+.ceus.announce-result .announce-success .announce-success-roll,
+.ceus.announce-result .announce-success .announce-success-character {
+    border: solid 1px #FFF;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #000;
+    margin: 4px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.ceus.ceus-result .result-body .result-total,
+.ceus .announce.announce-any .announce-result,
+.ceus.announce-result .announce-success .announce-success-result {
+    border: solid 1px #FFF;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #000;
+    margin: 4px;
+    font-size: 1.2em;
+}
+
+.ceus.ceus-result.sensitive {
+	background-color: rgba(70,70,70,0.3);
+}
+
+.ceus.ceus-result.fail .result-total,
+.ceus .announce.announce-any.fail .announce-result,
+.ceus .announce-success.fail .announce-success-result {
+	border-color: #F00;
+}
+
+.ceus.ceus-result.pass .result-total,
+.ceus .announce.announce-any.pass .announce-result,
+.ceus .announce-success.pass .announce-success-result {
+	border-color: #0F0;
+}
+
+.ceus.ceus-result.crit-success .result-total {
+	color: #0F0;
+}
+
+.ceus.ceus-result.crit-fail .result-total {
+	color: #F00;
+}
+
+

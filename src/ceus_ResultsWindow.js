@@ -159,7 +159,9 @@ export class ceus_ResultsWindow extends FormApplication {
 					<tbody>`;
 				for (const roll of rolls) {
 					const passFail = roll.isPass ? "✅" : (roll.isFail ? "❌": "");
-					dataSend += `<tr class="result ${roll.passClass}"><td>${roll.actor.name}</td><td>${game.i18n.localize(roll.possibleRoll.name)}</td><td>${roll.result.rolledAmount}</td><td>${passFail}</td></tr>`;
+					const passClass = roll.isPass ? "pass" : (roll.isFail ? "fail" : "");
+					const critClass = roll.critFail ? "crit-fail" : (roll.critSuccess ? "crit-success" : "");
+				dataSend += `<tr class="result ${passClass} ${critClass}"><td class="character">${roll.actor.name}</td><td class="roll-name">${game.i18n.localize(roll.possibleRoll.name)}</td><td class="roll-total">${roll.result.rolledAmount}</td><td class="roll-status">${passFail}</td></tr>`;
 				}
 				dataSend += "</table>";
 				break;
@@ -180,7 +182,7 @@ export class ceus_ResultsWindow extends FormApplication {
 					<thead>
 						<tr>
 							<th>${game.i18n.localize("Ceus.Results.Announce.Character")}</th>
-							<th>${game.i18n.localize("Ceus.Results.Announce.Success")}</th>
+							<th>${game.i18n.localize("Ceus.Results.Announce.Status")}</th>
 						</tr>
 					</thead>
 					<tbody>`;
@@ -201,7 +203,7 @@ export class ceus_ResultsWindow extends FormApplication {
 				for (const actor of uniqueActors) {
 					const passFail = actor.rollStatus == true ? "✅" : (actor.rollStatus == false ? "❌": "");
 					const passClass = actor.rollStatus == true ? "pass" : (actor.rollStatus == true ? "fail" : "");
-					dataSend += `<tr class="result ${roll.passClass}"><td>${actor.name}</td><td>${passFail}</td></tr>`;
+					dataSend += `<tr class="result ${passClass}"><td>${actor.name}</td><td>${passFail}</td></tr>`;
 				}
 				dataSend += "</table>";
 				break;
@@ -209,6 +211,7 @@ export class ceus_ResultsWindow extends FormApplication {
 				for (const roll of rolls) {
 					const passFail = roll.isPass ? "✅" : (roll.isFail ? "❌": "");
 					const passClass = roll.isPass ? "pass" : (roll.isFail ? "fail" : "");
+					
 					dataSend = `<div class="announce-success ${passClass}">
 						<div class="announce-success-roll">${game.i18n.localize(roll.possibleRoll.name)}</div>
 						<div class="announce-success-character">${roll.actor.name}</div>
@@ -220,7 +223,7 @@ export class ceus_ResultsWindow extends FormApplication {
 		
 		let chatData = {
 			user: game.user.id,
-			content: dataSend,
+			content: `<div class="ceus announce-result">${dataSend}</div>`,
 			type: CONST.CHAT_MESSAGE_TYPES.OTHER
 		};
 		await ChatMessage.create(chatData);
