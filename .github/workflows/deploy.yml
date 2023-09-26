@@ -8,35 +8,55 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Extract and Increment Version
+        run: |
+          VERSION=$(jq -r '.version' module.json)
+          NEW_VERSION=$(echo $VERSION | awk -F. '{$NF = $NF + 1;} 1' OFS=.)
+          echo "NEW_VERSION=${NEW_VERSION}" >> $GITHUB_ENV
+          jq --arg NEW_VERSION "$NEW_VERSION" '.version = $NEW_VERSION' module.json > temp.json
+          mv temp.json module.json
 
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ env.NEW_VERSION }}
+          release_name: Release ${{ env.NEW_VERSION }}
           draft: false
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Update module.json
+      - name: Update module.json with Download URL
         run: |
-          VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\///')
-          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${VERSION}/module.zip"
-          jq '.version = "'$VERSION'"' module.json | jq '.download = "'$DOWNLOAD_URL'"' > temp.json
+          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${{ env.NEW_VERSION }}/module.zip"
+          jq --arg DOWNLOAD_URL "$DOWNLOAD_URL" '.download = $DOWNLOAD_URL' module.json > temp.json
           mv temp.json module.json
-
-      - name: Install jq
-        run: sudo apt-get install jq
 
       - name: Create ZIP and TAR.GZ
         run: |
           zip -r module.zip module.json css/* lang/* src/* templates/*
           tar -zcvf module.tar.gz module.json css lang src templates
+          
+      - name: Upload module.json Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./module.json
+          asset_name: module.json
+          asset_content_type: application/json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
 
       - name: Upload Release Assets
         uses: actions/upload-release-asset@v1
