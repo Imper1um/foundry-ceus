@@ -222,6 +222,13 @@ export class ceus_RefactorRollProvider {
 	}
 	
 	/**
+	 * Gets an actor's roll bonus before its rolled so it makes it easier for players.
+	 * @return {integer} Roll bonus that will be given if the user makes a roll. If no bonus or unknown bonus, return null */
+	getActorRollBonus(actor, rollType, id) {
+		return null;
+	}
+	
+	/**
 	 * Called when a display is asked for.
 	 */
 	async displayRoll(requestOptions, user, actor, check, result) {

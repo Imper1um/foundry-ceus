@@ -11,7 +11,7 @@
 				<div class="actor-check-name">{{this.actor.name}}{{this.doneMessage}}</div>
 			</legend>
 			{{#each this.checks}}
-				<button class="check-button {{this.doneClass}}" id="check-button-{{this.roll.id}}" data-actorid="{{../actor._id}}" data-checkid="{{this.roll.id}}">{{localize this.roll.name}}</button>
+				<button class="check-button {{this.doneClass}}" id="check-button-{{this.roll.id}}" data-actorid="{{../actor._id}}" data-checkid="{{this.roll.id}}">{{localize this.roll.name}}{{this.bonusView}}</button>
 				{{#if this.isNotLast}}
 					{{#if ../../isAnd}}
 					<div class="check-separator check-and">{{localize "Ceus.Player.And"}}</div>

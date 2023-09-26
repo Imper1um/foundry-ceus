@@ -1,5 +1,6 @@
 import { Utils } from "./Utils.js";
 import { Ceus } from "./ceus.js";
+import { ceus_LogEngine } from "./ceus_LogEngine.js";
 
 export class ceus_PlayerRequestWindow extends FormApplication {
 	constructor(data, ...args) {
@@ -13,6 +14,13 @@ export class ceus_PlayerRequestWindow extends FormApplication {
 			game.users.apps.push(this);
 			Ceus.current.socketEngine.addCompleteWatcher(this.appId, this.onComplete, this.onFilter);
 		}
+	}
+	
+	static get log() {
+		if (!ceus_PlayerRequestWindow._log) {
+			ceus_PlayerRequestWindow._log = new ceus_LogEngine("ceus_PlayerRequestWindow");
+		}
+		return ceus_PlayerRequestWindow._log;
 	}
 	
 	async onFilter(data) {
@@ -108,8 +116,9 @@ export class ceus_PlayerRequestWindow extends FormApplication {
 		this.actors = [];
 		const user = game.user;
 		const userCharacter = user.character;
+		const rp = Ceus.current.providerEngine.currentRollProvider;
 		
-		const possibleRolls = Utils.flattenRolls(Ceus.current.providerEngine.currentRollProvider.getAvailableRolls());
+		const possibleRolls = Utils.flattenRolls(rp.getAvailableRolls());
 		
 		const requestUsers = this.requestOptions.requestUsers.find(ru => ru.userId === user._id);
 		if (!requestUsers) {
@@ -125,10 +134,19 @@ export class ceus_PlayerRequestWindow extends FormApplication {
 				if (!roll) {
 					continue;
 				}
-				if (check.trainedOption === "HideUntrained" && !Ceus.current.providerEngine.currentRollProvider.isActorTrained(actor, roll.rollType, check.rollId)) {
+				const actorTrained = rp.isActorTrained(actor, roll.rollType, check.rollId);
+				ceus_PlayerRequestWindow.log.Trace("handleRequestOptions", {check, roll, actorTrained});
+				if (check.trainedOption === "HideUntrained" && actorTrained === false) {
 					continue;
 				}
-				checks.push({ roll, check, doneClass: "" });
+				const bonus = rp.getActorRollBonus(actor, roll.rollType, roll.id);
+				var bonusView = "";
+				if (bonus != null && bonus > 0) {
+					bonusView = ` (+${bonus})`;
+				} else if (bonus != null && bonus < 0) {
+					bonusView = ` (${bonus})`;
+				}
+				checks.push({ roll, check, doneClass: "", bonus, bonusView});
 			}
 			if (checks.length) {
 				for (const c in checks) {

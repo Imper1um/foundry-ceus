@@ -54,15 +54,55 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 		if (rollType != CeusRoller.rollTypes().SKILL) {
 			return true;
 		}
-		const skill = actor.system.skills[id];
+		var skill = actor.system.skills[id];
 		if (!skill) {
-			const availableSkillRoll = getAvailableSkillRolls().find(s => s.id === id);
+			const availableSkillRoll = this.getAvailableSkillRolls().find(s => s.id === id);
 			if (availableSkillRoll) {
 				skill = actor.system.skills[availableSkillRoll.skillId];
 			}
 		}
 		if (!skill) { return false; }
 		return skill.ranks > 0;
+	}
+	
+	getActorRollBonus(actor, rollType, id) {
+		switch (rollType) {
+			case CeusRoller.rollTypes().SKILL:
+				var skill = actor.system.skills[id];
+				if (!skill) {
+					const availableSkillRoll = this.getAvailableSkillRolls().find(s => s.id === id);
+					if (availableSkillRoll) {
+						skill = actor.system.skills[availableSkillRoll.skillId];
+					}
+				}
+				if (!skill) { return null; }
+				return skill.value;
+			case CeusRoller.rollTypes().INITIATIVE:
+				return actor.system.attributes.init.value;
+			case CeusRoller.rollTypes().PERCEPTION:
+				return actor.system.skills.per.value;
+			case CeusRoller.rollTypes().ABILITY:
+				var ability = actor.system.abilities[id];
+				if (!ability) {
+					const availableAbilityRoll = this.getAvailableAbilityRolls().find(a => a.id === id);
+					if (availableAbilityRoll) {
+						ability = actor.system.abilities[availableAbilityRoll.abilityId];
+					}
+				}
+				if (!ability) { return null; }
+				return ability.value;
+			case CeusRoller.rollTypes().SAVE:
+				var save = actor.system.attributes[id];
+				if (!save) {
+					const availableSaveRoll = this.getAvailableSaveRolls().find(a => a.id === id);
+					if (availableSaveRoll) {
+						save = actor.system.attributes[availableSaveRoll.saveId];
+					}
+				}
+				if (!save) { return null; }
+				return save.value;
+		}
+		return null;
 	}
 	
 	isPlayer(actor) {
@@ -138,7 +178,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 		var completeRoll;
 		switch (requestItem.trainedOption) {
 			case "HideUntrained":
-				if (skill.isTrainedOnly && skl.ranks < 1) {
+				if (skill.isTrainedOnly && skill.ranks < 1) {
 					return new ceus_Result(
 						requestOptions.requestId,
 						actor._id,
@@ -153,7 +193,7 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 				completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
 				break;
 			case "PreventUntrained":
-				if (skill.isTrainedOnly && skl.ranks < 1) {
+				if (skill.isTrainedOnly && skill.ranks < 1) {
 					completeRoll = await actor.rollSkill(skillId, rp.baseRollOptions());
 				} else {
 					completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
