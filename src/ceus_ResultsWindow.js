@@ -159,14 +159,14 @@ export class ceus_ResultsWindow extends FormApplication {
 					<tbody>`;
 				for (const roll of rolls) {
 					const passFail = roll.isPass ? "✅" : (roll.isFail ? "❌": "");
-					dataSend += `<tr class="result ${roll.passClass}"><td>${roll.actor.name}</td><td>${game.i18n.localize(roll.roll.name)}</td><td>${roll.result.rolledAmount}</td><td>${passFail}</td></tr>`;
+					dataSend += `<tr class="result ${roll.passClass}"><td>${roll.actor.name}</td><td>${game.i18n.localize(roll.possibleRoll.name)}</td><td>${roll.result.rolledAmount}</td><td>${passFail}</td></tr>`;
 				}
 				dataSend += "</table>";
 				break;
 			case "any":
 				const passFail = rolls.some(r => r.isPass) ? true : (rolls.some(r => r.isFail) ? false : null);
 				const passFailClass = passFail == true ? "pass" : (passFail == false ? "fail" : "");
-				const allRollNames = rolls.map(r => game.i18n.localize(r.roll.name));
+				const allRollNames = rolls.map(r => game.i18n.localize(r.possibleRoll.name));
 				const uniqueRollNames = [...new Set(allRollNames)];
 				const uniqueRoll = uniqueRollNames.join(", ");
 				const status = passFail == true ? "✅" : (passFail == false ? "❌" : "");
@@ -210,7 +210,7 @@ export class ceus_ResultsWindow extends FormApplication {
 					const passFail = roll.isPass ? "✅" : (roll.isFail ? "❌": "");
 					const passClass = roll.isPass ? "pass" : (roll.isFail ? "fail" : "");
 					dataSend = `<div class="announce-success ${passClass}">
-						<div class="announce-success-roll">${game.i18n.localize(roll.roll.name)}</div>
+						<div class="announce-success-roll">${game.i18n.localize(roll.possibleRoll.name)}</div>
 						<div class="announce-success-character">${roll.actor.name}</div>
 						<div class="announce-success-result">${passFail}</div>
 					</div>`;
