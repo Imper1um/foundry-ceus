@@ -5,6 +5,7 @@ Ceus is kept as simple as possible for players, while affording many options for
 **NOTE:** This module's editor menu can only be seen by GMs.
 
 ![Open Request](images/OpenRequest.png)
+
 Ceus' GM Interface can be accessed from the Token Controls > Request Roll button.
 
 If you cannot see this button, you (probably):
@@ -14,12 +15,14 @@ If you cannot see this button, you (probably):
 
 ## Selecting Users
 ![Select Users](images/SelectUsers.png)
+
 Once you have opened the Ceus interface, you should see every user that is attached to this Foundry instance. You can click on individual players or you can click on the Add All buttons to add specific types of people.
 
 **NOTE:** The Active Tag is not automatically updating at this time. The Active tag only applies from when the screen is opened.
 
 ## Selecting Actors
 ![Select Actors](images/SelectActors.png)
+
 After you have selected at least one user, every actor that the selected users *could* have ownership to will appear in the Select Actors area.
 
 Each actor has a colored line above their image that denotes their disposition (Red = Enemy, Yellow = Neutral, Green = Friendly, Purple = Secret). You may select individual actors, or you may select groups of actors by using the Add All Buttons.
@@ -28,6 +31,7 @@ Each actor has a colored line above their image that denotes their disposition (
 
 ## Configuring the Roll screen
 ![Select Rolls](images/SelectRolls.png)
+
 Options in this area allow you to customize what players will see.
 
 ### Roll Privacy
@@ -47,6 +51,7 @@ Ceus allows for GMs to configure how many rolls can be made per Actor.
 
 ## Selecting Rolls
 ![Create Roll](images/CreateRoll.png)
+
 GMs can choose any type of generic roll for the specific ruleset selected. GMs may add as many (or as little) rolls as they want to.
 
 ### Custom/Bonus
@@ -74,6 +79,7 @@ Systems without a configurable Trained status will always roll in Always Untrain
 
 ## Sending Rolls
 ![Sending Roll](images/Actions.png)
+
 Once you have configured your roll, you have five options for sending rolls.
 
 ### Roll for Selected
@@ -93,6 +99,7 @@ This will build a custom macro that will pop up. This macro, when called, will s
 
 ## Roll Results
 ![Roll Results](images/RollResults.png)
+
 After a roll request has been sent, a roll results screen will show to the user that requested the roll.
 
 As users complete their rolls, their results will appear on this screen. If a DC has been set, it will automatically show if a result total exceeds the DC set. It will show who rolled the roll, what roll they selected, the breakdown (if the ruleset provides it), and the total roll.
