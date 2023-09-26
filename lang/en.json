@@ -60,7 +60,8 @@
 				"AnnounceAnySuccess": "At Least One Success?",
 				"AnnounceSuccessBreakdown": "Success Breakdown",
 				"AnnounceThisFull": "Full",
-				"AnnounceThisSuccess": "Success/Fail"
+				"AnnounceThisSuccess": "Success/Fail",
+				"GMFiat": "GM Fiat"
 			},
 			"Announce": {
 				"Character": "Character",

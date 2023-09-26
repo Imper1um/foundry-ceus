@@ -79,6 +79,49 @@ export class ceus_ResultsWindow extends FormApplication {
 	
 	activateListeners(html) {
 		html.find(".gm-action").click(this._onGmAction);
+		html.find(".ceus-results-list-item .total .total-amount").change(function() {
+			const target = $(this);
+			const dialog = $(target.parents(".ceus-dialog"));
+			const appid = dialog.data("appid");
+			const resultsWindow = game.users.apps.find(a => a.appId == appid);
+			const parsedValue = parseFloat(target.val());
+			const actorId = target.data("actorid");
+			const rollId = target.data("roll");
+			const completedRoll = resultsWindow.completedRolls.find(cr => cr.actor._id === actorId && cr.roll.id === rollId);
+			if (!completedRoll) { return; }
+			if (isNaN(parsedValue) || parsedValue < -1000000 || parsedValue > 1000000) {
+				target.val(completedRoll.result.rolledAmount);
+			} else {
+				completedRoll.result.rolledAmount = parsedValue;
+				
+				completedRoll.isPass = false;
+				completedRoll.isFail = false;
+				completedRoll.isAdvantage = false;
+				completedRoll.isDisadvantage = false;
+				completedRoll.isRolled = false;
+				completedRoll.user = game.user;
+				completedRoll.result.rolledUserId = game.user._id;
+				completedRoll.result.isRolled = false;
+				completedRoll.result.rolledAdvantageDisadvantage = null;
+				completedRoll.result.rollBreakdown = game.i18n.localize("Ceus.Results.GMActions.GMFiat");
+				completedRoll.result.critFail = false;
+				completedRoll.result.critSuccess = false;
+				completedRoll.result.isPass = null;
+				completedRoll.passClass = "";
+				if (completedRoll.roll.dc) {
+					if (completedRoll.result.rolledAmount >= completedRoll.roll.dc) {
+						completedRoll.isPass = true;
+						completedRoll.result.isPass = true;
+						completedRoll.passClass = "pass";
+					} else if (completedRoll.result.rolledAmount < completedRoll.roll.dc) {
+						completedRoll.isFail = true;
+						completedRoll.result.isPass = false;
+						completedRoll.passClass = "fail";
+					}
+				}
+			}
+			resultsWindow.render(false);
+		});
 	}
 	
 	async _onGmAction(event) {
