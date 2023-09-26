@@ -55,8 +55,7 @@ jobs:
 
       - name: Upload Assets to GitHub Release
         run: |
-          gh release upload ${{ env.NEW_VERSION }} module.zip
-          gh release upload ${{ env.NEW_VERSION }} module.tar.gz
+          gh release upload ${{ env.NEW_VERSION }} module.zip module.tar.gz module.json
 
       - name: Commit and Push Updated module.json to deploy branch
         run: |
