@@ -153,7 +153,7 @@ export class ceus_ResultsWindow extends FormApplication {
 							<th>${game.i18n.localize("Ceus.Results.Announce.Character")}</th>
 							<th>${game.i18n.localize("Ceus.Results.Announce.Roll")}</th>
 							<th>${game.i18n.localize("Ceus.Results.Announce.Total")}</th>
-							<th>${game.i18n.localize("Ceus.Results.Announce.Success")}</th>
+							<th>${game.i18n.localize("Ceus.Results.Announce.Status")}</th>
 						</tr>
 					</thead>
 					<tbody>`;
@@ -201,7 +201,7 @@ export class ceus_ResultsWindow extends FormApplication {
 				for (const actor of uniqueActors) {
 					const passFail = actor.rollStatus == true ? "✅" : (actor.rollStatus == false ? "❌": "");
 					const passClass = actor.rollStatus == true ? "pass" : (actor.rollStatus == true ? "fail" : "");
-					dataSend += `<tr class="result ${roll.passClass}"><td>${roll.actor.name}</td><td>${passFail}</td></tr>`;
+					dataSend += `<tr class="result ${roll.passClass}"><td>${actor.name}</td><td>${passFail}</td></tr>`;
 				}
 				dataSend += "</table>";
 				break;
