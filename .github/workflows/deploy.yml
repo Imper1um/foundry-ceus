@@ -77,3 +77,22 @@ jobs:
           asset_content_type: application/gzip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit and Push Updated module.json to deploy branch
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add module.json
+          git commit -m "Update version in module.json"
+          git push origin deploy
+          
+      - name: Create Pull Request to push new version back to master
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: "deploy"
+          destination_branch: "master"
+          pr_title: "Deploy to Master"
+          pr_body: "Auto PR to update version number."
+          pr_label: "automerge"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

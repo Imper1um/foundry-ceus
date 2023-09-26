@@ -1,0 +1,7 @@
+/* WARNING: When mentioning any changes, all CSS must be prefixed with .game.system-pf1 in this file. If you need to edit Ceus-wide CSS, please edit ceus.css. */
+/* Pathfinder 1 Specific CSS */
+.game.system-pf1 .ceus.ceus-result header,
+.game.system-pf1 .ceus.ceus-result .result-body .result-total,
+.game.system-pf1 .ceus.ceus-result .result-body .result-breakdown {
+	background-color: rgba(255,255,255,0.3);
+}

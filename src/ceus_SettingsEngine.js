@@ -50,11 +50,13 @@ export class ceus_SettingsEngine {
 				config: setting.config,
 				type: setting.type,
 				default: setting.default,
-				onChange: setting.onChange
+				onChange: setting.onChange,
+				choices: setting.choices
 			});
 		}
 		
 		console.log("Ceus | Game settings ready.");
+		this.isInitialized = true;
 	}
 	
 	get LogLevel() {

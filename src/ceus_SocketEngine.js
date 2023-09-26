@@ -99,22 +99,28 @@ export class ceus_SocketEngine {
 	
 	async pushRefactorRequest(request) {
 		ceus_SocketEngine.log.Trace("pushRefactorRequest", request);
-		await game.socket.emit('module.ceus', {type: 'refactor', request});
+		const data = {type: 'refactor', request};
+		await game.socket.emit('module.ceus', data);
+		await this.onRefactorRequest(data.request);
 		ui.notifications.info(game.i18n.localize("Ceus.Requestor.Sent"));
 	}
 	async pushCancelResponse(request, userid) {
 		ceus_SocketEngine.log.Trace("pushCancelResponse", {request, userid});
-		await game.socket.emit('module.ceus', {type: 'cancel', request: {
+		const data = {type: 'cancel', request: {
 			userid,
 			request
-		}});
+		}};
+		await game.socket.emit('module.ceus', data);
+		await this.onRequestCancel(data.request);
 	}
 	async pushCompleteResponse(request, userid, response) {
 		ceus_SocketEngine.log.Trace("onRefactorRequest", {request,userid,response});
-		await game.socket.emit('module.ceus', {type: 'complete', request: {
+		const data = {type: 'complete', request: {
 			userid,
 			request,
 			response
-		}});
+		}};
+		await game.socket.emit('module.ceus', data);
+		await this.onRequestComplete(data.request);
 	}
 }
