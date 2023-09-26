@@ -1,4 +1,6 @@
-class LMRTFYRoller extends Application {
+import { Ceus } from "./ceus.js";
+
+export class CeusRoller extends Application {
 
     constructor(actors, data) {
         super();
@@ -12,32 +14,21 @@ class LMRTFYRoller extends Application {
         this.message = data.message;
         this.tables = data.tables;
         this.chooseOne = data.chooseOne ?? false;
-
-        if (game.system.id === 'pf2e') {
-            this.dc = data.dc;
-            this.pf2Roll = '';
-        }
+        this.dc = data.dc;
 
         if (data.title) {
             this.options.title = data.title;
-        }
-
-        this.pf2eRollFor = {
-            ABILITY: "ability",
-            SAVE: "save",
-            SKILL: "skill",
-            PERCEPTION: "perception",
         }
 
         this.hasMidi = game.modules.get("midi-qol")?.active;
         this.midiUseNewRoller = isNewerVersion(game.modules.get("midi-qol")?.version, "10.0.26");
 
         Handlebars.registerHelper('canFailAbilityChecks', function (name, ability) {
-            if (LMRTFY.canFailChecks) {
+            if (Ceus.currentRollProvider.canFailChecks()) {
                 return `<div>` +
-                        `<button type="button" class="lmrtfy-ability-check-fail" data-ability="${ability}" disabled>${game.i18n.localize('LMRTFY.AbilityCheckFail')} ${game.i18n.localize(name)}</button>` +
-                        `<div class="lmrtfy-dice-tray-button enable-lmrtfy-ability-check-fail" data-ability="${ability}" title="${game.i18n.localize('LMRTFY.EnableChooseFail')}">` +            
-                            `${LMRTFY.d20Svg}` +
+                        `<button type="button" class="ceus-ability-check-fail" data-ability="${ability}" disabled>${game.i18n.localize('Ceus.AbilityCheckFail')} ${game.i18n.localize(name)}</button>` +
+                        `<div class="ceus-dice-tray-button enable-ceus-ability-check-fail" data-ability="${ability}" title="${game.i18n.localize('Ceus.EnableChooseFail')}">` +            
+                            `${Ceus.d20Svg}` +
                         `</div>` +
                     `</div>`;
             } else {
@@ -46,11 +37,11 @@ class LMRTFYRoller extends Application {
         });
 
         Handlebars.registerHelper('canFailSaveChecks', function (name, ability) {
-            if (LMRTFY.canFailChecks) {
+            if (Ceus.currentRollProvider.canFailChecks()) {
                 return `<div>` +
-                        `<button type="button" class="lmrtfy-ability-save-fail" data-ability="${ability}" disabled>${game.i18n.localize('LMRTFY.SavingThrowFail')} ${game.i18n.localize(name)}</button>` +
-                        `<div class="lmrtfy-dice-tray-button enable-lmrtfy-ability-save-fail" data-ability="${ability}" title="${game.i18n.localize('LMRTFY.EnableChooseFail')}">` +            
-                            `${LMRTFY.d20Svg}` +
+                        `<button type="button" class="ceus-ability-save-fail" data-ability="${ability}" disabled>${game.i18n.localize('Ceus.SavingThrowFail')} ${game.i18n.localize(name)}</button>` +
+                        `<div class="ceus-dice-tray-button enable-ceus-ability-save-fail" data-ability="${ability}" title="${game.i18n.localize('Ceus.EnableChooseFail')}">` +            
+                            `${Ceus.d20Svg}` +
                         `</div>` +
                     `</div>`;
             } else {
@@ -59,11 +50,11 @@ class LMRTFYRoller extends Application {
         });
 
         Handlebars.registerHelper('canFailSkillChecks', function (name, skill) {
-            if (LMRTFY.canFailChecks) {
+            if (Ceus.currentRollProvider.canFailChecks()) {
                 return `<div>` +
-                        `<button type="button" class="lmrtfy-skill-check-fail" data-skill="${skill}" disabled>${game.i18n.localize('LMRTFY.SkillCheckFail')} ${game.i18n.localize(name)}</button>` +
-                        `<div class="lmrtfy-dice-tray-button enable-lmrtfy-skill-check-fail" data-skill="${skill}" title="${game.i18n.localize('LMRTFY.EnableChooseFail')}">` +            
-                            `${LMRTFY.d20Svg}` +
+                        `<button type="button" class="ceus-skill-check-fail" data-skill="${skill}" disabled>${game.i18n.localize('Ceus.SkillCheckFail')} ${game.i18n.localize(name)}</button>` +
+                        `<div class="ceus-dice-tray-button enable-ceus-skill-check-fail" data-skill="${skill}" title="${game.i18n.localize('Ceus.EnableChooseFail')}">` +            
+                            `${Ceus.d20Svg}` +
                         `</div>` +
                     `</div>`;
             } else {
@@ -74,14 +65,14 @@ class LMRTFYRoller extends Application {
 
     static get defaultOptions() {
         const options = super.defaultOptions;
-        options.title = game.i18n.localize("LMRTFY.Title");
-        options.template = "modules/lmrtfy/templates/roller.html";
+        options.title = game.i18n.localize("Ceus.Title");
+        options.template = "modules/ceus/templates/roller.html";
         options.popOut = true;
         options.width = 400;
         options.height = "auto";
-        options.classes = ["lmrtfy", "lmrtfy-roller"];
-        if (game.settings.get('lmrtfy', 'enableParchmentTheme')) {
-          options.classes.push('lmrtfy-parchment');
+        options.classes = ["ceus", "ceus-roller"];
+        if (game.settings.get('ceus', 'enableParchmentTheme')) {
+          options.classes.push('ceus-parchment');
         }
         return options;
     }
@@ -95,7 +86,7 @@ class LMRTFYRoller extends Application {
             skills: []
         }, {inplace: false});
         data.abilities = abilities;
-        new LMRTFYRoller([actor], data).render(true);
+        new CeusRoller([actor], data).render(true);
     }
     static requestSkillChecks(actor, skills, options={}) {
         if (!actor || !skills) return;
@@ -106,7 +97,7 @@ class LMRTFYRoller extends Application {
             skills: []
         }, {inplace: false});
         data.skills = skills;
-        new LMRTFYRoller([actor], data).render(true);
+        new CeusRoller([actor], data).render(true);
     }
     static requestSavingThrows(actor, saves, options={}) {
         if (!actor || !saves) return;
@@ -117,29 +108,41 @@ class LMRTFYRoller extends Application {
             skills: []
         }, {inplace: false});
         data.saves = saves;
-        new LMRTFYRoller([actor], data).render(true);
+        new CeusRoller([actor], data).render(true);
     }
+	static rollTypes() {
+		return {
+            ABILITY: "ability",
+            SAVE: "save",
+            SKILL: "skill",
+            PERCEPTION: "perception",
+			INITIATIVE: "initiative",
+			DEATHSAVE: "deathsave",
+			DICE: "dice",
+			CUSTOM: "custom"
+        };
+	}
 
     async getData() {
         let note = ""
         if (this.advantage == 1)
-            note = game.i18n.localize("LMRTFY.AdvantageNote");
+            note = game.i18n.localize("Ceus.AdvantageNote");
         else if (this.advantage == -1)
-            note = game.i18n.localize("LMRTFY.DisadvantageNote");
+            note = game.i18n.localize("Ceus.DisadvantageNote");
 
         let abilities = {}
         let saves = {}
         let skills = {}
-        this.abilities.forEach(a => abilities[a] = LMRTFY.abilities[a])
-        this.saves.forEach(a => saves[a] = LMRTFY.saves[a])
+        this.abilities.forEach(a => abilities[a] = Ceus.currentRollProvider.abilities()[a])
+        this.saves.forEach(a => saves[a] = Ceus.currentRollProvider.saves()[a])
         this.skills
             .sort((a, b) => {
-                const skillA = (LMRTFY.skills[a]?.label) ? LMRTFY.skills[a].label : LMRTFY.skills[a];
-                const skillB = (LMRTFY.skills[b]?.label) ? LMRTFY.skills[b].label : LMRTFY.skills[b];
+                const skillA = (Ceus.currentRollProvider.skills()[a]?.label) ? Ceus.currentRollProvider.skills()[a].label : Ceus.currentRollProvider.skills()[a];
+                const skillB = (Ceus.currentRollProvider.skills()[b]?.label) ? Ceus.currentRollProvider.skills()[b].label : Ceus.currentRollProvider.skills()[b];
                 game.i18n.localize(skillA).localeCompare(skillB)
             })
             .forEach(s => {
-                const skill = (LMRTFY.skills[s]?.label) ? LMRTFY.skills[s].label : LMRTFY.skills[s];
+                const skill = (Ceus.currentRollProvider.skills()[s]?.label) ? Ceus.currentRollProvider.skills()[s].label : Ceus.currentRollProvider.skills()[s];
                 skills[s] = skill;
             });
 
@@ -163,29 +166,30 @@ class LMRTFYRoller extends Application {
 
     activateListeners(html) {
         super.activateListeners(html);
-        this.element.find(".lmrtfy-ability-check").click(this._onAbilityCheck.bind(this))
-        this.element.find(".lmrtfy-ability-save").click(this._onAbilitySave.bind(this))
-        this.element.find(".lmrtfy-skill-check").click(this._onSkillCheck.bind(this))
-        this.element.find(".lmrtfy-custom-formula").click(this._onCustomFormula.bind(this))
-        this.element.find(".lmrtfy-roll-table").click(this._onRollTable.bind(this));
-        if(LMRTFY.specialRolls['initiative']) {
-            this.element.find(".lmrtfy-initiative").click(this._onInitiative.bind(this))
+        this.element.find(".ceus-ability-check").click(this._onAbilityCheck.bind(this))
+        this.element.find(".ceus-ability-save").click(this._onAbilitySave.bind(this))
+        this.element.find(".ceus-skill-check").click(this._onSkillCheck.bind(this))
+        this.element.find(".ceus-custom-formula").click(this._onCustomFormula.bind(this))
+        this.element.find(".ceus-roll-table").click(this._onRollTable.bind(this));
+		var specialRolls = Ceus.currentRollProvider.specialRolls();
+        if(specialRolls['initiative']) {
+            this.element.find(".ceus-initiative").click(this._onInitiative.bind(this))
         }
-        if(LMRTFY.specialRolls['deathsave']) {
-            this.element.find(".lmrtfy-death-save").click(this._onDeathSave.bind(this))
+        if(specialRolls['deathsave']) {
+            this.element.find(".ceus-death-save").click(this._onDeathSave.bind(this))
         }
-        if(LMRTFY.specialRolls['perception']) {
-            this.element.find(".lmrtfy-perception").click(this._onPerception.bind(this))
+        if(specialRolls['perception']) {
+            this.element.find(".ceus-perception").click(this._onPerception.bind(this))
         }
 
-        this.element.find(".enable-lmrtfy-ability-check-fail").click(this._onToggleFailAbilityRoll.bind(this));
-        this.element.find(".lmrtfy-ability-check-fail").click(this._onFailAbilityCheck.bind(this));        
+        this.element.find(".enable-ceus-ability-check-fail").click(this._onToggleFailAbilityRoll.bind(this));
+        this.element.find(".ceus-ability-check-fail").click(this._onFailAbilityCheck.bind(this));        
         
-        this.element.find(".enable-lmrtfy-ability-save-fail").click(this._onToggleFailSaveRoll.bind(this));
-        this.element.find(".lmrtfy-ability-save-fail").click(this._onFailAbilitySave.bind(this));    
+        this.element.find(".enable-ceus-ability-save-fail").click(this._onToggleFailSaveRoll.bind(this));
+        this.element.find(".ceus-ability-save-fail").click(this._onFailAbilitySave.bind(this));    
 
-        this.element.find(".enable-lmrtfy-skill-check-fail").click(this._onToggleFailSkillRoll.bind(this));
-        this.element.find(".lmrtfy-skill-check-fail").click(this._onFailSkillCheck.bind(this));    
+        this.element.find(".enable-ceus-skill-check-fail").click(this._onToggleFailSkillRoll.bind(this));
+        this.element.find(".ceus-skill-check-fail").click(this._onFailSkillCheck.bind(this));    
     }
 
     _checkClose() {
@@ -197,7 +201,7 @@ class LMRTFYRoller extends Application {
     _disableButtons(event) {
         event.currentTarget.disabled = true;
 
-        if (LMRTFY.canFailChecks) {
+        if (Ceus.canFailChecks) {
             const buttonSelector = `${event.currentTarget.className}`;
             let oppositeSelector = "";
             let dataSelector = "";
@@ -232,13 +236,13 @@ class LMRTFYRoller extends Application {
         let options;
         switch(this.advantage) {
             case -1:
-                options = {... LMRTFY.disadvantageRollEvent };
+                options = {... Ceus.currentRollProvider.disadvantageRollEvent() };
                 break;
             case 0:
-                options = {... LMRTFY.normalRollEvent };
+                options = {... Ceus.currentRollProvider.normalRollEvent() };
                 break;
             case 1:
-                options = {... LMRTFY.advantageRollEvent };
+                options = {... Ceus.currentRollProvider.advantageRollEvent() };
                 break;
             case 2:
                 options = { event: event };
@@ -252,7 +256,7 @@ class LMRTFYRoller extends Application {
         return options;
     }
 
-    async _makeRoll(event, rollMethod, failRoll, ...args) {
+    async _makeRoll(event, rollMethod, rolledType, failRoll, ...args) {
         let options = this._getRollOptions(event, failRoll);                
 
         // save the current roll mode to reset it after this roll
@@ -262,72 +266,11 @@ class LMRTFYRoller extends Application {
         for (let actor of this.actors) {
             Hooks.once("preCreateChatMessage", this._tagMessage.bind(this));
 
-            // system specific roll handling
-            switch (game.system.id) {
-                case "pf2e": {
-                    switch (this.pf2Roll) {
-                        case this.pf2eRollFor.ABILITY:
-                            const modifier = LMRTFY.buildAbilityModifier(actor, args[0]);
-                            game.pf2e.Check.roll(modifier, { type: 'skill-check', dc: this.dc, actor }, event);
-                            break;
-
-                        case this.pf2eRollFor.SAVE:
-                            const save = actor.saves[args[0]].check;
-                            const saveOptions = actor.getRollOptions(['all', `${save.ability}-based`, 'saving-throw', save.name]);
-                            save.roll({ event, saveOptions, dc: this.dc });
-                            break;
-
-                        case this.pf2eRollFor.SKILL:
-                            // system specific roll handling
-                            const skill = actor.system.skills[args[0]];
-                            // roll lore skills only for actors who have them ...
-                            if (!skill) continue;
-
-                            const skillOptions = actor.getRollOptions(['all', `${skill.ability ?? 'int'}-based`, 'skill-check', skill.name]);
-                            skill.roll({ event, skillOptions, dc: this.dc });
-                            break;
-
-                        case this.pf2eRollFor.PERCEPTION:
-                            const precOptions = actor.getRollOptions(['all', 'wis-based', 'perception']);
-                            actor.perception.roll({ event, precOptions, dc: this.dc });
-                            break;
-                    }
-
-                    break;
-                }
-
-                case "foundry-chromatic-dungeons": {
-                    const key = args[0];
-                    const {attributes, attributeMods, saves} = actor.system.data;
-                    let label, formula, target;
-
-                    switch (rollMethod) {
-                        case 'attributeRoll':
-                            label = LMRTFY.abilities[key];
-                            formula = `1d20-${attributeMods[key]}`;
-                            target = attributes[key];
-                            break;
-                        case 'saveRoll':
-                            label = LMRTFY.saves[key];
-                            formula = `1d20+${saves.mods[key]}`;
-                            target = saves.targets[key];
-                            break;
-                    }
-
-                    actor[rollMethod](game.i18n.localize(label), formula, target);
-                    break;
-                }
-
-                case "degenesis": {
-                    const key = args[0];
-                    actor[rollMethod].call(actor, key, false)
-                    break;
-                }
-
-                default: {
-                    await actor[rollMethod].call(actor, ...args, options);
-                }
-            }
+			if (Ceus.currentRollProvider.handleCustomRoll(actor, event, rollMethod, rolledType, failRoll, this.dc, args)) {
+				continue;
+			}
+			
+			await actor[rollMethod].call(actor, ...args, options);
         }
 
         game.settings.set("core", "rollMode", rollMode);
@@ -363,7 +306,7 @@ class LMRTFYRoller extends Application {
     }
 
     _tagMessage(candidate, data, options) {
-        candidate.updateSource({"flags.lmrtfy": {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind}});
+        candidate.updateSource({"flags.ceus": {"message": this.data.message, "data": this.data.attach, "blind": candidate.blind}});
     }
 
     async _makeDiceRoll(event, formula, defaultMessage = null) {
@@ -383,7 +326,7 @@ class LMRTFYRoller extends Application {
             const rollData = actor.getRollData();
             const roll = new Roll(formula, rollData);
             const rollMessageData = await roll.toMessage(
-                {"flags.lmrtfy": messageFlag},
+                {"flags.ceus": messageFlag},
                 {rollMode: this.mode, create: false},
             );
 
@@ -464,7 +407,7 @@ class LMRTFYRoller extends Application {
                     if ( this.mode === "selfroll" ) chatData.whisper = [game.user.id];
                     if ( this.mode === "blindroll" ) chatData.blind = true;
 
-                    setProperty(chatData, "flags.lmrtfy", {"message": this.data.message, "data": this.data.attach, "blind": chatData.blind});
+                    setProperty(chatData, "flags.ceus", {"message": this.data.message, "data": this.data.attach, "blind": chatData.blind});
 
                     chatMessages.push(chatData);
 
@@ -482,78 +425,72 @@ class LMRTFYRoller extends Application {
     _onAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
         
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, false, ability);
+            this._makeRoll(event, Ceus.currentRollProvider.abilityRollMethod(), CeusRoller.rollTypes().ABILITY, false, ability);
         } else {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
+            this._makeRoll(event, Ceus.currentRollProvider.abilityRollMethod(), CeusRoller.rollTypes().ABILITY, ability);
         }
     }
 
     _onFailAbilityCheck(event) {
         event.preventDefault();
         const ability = event.currentTarget.dataset.ability;
-        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.ABILITY;
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, true, ability);
+            this._makeRoll(event, Ceus.currentRollProvider.abilityRollMethod(), CeusRoller.rollTypes().ABILITY, true, ability);
         } else {
-            this._makeRoll(event, LMRTFY.abilityRollMethod, ability);
+            this._makeRoll(event, Ceus.currentRollProvider.abilityRollMethod(), CeusRoller.rollTypes().ABILITY, ability);
         }
     }
 
     _onAbilitySave(event) {
         event.preventDefault();
         const saves = event.currentTarget.dataset.ability;
-        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
         
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.saveRollMethod, false, saves);
+            this._makeRoll(event, Ceus.currentRollProvider.saveRollMethod(), CeusRoller.rollTypes().SAVE, false, saves);
         } else {
-            this._makeRoll(event, LMRTFY.saveRollMethod, saves);
+            this._makeRoll(event, Ceus.currentRollProvider.saveRollMethod(), CeusRoller.rollTypes().SAVE, saves);
         }
     }
 
     _onFailAbilitySave(event) {
         event.preventDefault();
         const saves = event.currentTarget.dataset.ability;
-        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SAVE;
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.saveRollMethod, true, saves);
+            this._makeRoll(event, Ceus.currentRollProvider.saveRollMethod(), CeusRoller.rollTypes().SAVE, true, saves);
         } else {
-            this._makeRoll(event, LMRTFY.saveRollMethod, saves);
+            this._makeRoll(event, Ceus.currentRollProvider.saveRollMethod(), CeusRoller.rollTypes().SAVE, saves);
         }
     }
 
     _onSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.skillRollMethod, false, skill);
+            this._makeRoll(event, Ceus.currentRollProvider.skillRollMethod(), CeusRoller.rollTypes().SKILL, false, skill);
         } else {
-            this._makeRoll(event, LMRTFY.skillRollMethod, skill);
+            this._makeRoll(event, Ceus.currentRollProvider.skillRollMethod(), CeusRoller.rollTypes().SKILL, skill);
         }
     }
 
     _onFailSkillCheck(event) {
         event.preventDefault();
         const skill = event.currentTarget.dataset.skill;
-        if (game.system.id === 'pf2e') this.pf2Roll = this.pf2eRollFor.SKILL;
 
         // until patching has been removed
         if (!this.hasMidi || this.midiUseNewRoller) {
-            this._makeRoll(event, LMRTFY.skillRollMethod, true, skill);
+            this._makeRoll(event, Ceus.currentRollProvider.skillRollMethod(), CeusRoller.rollTypes().SKILL, true, skill);
         } else {
-            this._makeRoll(event, LMRTFY.skillRollMethod, skill);
+            this._makeRoll(event, Ceus.currentRollProvider.skillRollMethod(), CeusRoller.rollTypes().SKILL, skill);
         }
     }
 
@@ -565,44 +502,43 @@ class LMRTFYRoller extends Application {
     _onInitiative(event) {
         event.preventDefault();
 
-        if (game.system.id === 'pf2e') {
-            this._makePF2EInitiativeRoll(event);
-        } else {
-            if (this.data.initiative) {
-                for (let actor of this.actors) {
-                    actor.rollInitiative();
-                }
-                event.currentTarget.disabled = true;
-                this._checkClose();
-            } else {
-                const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
-                this._makeDiceRoll(event, initiative, game.i18n.localize("LMRTFY.InitiativeRollMessage"));
-            }
-        }
+		//Custom Event Handling for Initiative Rolls (if needed)
+		var initRollHandling = Ceus.currentRollProvider.handleInitiativeRoll(event, this.mode, this.actors);
+		if (initRollHandling && initRollHandling.isHandled) {
+			if (initRollHandling.checkClose) {
+				this._checkClose();
+			}
+			return;
+		}
+		
+		if (this.data.initiative) {
+			for (let actor of this.actors) {
+				actor.rollInitiative();
+			}
+			event.currentTarget.disabled = true;
+			this._checkClose();
+		} else {
+			const initiative = CONFIG.Combat.initiative.formula || game.system.data.initiative;
+			this._makeDiceRoll(event, initiative, game.i18n.localize("Ceus.InitiativeRollMessage"));
+		}
     }
 
     _onDeathSave(event) {
         event.preventDefault();
-        if (game.system.id == "dnd5e") {
-            for (let actor of this.actors) {
-                actor.rollDeathSave(event);
-            }
-            event.currentTarget.disabled = true;
-            this._checkClose();
-        } else if (game.system.id == "pf2e") {
-            for (let actor of this.actors) {
-                actor.rollRecovery();
-            }
-            event.currentTarget.disabled = true;
-            this._checkClose();
-        } else {
-            this._makeDiceRoll(event, "1d20", game.i18n.localize("LMRTFY.DeathSaveRollMessage"));
-        }
+		
+		var deathSaveHandling = Ceus.currentRollProvider.handleDeathSave(this.actors, event);
+		if (deathSaveHandling && deathSaveHandling.isHandled) {
+			if (deathSaveHandling.checkClose) {
+				this._checkClose();
+			}
+			return;
+		}
+		this._makeDiceRoll(event, "1d20", game.i18n.localize("Ceus.DeathSaveRollMessage"));
     }
 
     _onPerception(event) {
         event.preventDefault();
-        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("LMRTFY.PerceptionRollMessage"));
+        this._makeDiceRoll(event, `1d20 + @attributes.perception.totalModifier`, game.i18n.localize("Ceus.PerceptionRollMessage"));
     }
 
     _onRollTable(event) {
@@ -615,10 +551,10 @@ class LMRTFYRoller extends Application {
         event.preventDefault();
         if (event.currentTarget.classList.contains('disabled-button')) return;
 
-        const failButton = document.querySelector(`.lmrtfy-ability-check-fail[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        const failButton = document.querySelector(`.ceus-ability-check-fail[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
         if (failButton) failButton.disabled = !failButton.disabled;
 
-        const normalButton = document.querySelector(`.lmrtfy-ability-check[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        const normalButton = document.querySelector(`.ceus-ability-check[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
         if (normalButton) normalButton.disabled = !normalButton.disabled;
     }
 
@@ -626,10 +562,10 @@ class LMRTFYRoller extends Application {
         event.preventDefault();
         if (event.currentTarget.classList.contains('disabled-button')) return;
 
-        const failButton = document.querySelector(`.lmrtfy-ability-save-fail[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        const failButton = document.querySelector(`.ceus-ability-save-fail[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
         if (failButton) failButton.disabled = !failButton.disabled;
 
-        const normalButton = document.querySelector(`.lmrtfy-ability-save[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        const normalButton = document.querySelector(`.ceus-ability-save[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
         if (normalButton) normalButton.disabled = !normalButton.disabled;
     }
 
@@ -637,10 +573,12 @@ class LMRTFYRoller extends Application {
         event.preventDefault();
         if (event.currentTarget.classList.contains('disabled-button')) return;
 
-        const failButton = document.querySelector(`.lmrtfy-skill-check-fail[data-skill *= '${event?.currentTarget?.dataset?.skill}']`);
+        const failButton = document.querySelector(`.ceus-skill-check-fail[data-skill *= '${event?.currentTarget?.dataset?.skill}']`);
         if (failButton) failButton.disabled = !failButton.disabled;
 
-        const normalButton = document.querySelector(`.lmrtfy-skill-check[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
+        const normalButton = document.querySelector(`.ceus-skill-check[data-ability *= '${event?.currentTarget?.dataset?.ability}']`);
         if (normalButton) normalButton.disabled = !normalButton.disabled;
     }
 }
+
+console.log("Ceus | roller.js loaded");

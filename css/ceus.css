@@ -1,0 +1,392 @@
+.ceus input[type=checkbox] + label {
+	flex: 1;
+}
+
+/* Refactor */
+/** Requestor **/
+.ceus-requestor.ceus-refactor fieldset.select-users .form-group.user-select {
+    display: inline-block;
+    border: solid black 1px;
+    border-radius: 10px;
+	width: 100%;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .form-group label {
+	line-height: 0.5em;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user {
+    border: solid 1px;
+    margin: 5px;
+    text-align: center;
+    width: 100px;
+    padding: 5px;
+	display: inline-block;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user.inactive {
+	opacity: 0.8;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user.selected {
+	border-radius: 10px;
+	border-width: 2.5px;
+	border-color: #CFC;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user.selected .name {
+	font-weight: bold;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user i {
+    font-size: 2.5em;
+}
+.ceus-requestor.ceus-refactor fieldset.select-users .user .name {
+    font-size: 0.7em;
+    width: 100%;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user .user-image {
+	width: 100%;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user .user-image img {
+	height: 50px;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user .active {
+	font-size: 0.6em;
+	border-radius: 10px;
+	padding: 2px;
+	color: #010;
+	background-color: #0A0;
+	margin-right: 2px;
+}
+
+.ceus-requestor.ceus-refactor .select-buttons .button-intro {
+	flex: 2;
+	text-align: right; 
+	padding-right: 8px;
+}
+
+.ceus-requestor.ceus-refactor .button-separator {
+	flex: 1px;
+	border: solid 1px black;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user:hover {
+    border-color: #617a8f;
+    cursor: pointer;
+	color: #617a8f;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-users .user i,
+.ceus-requestor.ceus-refactor fieldset.select-users .user img,
+.ceus-requestor.ceus-refactor fieldset.select-users .user span {
+    cursor:pointer;
+}
+
+.ceus-requestor.ceus-refactor .form-group.actor-select {
+    display: inline-block;
+    width: 100%;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor {
+    width: 30px;
+    height: 68px;
+    margin: 5px;
+    display: inline-block;
+    overflow: hidden;
+    margin-bottom: -10px;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.invisible {
+	display: none;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor:hover {
+    background-color: #CFC;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor:hover .name {
+    color: #000;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor label { 
+    line-height: 0.6em;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor-image {
+    width: 30px;
+    height: 30px;
+    overflow: clip;
+}
+
+.ceus-requestor.ceus-refactor .select-actors input,
+.ceus-requestor.ceus-refactor .select-users input {
+	display: none;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.selected .name {
+    font-weight: bold;
+}
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.selected img {
+    border-radius: 5px;
+    border-width: 2px;
+    border-color: #CFC;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor-info {
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .name {
+    font-size: 0.6em;
+    text-overflow: ellipsis;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.friendly .actor-image {
+    border-top: solid 2px #0F0;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.enemy .actor-image {
+    border-top: solid 2px #F00;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.neutral .actor-image {
+    border-top: solid 2px #FF0;
+}
+
+.ceus-requestor.ceus-refactor fieldset.select-actors .actor.secret .actor-image {
+    border-top: solid 2px #F0F;
+}
+
+.ceus-requestor.ceus-refactor .select-rolls-buttons {
+    display: flex;
+}
+
+.ceus-requestor.ceus-refactor .select-rolls-buttons button {
+    margin: 5px;
+}
+
+.ceus-requestor.ceus-refactor .selector-roll option.category {
+  background: rgba(255,255,0,1) !important;
+    color: #000;
+}
+
+.ceus-requestor.ceus-refactor .select-rolls .context.invisible {
+	display: none;
+}
+
+.ceus-refactor .ceus-results-list-item.rolled {
+    border-radius: 5px;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.ceus-refactor .ceus-results-list-item.rolled.pass {
+    border-color: #AFA;
+}
+
+.ceus-refactor .ceus-results-list-item.rolled.fail {
+    border-color: #FAA;
+}
+
+.ceus-refactor .ceus-results-list-item .total,
+.ceus-refactor .ceus-results-list-item .success {
+    text-align: center;
+}
+
+.ceus-refactor .ceus-results-list-item .total {
+	font-size: 1.5em;
+}
+
+.ceus-refactor .ceus-results-list-item .success {
+    font-size: 3em;
+}
+
+.ceus-refactor .ceus-results-roll .users .users-header,
+.ceus-refactor .ceus-results-roll .actors .actors-header,
+.ceus-refactor .ceus-results-roll .rolls .rolls-header {
+    font-weight: bold;
+    display: inline-block;
+    width: 200px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.ceus-refactor .ceus-results-pending .actor-image img {
+	max-height: 100px;
+	max-width: 100px;
+}
+
+.ceus-refactor .ceus-results-list .ceus-results-list-item td {
+    padding: 5px;
+}
+
+.ceus-refactor .ceus-results-list .ceus-results-list-item .actor .actor-image {
+    width: 100px;
+}
+
+.ceus-refactor .ceus-results-list .ceus-results-list-item .actor .actor-image img {
+    height: 100px;
+}
+
+
+/* Player Rolling Screen */
+.ceus-request-player .actor-check-img,
+.ceus-request-player .actor-check-name {
+	text-align: center;
+}
+
+.ceus-request-player .actor-check-img img {
+	max-height: 100px;
+	max-width: 100px;
+}
+
+.ceus-request-player .actor-check-img img {
+	max-height: 60px;
+}
+
+.ceus-request-player .actor-selection-warning {
+	color: #F00;
+	font-weight: bold;
+	text-align: center;
+	margin: 5px;
+}
+
+.ceus-request-player .actor.selected {
+	border: solid 2px #FFF;
+	background-color: #AFA;
+}
+
+.ceus-request-player .actor.selected .actor-check-name {
+	color: #000;
+}
+
+.ceus-request-player .actor.done {
+	background-color: #AFA;
+	pointer-events: none;
+}
+
+.ceus .checks fieldset {
+	display: flex;
+}
+
+.ceus .checks fieldset legend {
+	border: solid 1px;
+	padding: 5px;
+	border-radius: 5px;
+}
+
+.ceus-request-player fieldset .check-button,
+.ceus-request-player fieldset .check-separator {
+	height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	padding: 8px;
+}
+
+.ceus-request-player .check-button.done {
+	pointer-events: none;
+	background-color: #353 !important;
+	text-decoration: line-through;
+	color: #AAA;
+}
+
+.ceus-request-player .checks-actor.done .check-separator,
+.ceus-request-player .checks-actor.done .check-button {
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.ceus-request-player .checks-actor.done legend {
+	background-color: #353;
+}
+
+/** Results Screen **/
+.ceus-results-header {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.ceus .ceus-gm-actions {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ceus .ceus-gm-actions .gm-action-all {
+    flex: 1;
+}
+
+.ceus .ceus-gm-actions .gm-action-all.gm-action-reroll {
+    flex: 100%;
+}
+
+/** Announcements **/
+.ceus.ceus-result header,
+.ceus .announce.announce-any .announce-key,
+.ceus.announce-result .announce-success .announce-success-roll,
+.ceus.announce-result .announce-success .announce-success-character {
+    border: solid 1px #FFF;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #000;
+    margin: 4px;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.ceus.ceus-result .result-body .result-total,
+.ceus .announce.announce-any .announce-result,
+.ceus.announce-result .announce-success .announce-success-result {
+    border: solid 1px #FFF;
+    border-radius: 20px;
+    text-align: center;
+    background-color: #000;
+    margin: 4px;
+    font-size: 1.2em;
+}
+
+.ceus.ceus-result.sensitive {
+	background-color: rgba(70,70,70,0.3);
+}
+
+.ceus.ceus-result.fail .result-total,
+.ceus .announce.announce-any.fail .announce-result,
+.ceus .announce-success.fail .announce-success-result {
+	border-color: #F00;
+}
+
+.ceus.ceus-result.pass .result-total,
+.ceus .announce.announce-any.pass .announce-result,
+.ceus .announce-success.pass .announce-success-result {
+	border-color: #0F0;
+}
+
+.ceus.ceus-result.crit-success .result-total {
+	color: #0F0;
+}
+
+.ceus.ceus-result.crit-fail .result-total {
+	color: #F00;
+}
+
+.ceus.announce-result .result.crit-success .roll-total {
+    font-weight: 1000;
+    color: #0F0;
+    border: solid #0F0 1px;
+    text-align: center;
+}
+
+.ceus.announce-result .result.crit-fail .roll-total {
+    font-weight: 1000;
+    color: #F00;
+    border: solid #F00 1px;
+    text-align: center;
+}

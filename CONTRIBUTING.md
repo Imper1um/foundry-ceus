@@ -1,55 +1,24 @@
-## Adding System Support
+# Adding System support
+Ceus uses an abstracted way of rolling for each system, based on its required functionality.
 
-LMRTFY operates by providing GMs a list of abilities, skills, and saves, and then associating each of these lists with a method on the system's `Actor` class which can be called to roll the correct ability check.
+This was originally forked from LMRTFY, but the way rolls were gathered and asked for has changed significantly. Before you begin, you will need to grab the id of the system, which is located in the `system.json` in the root directory for the Ruleset.
 
-Note that this was originally designed with only dnd5e in mind and some of its core assumptions still show that.
+## 1. Implement ceus_RefactorRollProvider
+Create a new file called ceus_RollProvider_<SystemID> for example, Starfinder 1st Edition would be `ceus_RollProvider_sfrpg`.
 
-### 1. Add your system to the module.json
+### Considerations
+All classes must `export` the class, and must `extends ceus_RefactorRollProvider`. `ceus_RefactorRollProvider` provides a lot of base functionality that prevents you from doing things over and over again. Here's a few things you *must* do in order to make your system class compatible with Ceus:
 
-`module.json` has a `systems` field which will need your system added to it before LMRTFY can be activated on a world with that system running.
+1. Implement `systemIdentifiers`. You must use the name of the system identifier used in `system.json` for your ruleset.
+2. Implement `isPlayer(actor)`. This is a formatting thing, but it helps a lot. Generally, you'll need to provide true if the actor is a player character sheet.
+3. Implement `getAvailableRolls()`. This must return an array that gives a listing of rolls that will be shown. For an example on how to format available rolls, check out `ceus_RollProvider_sf1e.getAvailableRolls()`
+4. Implement `getContextList(requestOptions)`. If you are planning on enabling Ceus to show a dialog for rolling for any roll that assigns a player a place in combat (Initiative), you will need to provide the Context list. Initiative in Foundry cannot be assigned without Context, so that will be necessary.
 
-### 2. Add system definitions to `LMRTFY#ready`
+## 2. Import your Roll Provider
+Roll Providers need to be added to `ceus_ProviderEngine`. The file needs to be imported at the top of the class, and added to `externalRollProviders`.
 
-Fill out `lmrtfy.js`'s `LMRTFY#ready` method's switch statement with your new system definitions.
+## 3. Update module.json
+In `module.json`, you need to add your system to `systems`, and you need to add the system information to `relationships.systems`.
 
-```js
-case 'dnd5e':
-    // which method on the Actor class can roll the appropriate check?
-    LMRTFY.saveRollMethod = 'rollAbilitySave';
-    LMRTFY.abilityRollMethod = 'rollAbilityTest';
-    LMRTFY.skillRollMethod = 'rollSkill';
-
-    // where are the abilities, skills, and saves defined?
-    LMRTFY.abilities = CONFIG.DND5E.abilities;
-    LMRTFY.skills = CONFIG.DND5E.skills;
-    LMRTFY.saves = CONFIG.DND5E.abilities;
-
-    // is there any special keybinding the system might expect for these kinds of rolls
-    LMRTFY.normalRollEvent = { shiftKey: true, altKey: false, ctrlKey: false };
-    LMRTFY.advantageRollEvent = { shiftKey: false, altKey: true, ctrlKey: false };
-    LMRTFY.disadvantageRollEvent = { shiftKey: false, altKey: false, ctrlKey: true };
-
-    // does your system support initiative rolls or deathsaves (as dnd5e understands them)?
-    LMRTFY.specialRolls = { 'initiative': true, 'deathsave': true };
-
-    // does you system use ability modifiers. this is for the dice and modifier buttons under custom formula
-    LMRTFY.abilityAbbreviations = CONFIG.DND5E.abilityAbbreviations;
-    LMRTFY.modIdentifier = 'mod';
-    LMRTFY.abilityModifiers = LMRTFY.parseAbilityModifiers();
-    break;
-```
-
-### 3. (Maybe Optional) Check `LMRTFYRoller#_makeRoll` signature
-
-There is one other place that system specific code might be needed: `roller.js`'s `LMRTFYRoller#_makeRoll` might need tweaks if your system's methods expect a different call signature than the default.
-
-```js
-actor[rollMethod].call(actor, ...args, { event: fakeEvent });
-```
-
-> `fakeEvent` is one of `normalRollEvent`, `advantageRollEvent`, or `disadvantageRollEvent` as defined above
-
-
-### 4. Open a PR
-
-Once everything works how you expect it to, by all means open a PR and we'll get it merged in. Any bugs in this system support will probably be sent your way. Thanks for helping make LMRTFY better! :)
+## 4. Create a Pull Request!
+Create a Pull Request to merge your changes into the code base!

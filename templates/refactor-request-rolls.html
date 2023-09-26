@@ -1,0 +1,163 @@
+<form autocomplete="off" onsubmit="event.preventDefault();" data-appid="{{appId}}" class="ceus-form ceus-request ceus-request-gm">
+	<fieldset class="select-users">
+		<legend>{{localize "Ceus.Requestor.SelectUsers.Title"}}</legend>
+		<div class="form-group user-select">
+		{{#each possibleUsers}}
+			<div class="user {{#if this.active}}active{{else}}inactive{{/if}} {{#if this.isSelected}}selected{{else}}not-selected{{/if}}" data-id="{{this.id}}" data-role="{{this.role}}" data-active="{{this.active}}">
+				<input type="checkbox" name="user-{{this.id}}" id="user-{{this.id}}" class="user-select" data-dtype="Boolean"
+					{{checked this.isSelected}} />
+				<label for="user-{{this.id}}">
+					<div class="user-image">
+					{{#if this.img}}<img src="{{this.img}}" alt="{{this.name}}" style="border-color: {{this.color}}" />{{else}}<i class="fas fa-user-alt" style="border-color: {{this.color}}"></i>{{/if}}
+					</div>
+					<div class="user-info">
+					{{#if this.active}}<span class="active">{{localize "Ceus.Requestor.SelectUsers.Active"}}</span>{{/if}}<span class="name" style="color: {{this.color}}">{{this.name}}</span>
+					</div>
+				</label>
+			</div>
+		{{/each}}
+		</div>
+		<div class="form-group select-buttons">
+			<div class="button-intro">{{localize "Ceus.Requestor.SelectUsers.AddAll"}}</div>
+			<button type="button" id="users-addAll-gm" class="add-all">{{localize "Ceus.Requestor.SelectUsers.AddAllGM"}}</button>
+			<button type="button" id="users-addAll-assistant" class="add-all">{{localize "Ceus.Requestor.SelectUsers.AddAllAssistant"}}</button>
+			<button type="button" id="users-addAll-trusted" class="add-all">{{localize "Ceus.Requestor.SelectUsers.AddAllTrustedPlayers"}}</button>
+			<button type="button" id="users-addAll-player" class="add-all">{{localize "Ceus.Requestor.SelectUsers.AddAllPlayers"}}</button>
+			<button type="button" id="users-addAll-online" class="add-all">{{localize "Ceus.Requestor.SelectUsers.AddAllOnline"}}</button>
+			<button type="button" id="users-addAll-everyone" class="add-all">{{localize "Ceus.Requestor.SelectUsers.AddEveryone"}}</button>
+			<div class="button-separator"></div>
+			<button type="button" id="users-clear" class="clear-all">{{localize "Ceus.Requestor.SelectUsers.Clear"}}</button>
+	</fieldset>
+	<fieldset class="select-actors">
+		<legend>{{localize "Ceus.Requestor.SelectActors.Title"}}</legend>
+		<div class="form-group actor-select">
+		{{#each possibleActors}}
+			<div class="actor {{this.dispositionClass}} {{#if this.isVisible}}visible{{else}}invisible{{/if}} {{#if this.isSelected}}selected{{else}}not-selected{{/if}}" data-id="{{this.actorId}}">
+				<input type="checkbox" class="actor-select" name="actor-{{this.actorId}}" id="actor-{{this.actorId}}" data-dtype="Boolean" {{checked this.isSelected}} />
+				<label for="actor-{{this.actorId}}">
+					<div class="actor-image">
+						<img src="{{this.imgUrl}}" />
+					</div>
+					<div class="actor-info">
+						<span class="name">{{this.name}}</span>
+					</div>
+				</label>
+			</div>
+		{{/each}}
+		</div>
+		<div class="form-group select-buttons">
+			<div class="button-intro">{{localize "Ceus.Requestor.SelectActors.AddAll"}}</div>
+			<button type="button" id="actors-addAll-friendly" class="addAll">{{localize "Ceus.Requestor.SelectActors.AddAllFriendly"}}</button>
+			<button type="button" id="actors-addAll-neutral" class="addAll">{{localize "Ceus.Requestor.SelectActors.AddAllNeutral"}}</button>
+			<button type="button" id="actors-addAll-enemy" class="addAll">{{localize "Ceus.Requestor.SelectActors.AddAllEnemy"}}</button>
+			<button type="button" id="actors-addAll-secret" class="addAll">{{localize "Ceus.Requestor.SelectActors.AddAllSecret"}}</button>
+			<button type="button" id="actors-addAll-players" class="addAll">{{localize "Ceus.Requestor.SelectActors.AddAllPlayers"}}</button>
+			<button type="button" id="actors-addAll-nonplayers" class="addAll">{{localize "Ceus.Requestor.SelectActors.AddAllNonPlayers"}}</button>
+			<div class="button-separator"></div>
+			<button type="button" id="actors-clear" class="clear-all">{{localize "Ceus.Requestor.SelectActors.Clear"}}</button>
+		</div>
+	</fieldset>
+	<fieldset class="select-rolls">
+		<legend>{{localize "Ceus.Requestor.SelectRolls.Title"}}</legend>
+		<div class="form-group-stack">
+			<div class="form-group title">
+				<label for="title-selection">{{localize "Ceus.Requestor.SelectRolls.TitleName"}}</label>
+				<input type="text" id="title-selection" name="title-selection" value="{{requestOptions.title}}">
+				<p class="hint">{{localize "Ceus.Requestor.SelectRolls.TitleHint"}}</p>
+			</div>
+			<div class="form-group message">
+				<label for="message-selection">{{localize "Ceus.Requestor.SelectRolls.MessageName"}}</label>
+				<input type="text" id="message-selection" name="message-selection" value="{{requestOptions.message}}">
+				<p class="hint">{{localize "Ceus.Requestor.SelectRolls.MessageHint"}}</p>
+			</div>
+		</div>
+		<div class="form-group context {{#if needsContext}}visible{{else}}invisible{{/if}}">
+			<label for="context-selection">{{localize "Ceus.Requestor.SelectRolls.ContextName"}}</label>
+			<select id="context-selection" name="context-selection">
+				{{#each possibleContexts}}
+				<option value="{{this.id}}" {{#if this.isSelected}}selected{{/if}}>{{this.name}}</option>
+				{{/each}}
+			</select>
+			<p class="hint">{{localize "Ceus.Requestor.SelectRolls.ContextHint"}}</p>
+		</div>
+		{{#if permitSetRollPrivacy}}
+		<div class="form-group roll-privacy">
+			<label for="roll-privacy">{{localize "Ceus.Requestor.SelectRolls.RollPrivacyName"}}</label>
+			<select id="roll-privacy" name="roll-privacy">
+				<option value="public" {{#if rollPrivacy.public}}selected{{/if}}>Public Roll</option>
+				<option value="blind" {{#if rollPrivacy.blind}}selected{{/if}}>Blind GM Roll</option>
+				<option value="gm" {{#if rollPrivacy.gm}}selected{{/if}}>GM Roll</option>
+				<option value="self" {{#if rollPrivacy.self}}selected{{/if}}>Self Roll</option>
+			</select>
+			<p class="hint">{{localize "Ceus.Requestor.SelectRolls.RollPrivacyHint"}}</p>
+		</div>
+		{{/if}}
+		{{#if permitRequireRollPrivacy}}
+		<div class="form-group roll-require-privacy">
+			<input type="checkbox" id="roll-require-privacy" name="roll-require-privacy" {{checked requestOptions.rollRequirePrivacy}}>
+			<label for="roll-require-privacy">{{localize "Ceus.Requestor.SelectRolls.RequireRollPrivacyName"}}</label>
+			<p class="hint">{{localize "Ceus.Requestor.SelectRolls.RequireRollPrivacyHint"}}</p>
+		</div>
+		{{/if}}
+		<div class="form-group roll-number">
+			<label for="roll-number">{{localize "Ceus.Requestor.SelectRolls.RollNumberName"}}</label>
+			<select id="roll-number" name="roll-number">
+				<option value="any" {{#if rollNumber.any}}selected{{/if}}>Roll Any</option>
+				<option value="one" {{#if rollNumber.one}}selected{{/if}}>Roll only one</option>
+				<option value="all" {{#if rollNumber.all}}selected{{/if}}>Roll All</option>
+			</select>
+			<p class="hint">{{localize "Ceus.Requestor.SelectRolls.RollNumberHint"}}</p>
+		</div>
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>{{localize "Ceus.Requestor.SelectRolls.Header.Roll"}}</th>
+					<th>{{localize "Ceus.Requestor.SelectRolls.Header.CustomBonus"}}</th>
+					{{#if permitDC}}<th>{{localize "Ceus.Requestor.SelectRolls.Header.DC"}}</th>{{/if}}
+					{{#if permitAdvantageDisadvantage}}<th>{{localize "Ceus.Requestor.SelectRolls.Header.AdvantageDisadvantage"}}</th>{{/if}}
+					{{#if trainedOptions}}<th>{{localize "Ceus.Requestor.SelectRolls.Header.Trained"}}</th>{{/if}}
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			{{#each requestOptions.requestItems}}
+				<tr data-id="{{this.id}}" class="requestItem">
+					<td class="requestItem-roll">{{ceus-rollSelector this}}</td>
+					<td class="requestItem-custombonus"><input type="text" class="selector-custombonus" name="custombonus-{{this.id}}" id="custombonus-{{this.id}}" value="{{this.customBonus}}" /></td>
+					{{#if this.permitDC}}<td class="requestItem-dc">{{#if this.allowDC}}<input type="text" class="selector-dc" name="dc-{{this.id}}" id="dc-{{this.id}}" value="{{this.dc}}" size="4" />{{/if}}</td>{{/if}}
+					{{#if this.permitAdvantageDisadvantage}}<td class="requestItem-advdis">{{ceus-advantageDisadvantage this}}</td>{{/if}}
+					{{#if this.trainedOptions}}<td class="requestItem-trained">{{ceus-trainedSelector this}}</td>{{/if}}
+					<td>
+						<button type="button" class="requestItem-delete" data-id="{{this.id}}"><i class="fas fa-trash"></i></button>
+					</td>
+				</tr>
+			{{/each}}
+			</tbody>
+		</table>
+		<div class="advdis-key">
+			{{localize "Ceus.Requestor.SelectRolls.AdvantageDisadvantage.Key"}}
+		</div>
+		<div class="select-rolls-buttons">
+			<button type="button" class="select-rolls-button" id="add-roll"><i class="fas fa-plus"></i> {{localize "Ceus.Requestor.SelectRolls.Buttons.Add"}}</button>
+			<button type="button" class="select-rolls-button" id="clear-rolls"><i class="fas fa-broom"></i> {{localize "Ceus.Requestor.SelectRolls.Buttons.Clear"}}</button>
+		</div>
+	</fieldset>	
+	<div class="errorlist">
+		<ul class="errorlist-items">
+			{{#each errors}}
+			<li class="{{error.type}}">{{#if this.preventsSubmission}}<span class="prevents label label-danger">{{localize "Ceus.Errors.PreventsSubmission"}}</span>{{/if}} {{error.content}}</li>
+			{{/each}}
+		</ul>
+	</div>
+	<div class="form-group response-buttons">
+		<button type="button" class="response-button" id="button-gmroll" {{#if preventsMacro}}disabled{{/if}}><i class="fas fa-dice"></i> {{localize "Ceus.Requestor.Buttons.GmrollSelected"}}</button>
+		<button type="button" class="response-button" id="button-ask" {{#if preventsSubmission}}disabled{{/if}}><i class="fas fa-person-circle-question"></i> {{localize "Ceus.Requestor.Buttons.AskSelected"}}</button>
+	</div>
+	<div class="form-group response-buttons">
+		<div class="response-buttons-header">Generate Macro</div>
+		<button type="button" class="response-button" id="button-macro-request" {{#if preventsMacro}}disabled{{/if}}><i class="fas fa-timeline"></i> {{localize "Ceus.Requestor.Buttons.MacroToScreen"}}</button>
+		<button type="button" class="response-button" id="button-macro-gmroll" {{#if preventsMacro}}disabled{{/if}}><i class="fas fa-dice"></i> {{localize "Ceus.Requestor.Buttons.MacroToGmroll"}}</button>
+		<button type="button" class="response-button" id="button-macro-ask" {{#if preventsMacro}}disabled{{/if}}><i class="fas fa-person-circle-question"></i> {{localize "Ceus.Requestor.Buttons.MacroToAsk"}}</button>
+	</div>
+</form>
+		
