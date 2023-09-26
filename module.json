@@ -1,62 +1,65 @@
 {
-	"id": "ceus",
-	"name": "Ceus",
-	"title": "Ceus - Ask For Rolls",
-	"description": "Want your players to roll in a specific way? Ceus asks players for specific rolls, preventing them from spending time looking for rolls.",
-	"version": "0.81",
-	"author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego, VTT Lair, Imper1um",
-	"authors": [{
-		"name": "Imper1um",
-		"url": "https://github.com/Imper1um"
-	}],
-	"esmodules": [
-		"./src/ceus_Startup.js"
-	],
-	"scripts": [],
-	"styles": [
-		"/css/ceus.css",
-		"/css/pf1.css"
-	],
-	"minimumCoreVersion": "11",
-	"compatibleCoreVersion": "11",
-	"compatibility": {
-		"minimum": "11",
-		"verified": "11"
-	},
-	"languages": [{
-			"lang": "en",
-			"name": "English",
-			"path": "lang/en.json"
-		}
-	],
-	"systems": [
-		"pf1",
-		"sf1e"
-	],
-	"relationships": {
-		"systems": [
-			{
-				"id": "pf1",
-				"type": "system",
-				"manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/v0.82.1/downloads/system.json",
-				"compatibility": {
-					"verified": "0.82.1"
-				}
-			},
-			{
-				"id": "sfrpg",
-				"type": "system",
-				"manifest": "https://github.com/foundryvtt-starfinder/foundryvtt-starfinder/blob/v0.24.2/src/system.json",
-				"compatibility": {
-					"verified": "0.24.2"
-				}
-			}
-		]
-	},
-	"socket": true,
-	"url": "https://github.com/Imper1um/foundry-ceus/",
-	"manifest": "https://github.com/Imper1um/foundry-ceus/releases/latest/download/module.json",
-    "download": "https://github.com/Imper1um/foundry-ceus/releases/download/0.81/module.zip",
-	"changelog": "https://github.com/Imper1um/foundry-ceus/releases",
-	"bugs": "https://github.com/Imper1um/foundry-ceus/issues"
+  "id": "ceus",
+  "name": "Ceus",
+  "title": "Ceus - Ask For Rolls",
+  "description": "Want your players to roll in a specific way? Ceus asks players for specific rolls, preventing them from spending time looking for rolls.",
+  "version": "0.82",
+  "author": "KaKaRoTo, iotech, Limping Ninja, Rughalt, Calego, VTT Lair, Imper1um",
+  "authors": [
+    {
+      "name": "Imper1um",
+      "url": "https://github.com/Imper1um"
+    }
+  ],
+  "esmodules": [
+    "./src/ceus_Startup.js"
+  ],
+  "scripts": [],
+  "styles": [
+    "/css/ceus.css",
+    "/css/pf1.css"
+  ],
+  "minimumCoreVersion": "11",
+  "compatibleCoreVersion": "11",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "systems": [
+    "pf1",
+    "sf1e"
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "pf1",
+        "type": "system",
+        "manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/v0.82.1/downloads/system.json",
+        "compatibility": {
+          "verified": "0.82.1"
+        }
+      },
+      {
+        "id": "sfrpg",
+        "type": "system",
+        "manifest": "https://github.com/foundryvtt-starfinder/foundryvtt-starfinder/blob/v0.24.2/src/system.json",
+        "compatibility": {
+          "verified": "0.24.2"
+        }
+      }
+    ]
+  },
+  "socket": true,
+  "url": "https://github.com/Imper1um/foundry-ceus/",
+  "manifest": "https://github.com/Imper1um/foundry-ceus/releases/latest/download/module.json",
+  "download": "https://github.com/Imper1um/foundry-ceus/releases/download/0.82/module.zip",
+  "changelog": "https://github.com/Imper1um/foundry-ceus/releases",
+  "bugs": "https://github.com/Imper1um/foundry-ceus/issues"
 }
