@@ -5,7 +5,6 @@ import { ceus_SocketEngine } from "./ceus_SocketEngine.js";
 import { ceus_SettingsEngine } from "./ceus_SettingsEngine.js";
 import { ceus_ResultsWindow } from "./ceus_ResultsWindow.js";
 import { ceus_LogEngine } from "./ceus_LogEngine.js";
-import { CeusRequestor } from "./requestor.js";
 
 
 export class Ceus {
@@ -87,31 +86,10 @@ export class Ceus {
         }
     }
 	
-	onThemeChange(enabled) {
-        $(".ceus.ceus-requestor,.ceus.ceus-roller").toggleClass("ceus-parchment", enabled);
-        if (!this.requestor) { return; }
-        if (enabled) {
-            this.requestor.options.classes.push("ceus-parchment");
-        } else {
-            this.requestor.options.classes = this.requestor.options.classes.filter(c => c !== "ceus-parchment");
-		}
-        // Resize to fit the new theme
-        if (this.requestor.element.length) {
-            this.requestor.setPosition({ width: "auto", height: "auto" });
-		}
-    }
-	
 	requestRoll() {
-		if (this.providerEngine.currentRollProvider.rollProviderType() === 'legacy') {
-			if (this.requestor === undefined) {
-				this.requestor = new CeusRequestor();
-			}
-			this.requestor.render(true);
-		} else if (this.providerEngine.currentRollProvider.rollProviderType() === 'refactor') {
-			const requestwindow = new ceus_RequestWindow();
-			this.requestWindows.push(requestwindow);
-			requestwindow.render(true);
-		}
+		const requestwindow = new ceus_RequestWindow();
+		this.requestWindows.push(requestwindow);
+		requestwindow.render(true);
     }
 	
 	async registerHandlebarsHelpers() {
@@ -212,80 +190,4 @@ export class Ceus {
 	static requestRoll(data) {
 		if (!game.user.isGM) { return; }
 	}
-
-    /*async onReady() {
-		this.providerEngine.onReady();
-		this.socketEngine.onReady();
-
-        
-
-        if (game.settings.get('ceus', 'deselectOnRequestorRender')) {
-            Hooks.on("renderCeusRequestor", () => {
-                canvas.tokens.releaseAll();
-            });
-        }
-		
-		
-		Hooks.on('renderChatMessage', this.hideBlind);
-    }*/
-
-    /* 
-	results() {
-		if (this.results === undefined) {
-			this.results = new Array();
-		}
-		return this.results;
-	}
-	addResults(newResults) {
-		const r = results();
-		r.push(newResults);
-		this.results = r;
-	}
-	getResults(id) {
-		return results.find(r => r.id == id);
-	}
-
-    
-
-    
-
-    async hideBlind(app, html, msg) {
-        if (msg.message.flags && msg.message.flags.ceus) {
-            if (msg.message.flags.ceus.blind && !game.user.isGM) {
-                msg.content = '<p>??</p>';
-
-                let idx = html[0].innerHTML.indexOf('<div class="message-content">');
-                html[0].innerHTML = html[0].innerHTML.substring(0, idx);
-                html[0].innerHTML += `<div class="message-content">${msg.content}</div>`;
-            }
-        }
-    }
-
-    fromUuid(uuid) {
-        let parts = uuid.split(".");
-        let doc;
-
-        if (parts.length === 1) return game.actors.get(uuid);
-        // Compendium Documents
-        if (parts[0] === "Compendium") {
-            return undefined;
-        }
-
-        // World Documents
-        else {
-            const [docName, docId] = parts.slice(0, 2);
-            parts = parts.slice(2);
-            const collection = CONFIG[docName].collection.instance;
-            doc = collection.get(docId);
-        }
-
-        // Embedded Documents
-        while (parts.length > 1) {
-            const [embeddedName, embeddedId] = parts.slice(0, 2);
-            doc = doc.getEmbeddedDocument(embeddedName, embeddedId);
-            parts = parts.slice(2);
-        }
-        if (doc.actor) doc = doc.actor;
-        return doc || undefined;
-    } */
 }

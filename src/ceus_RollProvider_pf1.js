@@ -184,9 +184,10 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		const saves = CONFIG.PF1.savingThrows;
 		return Object.keys(saves).map(key => {
 			const saveName = saves[key];
+			const capitalizedKey = key.charAt(0).toUpperCase() + key.slice(1);
 			return {
 				id: `${saveName}Save`,
-				name: `PF1.${saveName}Save`,
+				name: `PF1.SavingThrow${capitalizedKey}`,
 				type: "roll",
 				rollType: CeusRoller.rollTypes().SAVE,
 				method: this.rollSave,
@@ -212,7 +213,7 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 			
 			return {
 				id: `Skill${capitalizedKey}`,
-				name: `SFRPG.Skill${translatedKey}`,
+				name: `PF1.Skill${translatedKey}`,
 				type: "roll",
 				rollType: CeusRoller.rollTypes().SKILL,
 				method: this.rollSkill,
