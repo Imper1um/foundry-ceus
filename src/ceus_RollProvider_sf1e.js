@@ -54,7 +54,15 @@ export class ceus_RollProvider_sf1e extends ceus_RefactorRollProvider {
 		if (rollType != CeusRoller.rollTypes().SKILL) {
 			return true;
 		}
-		return actor.system.skills[id].ranks > 0;
+		const skill = actor.system.skills[id];
+		if (!skill) {
+			const availableSkillRoll = getAvailableSkillRolls().find(s => s.id === id);
+			if (availableSkillRoll) {
+				skill = actor.system.skills[availableSkillRoll.skillId];
+			}
+		}
+		if (!skill) { return false; }
+		return skill.ranks > 0;
 	}
 	
 	isPlayer(actor) {
