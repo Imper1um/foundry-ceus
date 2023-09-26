@@ -14,7 +14,8 @@
 	],
 	"scripts": [],
 	"styles": [
-		"/css/ceus.css"
+		"/css/ceus.css",
+		"/css/pf1.css"
 	],
 	"minimumCoreVersion": "11",
 	"compatibleCoreVersion": "11",

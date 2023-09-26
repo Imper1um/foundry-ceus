@@ -226,11 +226,7 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 	
 	baseRollOptions() {
 		return {
-			chatMessage: false,
-			onClose: null,
-			rollOptions: {
-				isPrivate: true,
-			}
+			chatMessage: false
 		};
 	}
 	
@@ -240,6 +236,7 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		const skillRoll = rp.getAvailableRolls().find(r => r.id === "Skills").rolls.find(r => r.id === requestItem.rollId);
 		const skillId = skillRoll.skillId;
 		const skill = actor.system.skills[skillRoll.skillId];
+		const rollOptions = rp.baseRollOptions();
 		var completeRoll;
 		switch (requestItem.trainedOption) {
 			case "HideUntrained":
@@ -255,17 +252,17 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 						null
 					);
 				}
-				completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
+				completeRoll = await actor.rollSkill(skillId, rollOptions);
 				break;
 			case "PreventUntrained":
 				if (skill.isTrainedOnly && skill.ranks < 1) {
-					completeRoll = await actor.rollSkillCheck(skillId, rp.baseRollOptions());
+					completeRoll = await actor.rollSkill(skillId, rollOptions);
 				} else {
-					completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
+					completeRoll = await actor.rollSkill(skillId, rollOptions);
 				}
 				break;
 			default:
-				completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
+				completeRoll = await actor.rollSkill(skillId, rollOptions);
 				break;
 			
 		}
@@ -273,11 +270,11 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 	}
 	
 	async rollPerception(requestOptions, actor, requestItem) {
-		ceus_RollProvider_sf1e.log.Trace("rollPerception", {requestOptions, actor, requestItem});
+		ceus_RollProvider_pf1.log.Trace("rollPerception", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const skill = actor.system.skills["per"];
 		const skillId = "per";
-		const completeRoll = await actor.rollSkillCheck(skillId, skill, rp.baseRollOptions());
+		const completeRoll = await actor.rollSkill(skillId, skill, rp.baseRollOptions());
 		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
@@ -286,7 +283,7 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const saveRoll = rp.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.rollId);
 		const completeRoll = await actor.rollSavingThrow(saveRoll.saveId, rp.baseRollOptions());
-		return this.buildResult(requestOptions, actor, requestItem, completeRoll);
+		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
 	async rollAbility(requestOptions, actor, requestItem) {
@@ -346,14 +343,15 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		}
 		var isCritSuccess = false;
 		var isCritFail = false;
-		for (const term of roll.callbackResult.terms) {
+		const finalRoll = typeof roll.rolls[0] === 'string' ? JSON.parse(roll.rolls[0]) : roll.rolls[0]; //I don't know why it does this.
+		for (const term of finalRoll.terms) {
 			if (!term.faces || term.faces !== 20) { continue; }
-			if (term.results[0].result === 20) { isCritSuccess = true; }
-			if (term.results[0].result === 1) { isCritFail = true; }
+			if (term.results[0].result === 20 && requestItem.canCritSuccess) { isCritSuccess = true; }
+			if (term.results[0].result === 1 && requestItem.canCritFail) { isCritFail = true; }
 		}
 		var isPass = null;
 		if (requestItem.dc) {
-			isPass = requestItem.dc <= roll.callbackResult._total;
+			isPass = requestItem.dc <= finalRoll.total;
 			if (isCritSuccess) { isPass = true; }
 			if (isCritFail) { isPass = false; }
 		}
@@ -364,11 +362,11 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 			actor._id,
 			requestItem.rollId,
 			game.data.userId,
-			roll.callbackResult._total,
+			finalRoll.total,
 			true,
 			isPass,
 			rollType,
-			roll.callbackResult.breakdown,
+			finalRoll.formula,
 			isCritFail,
 			isCritSuccess
 		);

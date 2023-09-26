@@ -33,7 +33,7 @@ export class Ceus {
 	}
 	
 	async onChatMessage(app, html, data) {
-		Ceus.log.Trace("onChatMessage", {app, html, data});
+		if (Ceus.current && Ceus.current.settingsEngine) { Ceus.log.Trace("onChatMessage", {app, html, data}); } //Avoids conflicts when starting up.
 		if (game.user.isGM) { return; }
 		if (html.hasClass("sensitive") && html.hasClass("ceus")) {
 			html.find('.result-total').text('???');
