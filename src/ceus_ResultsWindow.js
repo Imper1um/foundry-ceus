@@ -440,7 +440,8 @@ export class ceus_ResultsWindow extends FormApplication {
 	
 	
 	generateRollDescription(requestItem) {
-		const flat = Utils.flattenRolls(Ceus.current.providerEngine.currentRollProvider.getAvailableRolls());
+		const rp = Ceus.current.providerEngine.currentRollProvider;
+		const flat = Utils.flattenRolls(rp.getAvailableRolls());
 		
 		const roll = flat.find(r => r.id === requestItem.rollId);
 		const rollName = game.i18n.localize(roll.name);
@@ -451,7 +452,7 @@ export class ceus_ResultsWindow extends FormApplication {
 		if (requestItem.dc) {
 			rollDescription += `:DC${requestItem.dc}`;
 		}
-		if (Ceus.current.providerEngine.currentRollProvider.permitAdvantageDisadvantage()) {
+		if (rp.permitAdvantageDisadvantage()) {
 			switch (requestItem.advantageDisadvantage) {
 				case 'require-advantage':
 					rollDescription += ' [ADV]';
@@ -470,11 +471,8 @@ export class ceus_ResultsWindow extends FormApplication {
 					break;
 			}
 		}
-		var trainedOptions = Ceus.current.providerEngine.currentRollProvider.trainedOptions();
-		if (trainedOptions && trainedOptions.length > 1) {
-			for (const to of trainedOptions) {
-				rollDescription += ' [' + game.i18n.localize(`Ceus.Requestor.SelectRolls.Trained.${to}`) + ']';
-			}
+		if (requestItem.trainedOption) {
+			rollDescription += ' [' + game.i18n.localize(`Ceus.Requestor.SelectRolls.Trained.${requestItem.trainedOption}`) + ']';
 		}
 		return rollDescription;
 	}
