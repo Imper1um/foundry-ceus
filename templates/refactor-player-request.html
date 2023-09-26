@@ -1,0 +1,27 @@
+<form autocomplete="off" onsubmit="event.preventDefault();" data-appid="{{appId}}" class="ceus-form ceus-request ceus-request-player" data-requestid="{{requestOptions.requestId}}" data-isand="{{isAnd}}" data-isor="{{isOr}}">
+	<div class="header">
+		<h1 class="header-title">{{requestOptions.title}}</h1>
+		<div class="header-content">{{requestOptions.message}}</div>
+	</div>
+	<div class="checks">
+		{{#each actors}}
+		<fieldset id="checks-actor-{{this.actor._id}}" class="checks-actor {{this.doneClass}}" data-actorid="{{this.actor._id}}">
+			<legend>
+				<div class="actor-check-img"><img src="{{this.actor.img}}" /></div>
+				<div class="actor-check-name">{{this.actor.name}}{{this.doneMessage}}</div>
+			</legend>
+			{{#each this.checks}}
+				<button class="check-button {{this.doneClass}}" id="check-button-{{this.roll.id}}" data-actorid="{{../actor._id}}" data-checkid="{{this.roll.id}}">{{localize this.roll.name}}{{this.bonusView}}</button>
+				{{#if this.isNotLast}}
+					{{#if ../../isAnd}}
+					<div class="check-separator check-and">{{localize "Ceus.Player.And"}}</div>
+					{{/if}}
+					{{#if ../../isOr}}
+					<div class="check-separator check-or">{{localize "Ceus.Player.Or"}}</div>
+					{{/if}}
+				{{/if}}
+			{{/each}}
+		</fieldset>
+		{{/each}}
+	</div>
+</form>

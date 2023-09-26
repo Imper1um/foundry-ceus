@@ -1,69 +1,162 @@
 {
-    "LMRTFY.Title": "Let Me Roll That For You!",
-    "LMRTFY.ControlTitle": "Request Roll",
-    "LMRTFY.AdvantageNote": "These rolls will be made with advantage",
-    "LMRTFY.DisadvantageNote": "These rolls will be made with disadvantage",
-    "LMRTFY.SelectUser": "Select User:",
-    "LMRTFY.ControlledCharacters": "Controlled characters",
-    "LMRTFY.ControlledTokens": "Controlled Tokens",
-    "LMRTFY.AssignedCharacters": "Assigned characters",
-    "LMRTFY.SelectCharacters": "Select characters:",
-    "LMRTFY.SelectAll": "Select All",
-    "LMRTFY.SelectNone": "Clear Selection",
-    "LMRTFY.Modifiers": "Modifiers: ",
-    "LMRTFY.NormalRoll": "Normal Roll",
-    "LMRTFY.AdvantageRoll": "Advantage",
-    "LMRTFY.DisadvantageRoll": "Disadvantage",
-    "LMRTFY.QueryRoll": "Query Player",
-    "LMRTFY.WindowTitle": "Window Title:",
-    "LMRTFY.WindowTitleValue": "Get Rolling!",
-    "LMRTFY.WindowTitlePlaceholder": "They see me Rollin', they hating'",
-    "LMRTFY.Message": "Message:",
-    "LMRTFY.MessagePlaceholder": "Roll to see if you find any traps...",
-    "LMRTFY.AbilityChecks": "Ability Checks:",
-    "LMRTFY.AbilityCheck": "Ability Check: ",
-    "LMRTFY.SavingThrows": "Saving Throws:",
-    "LMRTFY.SavingThrow": "Saving Throw: ",
-    "LMRTFY.SkillChecks": "Skill Checks:",
-    "LMRTFY.SkillCheck": "Skill Check: ",
-    "LMRTFY.RequestRolls": "Request Rolls!",
-    "LMRTFY.SaveRequest": "Save Request as Macro",
-    "LMRTFY.RollerIntro": " Your GM has requested rolls from your character(s): ",
-    "LMRTFY.Reason": "Reason: ",
-    "LMRTFY.CustomFormula": "Custom Formula: ",
-    "LMRTFY.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
-    "LMRTFY.Initiative": "Initiative",
-    "LMRTFY.DeathSave": "Death Save",
-    "LMRTFY.Perception": "Perception",
-    "LMRTFY.InitiativeRollMessage": "Roll for Initiative!",
-    "LMRTFY.DeathSaveRollMessage": "Death Saving Throw",
-    "LMRTFY.PerceptionRollMessage": "Perception Check",
-    "LMRTFY.Extras": "Extras",
-    "LMRTFY.EnableParchmentTheme": "Enable parchment theme",
-    "LMRTFY.EnableParchmentThemeHint": "Enables the use of the stylized UI with a parchment look",
-    "LMRTFY.SentNotification": "LMRTFY: Roll request sent to connected players",
-    "LMRTFY.NothingNotification": "LMRTFY: Nothing to request",
-    "LMRTFY.RollTables": "Rollable Table:",
-    "LMRTFY.DeselectOnRequestorRender": "Deselect tokens when opening requestor",
-    "LMRTFY.DeselectOnRequestorRenderHint": "Enable to prevent roll requests from being sent to GM user (yourself)",
-    "LMRTFY.Selectors": "Dice & Modifiers",
-    "LMRTFY.ClearCustomFormula": "Clear Custom Formula",
-    "LMRTFY.Visibility": "Visibility",
-    "LMRTFY.ChooseOneDM": "Player chooses one request to roll:",
-    "LMRTFY.ChooseOne": "Pick one to roll:",
-    "LMRTFY.Enabled": "Enabled",
-    "LMRTFY.DC": "DC",
-    "LMRTFY.UseTokenImageOnRequester": "Use the token's image on the requestor",
-    "LMRTFY.UseTokenImageOnRequesterHint": "When opening the roll requester, use the token's image instead of the actor portrait",
-    "LMRTFY.Selected": "Controlled token at time of macro run",
-    "LMRTFY.SelectedNotification": "The selected user can only be used with 'Save Request as Macro'",
-    "LMRTFY.Macros": "For Macros",
-    "LMRTFY.Users": "Users",
-    "LMRTFY.NoSelectedToken": "Token(s) needs to be selected before the macro can be run",
-    "LMRTFY.SavingThrowFail": "FAIL Saving Throw: ",
-    "LMRTFY.AbilityCheckFail": "FAIL Ability Check: ",
-    "LMRTFY.SkillCheckFail": "FAIL Skill Check: ",
-    "LMRTFY.EnableChooseFail": "Enable Fail Button",
-    "LMRTFY.ShowFailButtons": "Show Fail Button",
-    "LMRTFY.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form"
+    "Ceus": {
+		"ControlTitle": "Request Roll",
+		"Trained": {
+			"HideUntrained": "Hide Untrained Skills from view.",
+			"PreventUntrained": "Prevent Untrained Skills from being rolled.",
+			"AllowUntrained": "Allow Untrained Skills to be rolled."
+		},
+		"Player": {
+			"Or": "Or",
+			"And": "And",
+			"Title": "Request Roll",
+			"Warnings": {
+				"Initial": "You msut select a character to roll for.",
+				"AvailableRolls": "You may roll more than once if you wish.",
+				"RollDone": " [Done!]",
+				"RollAny": " [Done: More Rolls Available]"
+			},
+			"SelectionWarning": "You must select a character to roll for before you can select a roll!",
+			"CloseInfo": "Roll window was closed because other users rolled all of the asked for rolls, or the GM cancelled this roll."
+		},
+		"Setting": {
+			"LogLevel": {
+				"Name": "Log Level",
+				"Hint": "What is the maximum level of content you want to see in the Console Log for this module? Setting this higher will slow down your browser, but it will provide more information to developers to fix issues."
+			},
+			"NotifyLevel": {
+				"Name": "Notify Level",
+				"Hint": "What is the maximum level of notices that you want to see on your notification log for this module? Setting this higher will produce more notifications and slow down your browser."
+			}
+		},
+		"Results": {
+			"Header": "Roll Results",
+			"Actor": "Actor",
+			"Rolls": "Rolls",
+			"Users": "Users",
+			"Actors": "Actors",
+			"RollDescription": "Roll Description",
+			"Roll": "Roll",
+			"Rolls": "Rolls",
+			"Success": "Success",
+			"Bonus": "Bonus",
+			"Total": "Total",
+			"Cancel": "closed their request window.",
+			"Breakdown": "Breakdown",
+			"RolledBy": "Rolled by: ",
+			"Pending": "Pending Rolls",
+			"Completed": "Completed Rolls",
+			"GMActions": {
+				"RollAll": "Roll Remaining Pending Rolls",
+				"RollThis": "Roll This",
+				"CancelAll": "Cancel Remaining Pending Rolls",
+				"CancelThis": "Cancel",
+				"RerollAll": "Reroll All",
+				"RerollThis": "Reroll",
+				"NotifyAll": "Notify Remaining Rolls",
+				"NotifyThis": "Notify",
+				"Announce": "Announce: ",
+				"AnnounceFull": "Full Results",
+				"AnnounceAnySuccess": "At Least One Success?",
+				"AnnounceSuccessBreakdown": "Success Breakdown",
+				"AnnounceThisFull": "Full",
+				"AnnounceThisSuccess": "Success/Fail",
+				"GMFiat": "GM Fiat"
+			},
+			"Announce": {
+				"Character": "Character",
+				"Roll": "Roll",
+				"Total": "Total",
+				"Status": "Pass/Fail"
+			}
+		},
+		"Actions": {
+			"Dice": "Dice",
+			"Custom": "Custom"
+		},
+		"Requestor": {
+			"Title": "Ceus: Request Roll",
+			"Sent": "Request sent to all involved users.",
+			"SelectUsers": {
+				"Title": "Select Users",
+				"AddAll": "Add All",
+				"AddAllGM": "GMs",
+				"AddAllAssistant": "Assistant GMs",
+				"AddAllTrustedPlayers": "Trusted",
+				"AddAllPlayers": "Players",
+				"AddAllOnline": "Online Users",
+				"AddEveryone": "Everyone",
+				"Clear": "Clear",
+				"Active": "Active"
+			},
+			"SelectActors": {
+				"Title": "Select Actors",
+				"AddAll": "Add All",
+				"AddAllFriendly": "Friendly",
+				"AddAllNeutral": "Neutral",
+				"AddAllEnemy": "Enemy",
+				"AddAllSecret": "Secret",
+				"AddAllPlayers": "Players",
+				"AddAllNonPlayers": "Non-Players",
+				"Clear": "Clear"
+			},
+			"SelectRolls": {
+				"Title": "Select Rolls",
+				"Clear": "Clear",
+				"ContextName": "Context",
+				"ContextHint": "When a roll requires it (for example, Initiative requires a Combat context), select the context for that roll.",
+				"RollNumberName": "Roll Number",
+				"RollNumberHint": "Select if receivers need to roll one, must roll all, or can roll any number.",
+				"RollPrivacyName": "Roll Privacy",
+				"RollPrivacyHint": "Select what roll privacy that players should roll.",
+				"RequireRollPrivacyName": "Require Roll Privacy",
+				"RequireRollPrivacyHint": "If checked, roll privacy should be enforced, and cannot be changed by the player.",
+				"TitleName": "Title",
+				"TitleHint": "Enter in a title for the roller window.",
+				"MessageName": "Message",
+				"MessageHint": "Enter in a message for the roller window.",
+				"Header": {
+					"Roll": "Roll",
+					"CustomBonus": "Custom/Bonus",
+					"DC": "DC",
+					"AdvantageDisadvantage": "Adv/Dis",
+					"Trained": "Trained"
+				},
+				"AdvantageDisadvantage": {
+					"RequireAdvantage": "✅ Adv / ❌ Norm / ❌ Dis",
+					"RequireDisadvantage": "❌ Adv / ❌ Norm / ✅ Dis",
+					"RequireNormal": "❌ Adv / ✅ Norm / ❌ Dis",
+					"AllowNormalAdvantage": "✅ Adv / ✅ Norm / ❌ Dis",
+					"AllowNormalDisadvantage": "❌ Adv / ✅ Norm / ✅ Dis",
+					"AllowAdvantageDisadvantage": "✅ Adv / ❌ Norm / ✅ Dis",
+					"AllowAll": "✅ Adv / ✅ Norm / ✅ Dis",
+					"Key": "❌ = Not Allowed, ✅ = Allowed"
+				},
+				"Trained": {
+					"AllowUntrained": "Allow Untrained",
+					"PreventUntrained": "Prevent Untrained",
+					"HideUntrained": "Require Trained"
+				},
+				"Buttons": {
+					"Add": "Add",
+					"Clear": "Clear"
+				}
+			},
+			"Buttons": {
+				"GmrollSelected": "Roll for selected",
+				"AskSelected": "Ask selected to roll",
+				"MacroToScreen": "To this screen",
+				"MacroToGmroll": "To roll for selected",
+				"MacroToAsk": "To ask selected to roll"
+			}
+		},
+		"Errors": {
+			"PreventsSubmission": "Prevents Submission",
+			"NoUsers": "There are no users selected!",
+			"NoActors": "There are no actors selected!",
+			"NoRolls": "There are no rolls selected!",
+			"NoActive": "None of the users you have selected are online to receive the request."
+		}
+		
+    }
 }

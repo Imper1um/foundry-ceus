@@ -1,0 +1,225 @@
+This file is just holding old module.json information for later.
+"dnd5e",
+		"dnd5eJP",
+		"pf1",
+		"pf2e",
+		"D35E",
+		"sw5e",
+		"cof",
+		"coc",
+		"demonlord",
+		"ose",
+		"foundry-chromatic-dungeons",
+		"degenesis",
+		"ffd20",
+
+
+{
+				"id": "dnd5e",
+				"type": "system",
+				"manifest": "https://gitlab.com/asacolips-projects/foundry-mods/archmage/-/raw/2.0.2/system.json",
+				"compatibility": {
+					"verified": "2.0.2"
+				}
+			},
+			{
+				"id": "dnd5eJP",
+				"type": "system"
+			},
+			{
+				"id": "pf1",
+				"type": "system",
+				"manifest": "https://gitlab.com/foundryvtt_pathfinder1e/foundryvtt-pathfinder1/-/releases/v0.82.1/downloads/system.json",
+				"compatibility": {
+					"verified": "0.82.1"
+				}
+			},
+			{
+				"id": "pf2e",
+				"type": "system",
+				"manifest": "https://github.com/foundryvtt/pf2e/releases/download/3.13.6/system.json",
+				"compatibility": {
+					"verified": "3.13.6"
+				}
+			},
+			{
+				"id": "D35E",
+				"type": "system",
+				"manifest": "https://github.com/Rughalt/D35E/blob/master/system.json",
+				"compatibility": {
+					"verified": "0.99.1"
+				}
+			},
+			{
+				"id": "sw5e",
+				"type": "system"
+			},
+			{
+				"id": "cof",
+				"type": "system",
+				"manifest": "https://github.com/ZigmundKreud/cof/releases/download/9.269.3/system.json",
+				"compatibility": {
+					"verified": "9.269.3"
+				}
+			},
+			{
+				"id": "coc",
+				"type": "system",
+				"manifest": "https://github.com/ZigmundKreud/coc/releases/download/9.269.4/system.json",
+				"compatibility": {
+					"verified": "9.269.4"
+				}
+			},
+			{
+				"id": "demonlord",
+				"type": "system",
+				"manifest": "https://github.com/Xacus/demonlord/releases/download/2.2.1/system.json",
+				"compatibility": {
+					"verified": "2.2.1"
+				}
+			},
+			{
+				"id": "ose",
+				"type": "system",
+				"manifest": "https://github.com/vttred/ose/releases/download/1.6.2/system.json",
+				"compatibility": {
+					"verified": "1.6.2"
+				}
+			},
+			{
+				"id": "foundry-chromatic-dungeons",
+				"type": "system",
+				"manifest": "https://github.com/wyrmisis/foundry-chromatic-dungeons/releases/download/1.1.0/system.json",
+				"compatibility": {
+					"verified": "1.1.0"
+				}
+			},
+			{
+				"id": "degenesis",
+				"type": "system",
+				"manifest": "https://github.com/greedyj4ck/DEGENESIS-FoundryVTT/releases/latest/download/system.json",
+				"compatibility": {
+					"verified": "0.5.1"
+				}
+			},
+			{
+				"id": "ffd20",
+				"type": "system",
+				"manifest": "https://github.com/Ritsuna/Foundry_FFD20/blob/master/system.json",
+				"compatibility": {
+					"verified": "10.1.7"
+				}
+			},
+			
+			
+			
+			,
+		{
+			"lang": "ja",
+			"name": "日本語 (Japanese)",
+			"path": "lang/ja.json"
+		},
+		{
+			"lang": "de",
+			"name": "German",
+			"path": "lang/de.json"
+		},
+		{
+			"lang": "pt-BR",
+			"name": "Português (Brasil)",
+			"path": "lang/pt-BR.json"
+		},
+		{
+			"lang": "es",
+			"name": "Español",
+			"path": "lang/es.json"
+		},
+		{
+			"lang": "fr",
+			"name": "Français",
+			"path": "lang/fr.json"
+		},
+		{
+			"lang": "cn",
+			"name": "中文",
+			"path": "lang/cn.json"
+		},
+		{
+			"lang": "zh-tw",
+			"name": "正體中文",
+			"path": "lang/zh-tw.json"
+		},
+		{
+			"lang": "it",
+			"name": "Italiana",
+			"path": "lang/it.json"
+		}
+		
+		
+		
+		"Ceus.Title": "Let Me Roll That For You!",
+    "Ceus.AdvantageNote": "These rolls will be made with advantage",
+    "Ceus.DisadvantageNote": "These rolls will be made with disadvantage",
+    "Ceus.SelectUser": "Select User:",
+    "Ceus.ControlledCharacters": "Controlled characters",
+    "Ceus.ControlledTokens": "Controlled Tokens",
+    "Ceus.AssignedCharacters": "Assigned characters",
+    "Ceus.SelectCharacters": "Select characters:",
+    "Ceus.SelectAll": "Select All",
+    "Ceus.SelectNone": "Clear Selection",
+    "Ceus.Modifiers": "Modifiers: ",
+    "Ceus.NormalRoll": "Normal Roll",
+    "Ceus.AdvantageRoll": "Advantage",
+    "Ceus.DisadvantageRoll": "Disadvantage",
+    "Ceus.QueryRoll": "Query Player",
+    "Ceus.WindowTitle": "Window Title:",
+    "Ceus.WindowTitleValue": "Get Rolling!",
+    "Ceus.WindowTitlePlaceholder": "They see me Rollin', they hating'",
+    "Ceus.Message": "Message:",
+    "Ceus.MessagePlaceholder": "Roll to see if you find any traps...",
+    "Ceus.AbilityChecks": "Ability Checks:",
+    "Ceus.AbilityCheck": "Ability Check: ",
+    "Ceus.SavingThrows": "Saving Throws:",
+    "Ceus.SavingThrow": "Saving Throw: ",
+    "Ceus.SkillChecks": "Skill Checks:",
+    "Ceus.SkillCheck": "Skill Check: ",
+    "Ceus.RequestRolls": "Request Rolls!",
+    "Ceus.SaveRequest": "Save Request as Macro",
+    "Ceus.RollerIntro": " Your GM has requested rolls from your character(s): ",
+    "Ceus.Reason": "Reason: ",
+    "Ceus.CustomFormula": "Custom Formula: ",
+    "Ceus.CustomFormulaPlaceholder": "1d20 + @abilities.str.mod + 1",
+    "Ceus.Initiative": "Initiative",
+    "Ceus.DeathSave": "Death Save",
+    "Ceus.Perception": "Perception",
+    "Ceus.InitiativeRollMessage": "Roll for Initiative!",
+    "Ceus.DeathSaveRollMessage": "Death Saving Throw",
+    "Ceus.PerceptionRollMessage": "Perception Check",
+    "Ceus.Extras": "Extras",
+    "Ceus.EnableParchmentTheme": "Enable parchment theme",
+    "Ceus.EnableParchmentThemeHint": "Enables the use of the stylized UI with a parchment look",
+    "Ceus.SentNotification": "Ceus: Roll request sent to connected players",
+    "Ceus.NothingNotification": "Ceus: Nothing to request",
+    "Ceus.RollTables": "Rollable Table:",
+    "Ceus.DeselectOnRequestorRender": "Deselect tokens when opening requestor",
+    "Ceus.DeselectOnRequestorRenderHint": "Enable to prevent roll requests from being sent to GM user (yourself)",
+    "Ceus.Selectors": "Dice & Modifiers",
+    "Ceus.ClearCustomFormula": "Clear Custom Formula",
+    "Ceus.Visibility": "Visibility",
+    "Ceus.ChooseOneDM": "Player chooses one request to roll:",
+    "Ceus.ChooseOne": "Pick one to roll:",
+    "Ceus.Enabled": "Enabled",
+    "Ceus.DC": "DC",
+    "Ceus.UseTokenImageOnRequester": "Use the token's image on the requestor",
+    "Ceus.UseTokenImageOnRequesterHint": "When opening the roll requester, use the token's image instead of the actor portrait",
+    "Ceus.Selected": "Controlled token at time of macro run",
+    "Ceus.SelectedNotification": "The selected user can only be used with 'Save Request as Macro'",
+    "Ceus.Macros": "For Macros",
+    "Ceus.Users": "Users",
+    "Ceus.NoSelectedToken": "Token(s) needs to be selected before the macro can be run",
+    "Ceus.SavingThrowFail": "FAIL Saving Throw: ",
+    "Ceus.AbilityCheckFail": "FAIL Ability Check: ",
+    "Ceus.SkillCheckFail": "FAIL Skill Check: ",
+    "Ceus.EnableChooseFail": "Enable Fail Button",
+    "Ceus.ShowFailButtons": "Show Fail Button",
+    "Ceus.ShowFailButtonsHint": "Show fail buttons for ability checks, ability saves and skill the requested roll form", 

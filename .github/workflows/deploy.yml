@@ -1,0 +1,59 @@
+name: Deploy Module
+
+on:
+  push:
+    branches:
+      - deploy  # Run this workflow when you push to the 'deploy' branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Update module.json
+        run: |
+          VERSION=$(echo ${{ github.ref }} | sed 's/refs\/tags\///')
+          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/${VERSION}/module.zip"
+          jq '.version = "'$VERSION'"' module.json | jq '.download = "'$DOWNLOAD_URL'"' > temp.json
+          mv temp.json module.json
+
+      - name: Install jq
+        run: sudo apt-get install jq
+
+      - name: Create ZIP and TAR.GZ
+        run: |
+          zip -r module.zip module.json css/* lang/* src/* templates/*
+          tar -zcvf module.tar.gz module.json css lang src templates
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./module.zip
+          asset_name: module.zip
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Upload TAR.GZ Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./module.tar.gz
+          asset_name: module.tar.gz
+          asset_content_type: application/gzip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
