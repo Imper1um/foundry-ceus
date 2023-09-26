@@ -19,7 +19,7 @@ jobs:
         id: create_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref }}
+          tag_name: foundry-ceus-release-${{ github.run_number }}
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
