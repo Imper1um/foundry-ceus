@@ -177,13 +177,13 @@ export class ceus_ResultsWindow extends FormApplication {
 	async notify(actorIds) {
 		const newNotification = this.requestOptions.shrink();
 		newNotification.requestActors = newNotification.requestActors.filter(ra => actorIds.includes(ra.actorId));
-		Ceus.current.socketEngine.pushRefactorRequest(newNotification);
+		await Ceus.current.socketEngine.pushRefactorRequest(newNotification);
 	}
 	
 	async roll(actorIds) {
 		const newNotification = this.requestOptions.shrink();
 		newNotification.requestUsers = [new ceus_RequestUser(game.user._id)];
-		Ceus.current.socketEngine.pushRefactorRequest(newNotification);
+		await Ceus.current.socketEngine.pushRefactorRequest(newNotification);
 	}
 	
 	async announce(rolls, dataAmount) {
@@ -319,7 +319,7 @@ export class ceus_ResultsWindow extends FormApplication {
 		const rerollActors = rolls.map(r => r.actor._id);
 		newNotification.requestActors = newNotification.requestActors.filter(ra => rerollActors.includes(ra.actorId));
 		newNotification.requestItems = rerollList;
-		Ceus.current.socketEngine.pushRefactorRequest(newNotification.shrink());
+		await Ceus.current.socketEngine.pushRefactorRequest(newNotification.shrink());
 		
 		this.render(false);
 	}

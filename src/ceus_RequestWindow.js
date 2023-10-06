@@ -29,6 +29,34 @@ export class ceus_RequestWindow extends FormApplication {
 		this.errors = new Array();
 	}
 	
+	async fill(data) {
+		this.requestOptions = data;
+		
+		for (const requestActor of this.requestOptions.requestActors) {
+			const possibleActor = this.possibleActors.find(ra => ra.actorId === requestActor.actorId);
+			if (!possibleActor) { continue; }
+			possibleActor.isSelected = true;
+		}
+		
+		var isGmSelect = false;
+		var actorShouldBeVisible = new Array();
+		for (const requestUser of this.requestOptions.requestUsers) {
+			const possibleUser = this.possibleUsers.find(ru => ru.id === requestUser.userId);
+			if (!possibleUser) { continue; }
+			possibleUser.isSelected = true;
+			if (possibleUser.role === 4) { isGmSelect = true; }
+			actorShouldBeVisible = actorShouldBeVisible.concat(possibleUser.ownership);
+		}
+		
+		for (const possibleActor of this.possibleActors) {
+			possibleActor.isVisible = isGmSelect || actorShouldBeVisible.some(a => a.id === possibleActor.actorId);
+		}
+		
+		for (const requestItem of this.requestOptions.requestItems) {
+			requestItem.appId = this.appId;
+		}
+	}
+	
 	static get defaultOptions() {
 		const options = super.defaultOptions;
 		options.title = game.i18n.localize("Ceus.Requestor.Title");
@@ -126,18 +154,21 @@ export class ceus_RequestWindow extends FormApplication {
 		const item = $(event.currentTarget);
 		const parentForm = item.parents('.ceus-form');
 		const dataParent = parentForm.data('appid');
+		
+		
+		
 		const requestWindow = game.users.apps.find(a => a.appId == dataParent);
 		const requestOptions = requestWindow.requestOptions;
 		const requestActors = requestOptions.requestActors.map(ra => ra.name).join(", ");
 		const requestUsers = requestOptions.requestUsers.map(ru => ru.name).join(", ");
 		const requestContent = requestOptions.shrink();
-		const scriptContent = `// Request Rolls\n
-			// Users: ${requestUsers}\n
-			// Actors: ${requestActors}\n
-			// Title: ${requestOptions.title}\n
-			// Message: ${requestOptions.message}\n
-			const data = ${JSON.stringify(requestOptions.shrink())};\n
-			Ceus.openRequest(data);`;
+		const scriptContent = `// Request Rolls
+// Users: ${requestUsers}
+// Actors: ${requestActors}
+// Title: ${requestOptions.title}
+// Message: ${requestOptions.message}
+const data = ${JSON.stringify(requestOptions.shrink())};
+globalThis.Ceus.macro_openRequest(data);`;
 		const macro = await Macro.create({
 			name: "Ceus: " + (requestOptions.title || requestOptions.message),
 			type: "script",
@@ -157,13 +188,13 @@ export class ceus_RequestWindow extends FormApplication {
 		const requestActors = requestOptions.requestActors.map(ra => ra.name).join(", ");
 		const requestUsers = requestOptions.requestUsers.map(ru => ru.name).join(", ");
 		const requestContent = requestOptions.shrink();
-		const scriptContent = `// Request Rolls\n
-			// Users: ${requestUsers}\n
-			// Actors: ${requestActors}\n
-			// Title: ${requestOptions.title}\n
-			// Message: ${requestOptions.message}\n
-			const data = ${JSON.stringify(requestOptions.shrink())};\n
-			Ceus.gmRoll(data);`;
+		const scriptContent = `// Request Rolls
+// Users: ${requestUsers}
+// Actors: ${requestActors}
+// Title: ${requestOptions.title}
+// Message: ${requestOptions.message}
+const data = ${JSON.stringify(requestOptions.shrink())};
+await globalThis.Ceus.macro_gmRoll(data);`;
 		const macro = await Macro.create({
 			name: "Ceus: " + (requestOptions.title || requestOptions.message),
 			type: "script",
@@ -183,13 +214,13 @@ export class ceus_RequestWindow extends FormApplication {
 		const requestActors = requestOptions.requestActors.map(ra => ra.name).join(", ");
 		const requestUsers = requestOptions.requestUsers.map(ru => ru.name).join(", ");
 		const requestContent = requestOptions.shrink(); 
-		const scriptContent = `// Request Rolls\n
-			// Users: ${requestUsers}\n
-			// Actors: ${requestActors}\n
-			// Title: ${requestOptions.title}\n
-			// Message: ${requestOptions.message}\n
-			const data = ${JSON.stringify(requestOptions.shrink())};\n
-			Ceus.requestRoll(data);`;
+		const scriptContent = `// Request Rolls
+// Users: ${requestUsers}
+// Actors: ${requestActors}
+// Title: ${requestOptions.title}
+// Message: ${requestOptions.message}
+const data = ${JSON.stringify(requestOptions.shrink())};
+await globalThis.Ceus.macro_requestRollWindow(data);`;
 		const macro = await Macro.create({
 			name: "Ceus: " + (requestOptions.title || requestOptions.message),
 			type: "script",
@@ -373,7 +404,7 @@ export class ceus_RequestWindow extends FormApplication {
 		
 		item.rollId = action.id;
 		item.rollType = action.rollType;
-		item.trainedOptions = Ceus.current.providerEngine.currentRollProvider.rollTrainedOptions(action.rollType, action.id);
+		item.trainedOptions = Ceus.current.providerEngine.currentRollProvider.rollTrainedOptions(action.rollType, action.rollId);
 		item.trainedOption = "";
 		if (item.trainedOptions && item.trainedOptions.length) {
 			item.trainedOption = item.trainedOptions.find(() => true);
@@ -381,7 +412,7 @@ export class ceus_RequestWindow extends FormApplication {
 		item.customBonus = "";
 		item.dc = "",
 		item.advantageDisadvantage = "require-normal";
-		item.allowDC = Ceus.current.providerEngine.currentRollProvider.allowDC(action.rollType, action.id);
+		item.allowDC = Ceus.current.providerEngine.currentRollProvider.allowDC(action.rollType, action.rollId);
 		item.permitDC = Ceus.current.providerEngine.currentRollProvider.permitDC();
 		item.permitAdvantageDisadvantage = Ceus.current.providerEngine.currentRollProvider.permitAdvantageDisadvantage();
 		item.canCritSuccess = action.canCritSuccess;
