@@ -237,6 +237,8 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		const skillId = skillRoll.skillId;
 		const skill = actor.system.skills[skillRoll.skillId];
 		const rollOptions = rp.baseRollOptions();
+		rollOptions.rollMode = requestOptions.rollPrivacy;
+		rollOptions.bonus = requestItem.customBonus;
 		var completeRoll;
 		switch (requestItem.trainedOption) {
 			case "HideUntrained":
@@ -274,7 +276,10 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const skill = actor.system.skills["per"];
 		const skillId = "per";
-		const completeRoll = await actor.rollSkill(skillId, skill, rp.baseRollOptions());
+		const rollOptions = rp.baseRollOptions();
+		rollOptions.rollMode = requestOptions.rollPrivacy;
+		rollOptions.bonus = requestItem.customBonus;
+		const completeRoll = await actor.rollSkill(skillId, rollOptions);
 		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
@@ -282,7 +287,10 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		ceus_RollProvider_pf1.log.Trace("rollSave", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const saveRoll = rp.getAvailableRolls().find(r => r.id === "Saves").rolls.find(r => r.id === requestItem.rollId);
-		const completeRoll = await actor.rollSavingThrow(saveRoll.saveId, rp.baseRollOptions());
+		const rollOptions = rp.baseRollOptions();
+		rollOptions.rollMode = requestOptions.rollPrivacy;
+		rollOptions.bonus = requestItem.customBonus;
+		const completeRoll = await actor.rollSavingThrow(saveRoll.saveId, rollOptions);
 		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
@@ -290,7 +298,10 @@ export class ceus_RollProvider_pf1 extends ceus_RefactorRollProvider {
 		ceus_RollProvider_pf1.log.Trace("rollAbility", {requestOptions, actor, requestItem});
 		const rp = Ceus.current.providerEngine.currentRollProvider;
 		const abilityRoll = rp.getAvailableRolls().find(r => r.id === "Abilities").rolls.find(r => r.id === requestItem.rollId);
-		const completeRoll = await actor.rollAbilityTest(abilityRoll.abilityId, rp.baseRollOptions());
+		const rollOptions = rp.baseRollOptions();
+		rollOptions.rollMode = requestItem.rollPrivacy;
+		rollOptions.bonus = requestItem.customBonus;
+		const completeRoll = await actor.rollAbilityTest(abilityRoll.abilityId, rollOptions);
 		return rp.buildResult(requestOptions, actor, requestItem, completeRoll);
 	}
 	
